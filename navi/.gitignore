@@ -1,0 +1,9 @@
+# Flutter/Dart/Pub
+pubspec.lock
+.packages
+.metadata
+.dart_tool/
+build/
+**/doc/api/
+.pub-cache/
+.pub/
