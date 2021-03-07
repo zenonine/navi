@@ -1,7 +1,6 @@
 name: navi
 description: Navigation framework for Flutter
 version: 0.0.1
-author: Zeno Nine <zenonine.com@gmail.com>
 homepage: https://github.com/zenonine/navi
 
 environment:
