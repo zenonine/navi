@@ -1,4 +1,4 @@
-[Simple Example](https://github.com/zenonine/navi/tree/master/examples/simple/lib/main.dart)
+[Simple Example](https://github.com/zenonine/navi/blob/master/examples/simple/lib/main.dart)
 
 ```
 import 'package:flutter/material.dart';
