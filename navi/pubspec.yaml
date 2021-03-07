@@ -1,5 +1,5 @@
 name: navi
-description: Navigation framework for Flutter
+description: Navigation framework for Flutter. Similar to Angular Router.
 version: 0.0.1
 homepage: https://github.com/zenonine/navi
 
