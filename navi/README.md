@@ -120,9 +120,16 @@ Let's start with an example, which is complex enough to see the problem.
 * Hierarchy pages we want
   * `Navigator.pages` for home page: `[HomePage]`
   * `Navigator.pages` for a root category: `[HomePage, CategoryPage]`
-  * `Navigator.pages` for a 2nd level category: `[HomePage, CategoryPage, CategoryPage]`. We can have 3rd, 4th level category, but let's stop here.
-  * `Navigator.pages` for product overview page, which belongs to a 2nd level category: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage]`
-  * `Navigator.pages` for product details page: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage, ProductDetailsPage]`
+  * `Navigator.pages` for a 2nd level category: `[HomePage, CategoryPage, CategoryPage]`. We can have 3rd, 4th level
+    category, but let's stop here.
+  * `Navigator.pages` for product overview page, which belongs to a 2nd level
+    category: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage]`
+  * `Navigator.pages` for product details
+    page: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage, ProductDetailsPage]`.
+
+    In this case, we also have nested stack for specs and accessories tabs: `[ProductDetailsSpecsPage]`
+    or `[ProductDetailsAccessoriesPage]`
+
 * Mapping URLs to pages
   * `/`: `HomePage`
   * `/categories/:id`: `CategoryPage`
@@ -273,4 +280,10 @@ class ProductDetailsStack extends RouteStack {
   * `context.navi.byStack(ProductStack(id: 1, categoryId: 3))`
   * `context.navi.byStack(ProductStack(id: 1, onNavigated: {}))`
 
-* TBD. How to sync URL and the current navigation stack?
+* How to sync URL and the current navigation stack?
+
+  You will have 2 options to choose:
+  * Don't use code generator: path parameters and query parameters are provided to you as `String`. You need to manually
+    validate and convert to your types.
+  * Use code generator to generate typesafe interfaces, which allow you to sync path parameters and query parameters to
+    your variable in the defined types automatically.
