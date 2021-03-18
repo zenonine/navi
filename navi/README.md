@@ -1,9 +1,103 @@
 Work In Progress: Declarative Navigation framework for Flutter
 
+# Introduction
+
+The goal of this library is to create a simple declarative navigation API for Flutter projects.
+
+You only need to know how to use 2 simple classes: `RouteStack` class, `StackOutlet` widget and nothing more.
+
+```
+// This stack only have a single page: [HomePage()]
+class HomeStack extends RouteStack {
+  List<RouteStack> get upperStacks => [];
+  List<Widget> get pages => [HomePage()];
+}
+
+// This stack reuse upper stack `HomeStack` and join with category pages in current stack.
+// Result: [HomePage(), CategoryPage(id: 1), CategoryPage(id: 2), CategoryPage(id: 3)]
+class CategoriesStack extends RouteStack {
+  CategoriesStack({required this.categoryId});
+
+  final int categoryId;
+
+  List<RouteStack> get upperStacks => [HomeStack()];
+
+  List<Widget> get pages {
+    // Assume parent categories are 1, 2
+    return [
+      CategoryPage(categoryId: 1),
+      CategoryPage(categoryId: 2),
+      CategoryPage(categoryId: categoryId),
+    ];
+  }
+}
+```
+
+If you want to have nested routes, use `StackOutlet` widget.
+
+The example below use `BottomNavigationBar` to demonstrate how you can use declarative API to switch between 2 tabs,
+each tab is a route.
+
+Calling `setState()` will update the current nested stack, and therefore switching the tabs.
+
+```
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  ProductDetailsTab tab = ProductDetailsTab.specs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // ... removed for concise
+      body: StackOutlet(
+        stack: ProductDetailsStack(
+          productId: widget.productId,
+          tab: tab,
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.list)),
+          BottomNavigationBarItem(icon: Icon(Icons.plumbing_sharp)),
+        ],
+        currentIndex: tab == ProductDetailsTab.specs ? 0 : 1,
+        onTap: (tabIndex) {
+          setState(() {
+            tab = tabIndex == 0
+                ? ProductDetailsTab.specs
+                : ProductDetailsTab.accessories;
+          });
+        },
+      ),
+    );
+  }
+}
+```
+
+```
+enum ProductDetailsTab { specs, accessories }
+
+class ProductDetailsStack extends RouteStack {
+  ProductDetailsStack({required this.productId, required this.tab});
+  
+  // ... removed for concise
+  
+  List<Widget> get pages {
+    return [
+      if (tab == ProductDetailsTab.specs)
+        ProductDetailsSpecsPage(productId: productId),
+      if (tab == ProductDetailsTab.accessories)
+        ProductDetailsAccessoriesPage(productId: productId),
+    ];
+  }
+}
+```
+
 # Example
+
 Let's start with an example, which is complex enough to see the problem.
 
-* We have an online store (Web and Mobile), and we want to organize our products into categories similar to Amazon. So we want:
+* We have an online store (Web and Mobile), and we want to organize our products into categories similar to Amazon. So
+  we want:
   * Home page
     * shows all root categories
     * shows top products, recent products, etc.
@@ -26,74 +120,170 @@ Let's start with an example, which is complex enough to see the problem.
 * Hierarchy pages we want
   * `Navigator.pages` for home page: `[HomePage]`
   * `Navigator.pages` for a root category: `[HomePage, CategoryPage]`
-  * `Navigator.pages` for a 2nd level category: `[HomePage, CategoryPage, CategoryPage]`. We can have 3rd, 4th level category, but let's stop here.
-  * `Navigator.pages` for product overview page, which belongs to a 2nd level category: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage]`
-  * `Navigator.pages` for product details page: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage, ProductDetailsPage]`
+  * `Navigator.pages` for a 2nd level category: `[HomePage, CategoryPage, CategoryPage]`. We can have 3rd, 4th level
+    category, but let's stop here.
+  * `Navigator.pages` for product overview page, which belongs to a 2nd level
+    category: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage]`
+  * `Navigator.pages` for product details
+    page: `[HomePage, CategoryPage, CategoryPage, ProductOverviewPage, ProductDetailsPage]`.
+
+    In this case, we also have nested stack for specs and accessories tabs: `[ProductDetailsSpecsPage]`
+    or `[ProductDetailsAccessoriesPage]`
+
 * Mapping URLs to pages
   * `/`: `HomePage`
   * `/categories/:id`: `CategoryPage`
   * `/products/:id`: `ProductOverviewPage`. Automatically find the default category it belongs to.
-  * `/products/:id?categoryId=:categoryId`: `ProductOverviewPage`. Use the given category if valid or fallback to default category it belongs to.
-  * `/products/:id/details`: `ProductDetailsPage`. Automatically find the default category it belongs to.
-  * `/products/:id/details?categoryId=:categoryId`: `ProductDetailsPage`. Use the given category if valid or fallback to default category it belongs to.
+  * `/products/:id?categoryId=:categoryId`: `ProductOverviewPage`. Use the given category if valid or fallback to
+    default category it belongs to.
+  * `/products/:id/details`: `ProductDetailsPage`, tab `specs` by default. Automatically find the default category it
+    belongs to.
+  * `/products/:id/details?categoryId=:categoryId`: `ProductDetailsPage`, tab `specs` by default. Use the given category
+    if valid or fallback to default category it belongs to.
+  * `/products/:id/details?tab=accessories`: open tab `accessories` on `ProductDetailsPage`.
 
 # High level idea
 
 Managing the whole navigation system in one place `Navigator(pages: [...])` is too difficult.
 
-Therefore, the idea is splitting into smaller navigation domains (I call them stacks) and combine them into a single `Navigator.pages`.
+Therefore, the idea is splitting into smaller navigation domains (I call them stacks) and combine them into a
+single `Navigator.pages`.
 
 * How we organize these smaller domains and their relationships?
-  
+
+In the example code below, we have 3 stacks `HomeStack`, `CategoriesStack` and `ProductStack`.
+
+`ProductStack` reuses `HomeStack` and `CategoriesStack`, so home page and categories pages are added automatically to
+product page.
+
+For nested routes, we use simple declarative API with `StackOutlet` widget in a `BottomNavigationBar`.
+Calling `setState()` will update the current nested stack, and therefore switching the tabs.
+
 ```
 // Navigator.pages will be [HomePage()]
-class RootStack {
-  List<RouteStack> get parentStacks => [];
+class HomeStack extends RouteStack {
+  @override
+  List<RouteStack> get upperStacks => [];
 
-  List<RouteEntry> get pages => [HomePage()];
+  @override
+  List<Widget> get pages => [HomePage()];
 }
 
 // Navigator.pages will be [HomePage(), CategoryPage(id: 1), CategoryPage(id: 2), CategoryPage(id: 3)]
-class CategoryStack {
-  CategoryStack({required this.id});
+class CategoriesStack extends RouteStack {
+  CategoriesStack({required this.categoryId});
 
-  final int id;
-  
-  List<RouteStack> get parentStacks => [RootStack()];
+  final int categoryId;
 
-  List<RouteEntry> get pages {
-    // assume, this.id = 3,
-    // calling remote endpoint to see parent categories: 1, 2.
-    return [CategoryPage(id: 1), CategoryPage(id: 2), CategoryPage(id: id)];
+  @override
+  List<RouteStack> get upperStacks => [HomeStack()];
+
+  @override
+  List<Widget> get pages {
+    // Assume parent categories are 1, 2
+    return [
+      CategoryPage(categoryId: 1),
+      CategoryPage(categoryId: 2),
+      CategoryPage(categoryId: categoryId),
+    ];
   }
 }
 
 // Navigator.pages will be smt like [HomePage(), CategoryPage(id: 1), CategoryPage(id: 2), CategoryPage(id: 3), ProductOverviewPage(id: 1)]
-// or [HomePage(), CategoryPage(id: 1), CategoryPage(id: 2), CategoryPage(id: 3), ProductOverviewPage(id: 1), ProductDetailPage(id: 1)]
-class ProductStack {
-  ProductStack({required this.id, this.categoryId, this.pageId});
-  
-  final int id;
-  final int? categoryId;
-  final String? pageId;
-  
-  List<RouteStack> get parentStacks {
-    // calling service to validate categoryId, if not valid, return a default category for the product.
-    // assuming the categoryId is valid and we use it directly to simplify the example.
-    
-    return [
-      RootStack(),
-      CategoryStack(id: categoryId),
-    ];
-  };
+// or [HomePage(), CategoryPage(id: 1), CategoryPage(id: 2), CategoryPage(id: 3), ProductOverviewPage(id: 1), ProductDetailsPage(id: 1)]
+class ProductStack extends RouteStack {
+  ProductStack({required this.productId, required this.showDetails});
 
-  List<RouteEntry> get pages {
-    // assume, this.id = 1,
+  // TODO: @PathParam()
+  final int productId;
+  final bool showDetails;
+
+  @override
+  List<RouteStack> get upperStacks {
+    // calling remote endpoint to find product category
+    final categoryId = 3;
+    return [HomeStack(), CategoriesStack(categoryId: categoryId)];
+  }
+
+  @override
+  List<Widget> get pages {
     return [
-      CategoryStack(),
-      ProductOverviewPage(id: id),
-      if (pageId == 'details') ProductDetailPage(id: id),
+      ProductOverviewPage(productId: productId),
+      if (showDetails) ProductDetailsPage(productId: productId),
     ];
   }
 }
 ```
+
+```
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  ProductDetailsTab tab = ProductDetailsTab.specs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Product ${widget.productId}'),
+      ),
+      body: StackOutlet(
+        stack: ProductDetailsStack(
+          productId: widget.productId,
+          tab: tab,
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.list)),
+          BottomNavigationBarItem(icon: Icon(Icons.plumbing_sharp)),
+        ],
+        currentIndex: tab == ProductDetailsTab.specs ? 0 : 1,
+        onTap: (tabIndex) {
+          setState(() {
+            tab = tabIndex == 0
+                ? ProductDetailsTab.specs
+                : ProductDetailsTab.accessories;
+          });
+        },
+      ),
+    );
+  }
+}
+
+enum ProductDetailsTab { specs, accessories }
+
+class ProductDetailsStack extends RouteStack {
+  ProductDetailsStack({required this.productId, required this.tab});
+
+  // TODO: @PathParam()
+  final int productId;
+  final ProductDetailsTab tab;
+
+  @override
+  List<RouteStack> get upperStacks => [];
+
+  @override
+  List<Widget> get pages {
+    return [
+      if (tab == ProductDetailsTab.specs)
+        ProductDetailsSpecsPage(productId: productId),
+      if (tab == ProductDetailsTab.accessories)
+        ProductDetailsAccessoriesPage(productId: productId),
+    ];
+  }
+}
+```
+
+* Imperative navigation
+  * `context.navi.byUrl('/products/1')`
+  * `context.navi.byUrl('/products/:id', pathParams: {'id': 1})`
+  * `context.navi.byStack(ProductStack(id: 1))`
+  * `context.navi.byStack(ProductStack(id: 1, categoryId: 3))`
+  * `context.navi.byStack(ProductStack(id: 1, onNavigated: {}))`
+
+* How to sync URL and the current navigation stack?
+
+  You will have 2 options to choose:
+  * Don't use code generator: path parameters and query parameters are provided to you as `String`. You need to manually
+    validate and convert to your types.
+  * Use code generator to generate typesafe interfaces, which allow you to sync path parameters and query parameters to
+    your variable in the defined types automatically.

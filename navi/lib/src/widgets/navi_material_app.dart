@@ -15,9 +15,12 @@ class NaviMaterialApp extends StatefulWidget {
 class _NaviMaterialAppState extends State<NaviMaterialApp> {
   @override
   Widget build(BuildContext context) {
+    // TODO: MaterialApp.router()
     return MaterialApp(
       title: widget.title,
-      home: SizedBox.shrink(),
+      home: Center(
+        child: Text(widget.title),
+      ),
     );
   }
 }
