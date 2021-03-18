@@ -39,9 +39,10 @@ If you want to have nested routes, use `StackOutlet` widget.
 The example below use `BottomNavigationBar` to demonstrate how you can use declarative API to switch between 2 tabs,
 each tab is a route.
 
-Calling `setState()` will update the current nested stack, and therefore switching the tabs. You want to control
-transition of the nested stack? => just use the normal flutter way, because `StackOutlet` widget is just a normal
-widget.
+Calling `setState()` will update the current nested stack, and therefore switching the tabs.
+
+You want to control transition of the nested stack? => just use the normal flutter way, because `StackOutlet` widget is
+just a normal widget.
 
 ```
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
@@ -106,8 +107,8 @@ Let's start with an example, which is complex enough to see the problem.
     * shows top products, recent products, etc.
     * Etc.
   * Category page
-    * select a root category to open category page of 2nd level categories, so on and so on.
-      For example of a 3rd level category, `Computer & Accessories › Data Storage › External Data Storage`.
+    * select a root category to open category page of 2nd level categories, so on and so on. For example of a 3rd level
+      category, `Computer & Accessories › Data Storage › External Data Storage`.
     * in each category page,
       * shows all next level categories if it has
       * shows all products of current category and sub-categories
