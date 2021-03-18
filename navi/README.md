@@ -4,7 +4,8 @@ Work In Progress: Declarative Navigation framework for Flutter
 
 The goal of this library is to create a simple declarative navigation API for Flutter projects.
 
-You only need to know how to use 2 simple classes: `RouteStack` class, `StackOutlet` widget and nothing more.
+To use the library, you only need to know how to use 2 simple classes: `RouteStack` class, `StackOutlet` widget and
+nothing more.
 
 ```
 // This stack only have a single page: [HomePage()]
