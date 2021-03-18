@@ -278,11 +278,14 @@ class ProductDetailsStack extends RouteStack {
 ```
 
 * Imperative navigation
-  * `context.navi.byUrl('/products/1')`
+  * `context.navi.byUrl('details')`: navigate to relative URL
+  * `context.navi.byUrl('/products/1')`: navigate to absolute URL (begin with a slash)
   * `context.navi.byUrl('/products/:id', pathParams: {'id': 1})`
   * `context.navi.byStack(ProductStack(id: 1))`
   * `context.navi.byStack(ProductStack(id: 1, categoryId: 3))`
-  * `context.navi.byStack(ProductStack(id: 1, onNavigated: {}))`
+  * `context.navi.byStack(ProductStack(id: 1, onNavigated: () {}), onFailure: () {})`
+  * `context.navi.pop()`: move up one level in the current stack or exit if there's no upper page.
+  * `context.navi.back()`: move back to the previous page in the history.
 
 * How to sync URL and the current navigation stack?
 
