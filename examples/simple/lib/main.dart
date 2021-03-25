@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:navi/navi.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
+
+import 'app/index.dart';
 
 void main() {
-  runApp(NaviMaterialApp(
-    title: 'Navi - Simple Example',
-    // TODO: configure URL mapping to root stacks here (NOT mapping to pages!)
-  ));
+  timeDilation = 3; // slow motion (x times slower)
+  runApp(App());
 }
