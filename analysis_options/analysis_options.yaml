@@ -1,0 +1,17 @@
+include: flutter_analysis_options.yaml
+
+analyzer:
+  exclude:
+    # Ignore generated files
+    - '**/*.g.dart'
+    - 'lib/src/generated/*.dart'
+
+linter:
+  rules:
+    always_specify_types: false
+
+    # enable only if working in a team
+    flutter_style_todos: false
+
+    # Only support from sdk 2.2
+    prefer_collection_literals: false

@@ -10,7 +10,7 @@ class BookCommentStack extends PageStack<int> {
   @override
   List<Page> pages(BuildContext context) => List.generate(
         state + 1,
-        (index) => MaterialPage(
+        (index) => MaterialPage<dynamic>(
           key: ValueKey(index),
           child: LikeCounter(
             title: 'Comment #$index',
@@ -20,5 +20,5 @@ class BookCommentStack extends PageStack<int> {
       );
 
   @override
-  void beforePop(context, route, result) => state--;
+  void beforePop(context, route, dynamic result) => state--;
 }

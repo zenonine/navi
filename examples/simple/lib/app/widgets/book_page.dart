@@ -4,7 +4,7 @@ import 'package:navi/navi.dart';
 import '../index.dart';
 
 class BookPage extends StatefulWidget {
-  BookPage({
+  const BookPage({
     Key? key,
     required this.book,
     this.tab,
@@ -32,10 +32,10 @@ class _BookPageState extends State<BookPage>
     ),
   );
 
-  late AnimationController _animationController = AnimationController(
+  late final AnimationController _animationController = AnimationController(
       vsync: this, duration: const Duration(milliseconds: 300));
 
-  late Animation<double> _animation = CurvedAnimation(
+  late final Animation<double> _animation = CurvedAnimation(
     parent: _animationController,
     curve: Curves.easeIn,
   );
@@ -73,7 +73,7 @@ class _BookPageState extends State<BookPage>
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.add_comment), label: 'Like comments'),
           BottomNavigationBarItem(

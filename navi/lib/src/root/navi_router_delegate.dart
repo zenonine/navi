@@ -15,6 +15,7 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
     rootStack.addListener(_stackListener);
   }
 
+  @override
   final GlobalKey<NavigatorState> navigatorKey;
   final PageStack rootStack;
   late final VoidCallback _stackListener;
@@ -24,7 +25,7 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
   RouteInfo get currentConfiguration {
     return rootStack is RouteStack
         ? (rootStack as RouteStack).routeInfo
-        : RouteInfo();
+        : const RouteInfo();
   }
 
   @override
@@ -51,8 +52,9 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
       key: navigatorKey,
       pages: _initialized
           ? rootStack.pages(context)
-          : [MaterialPage(child: EmptyStackOutlet())],
-      onPopPage: (route, result) => rootStack.onPopPage(context, route, result),
+          : [MaterialPage<dynamic>(child: EmptyStackOutlet())],
+      onPopPage: (route, dynamic result) =>
+          rootStack.onPopPage(context, route, result),
     );
   }
 }

@@ -6,12 +6,12 @@ class BackButtonController extends ChangeNotifier {
   bool get priority => _takePriority;
 
   void takePriority() {
-    this._takePriority = true;
+    _takePriority = true;
     notifyListeners();
   }
 
   void removePriority() {
-    this._takePriority = false;
+    _takePriority = false;
     notifyListeners();
   }
 }

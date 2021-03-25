@@ -12,12 +12,12 @@ class BookStack extends RouteStack<BookStackState> {
 
   @override
   List<Page> pages(BuildContext context) => [
-        MaterialPage(
-          key: ValueKey('Books'),
+        MaterialPage<dynamic>(
+          key: const ValueKey('Books'),
           child: BooksPage(onSelectBook: _selectBook),
         ),
         if (state.book != null)
-          MaterialPage(
+          MaterialPage<dynamic>(
             key: ValueKey(state),
             child: BookPage(
               book: state.book!,
@@ -39,7 +39,7 @@ class BookStack extends RouteStack<BookStackState> {
   }
 
   @override
-  void beforePop(context, route, result) => state = defaultInitialState;
+  void beforePop(context, route, dynamic result) => state = defaultInitialState;
 
   @override
   RouteInfo get routeInfo {
@@ -53,7 +53,7 @@ class BookStack extends RouteStack<BookStackState> {
       );
     }
 
-    return RouteInfo();
+    return const RouteInfo();
   }
 
   @override

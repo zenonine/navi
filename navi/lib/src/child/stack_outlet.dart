@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import '../main.dart';
 
-class StackOutlet<Stack extends PageStack> extends StatefulWidget {
-  StackOutlet({
+class StackOutlet<Stack extends PageStack<dynamic>> extends StatefulWidget {
+  const StackOutlet({
     required this.stack,
     this.backButtonController,
     this.navigatorKey,
@@ -67,7 +67,7 @@ class _StackOutletState extends State<StackOutlet> {
     if (_takePriority) {
       _backButtonDispatcher?.takePriority();
     }
-    return Router(
+    return Router<dynamic>(
       routerDelegate: _routerDelegate,
       backButtonDispatcher: _backButtonDispatcher,
     );

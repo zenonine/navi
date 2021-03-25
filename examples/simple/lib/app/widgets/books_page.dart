@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../index.dart';
 
 class BooksPage extends StatelessWidget {
-  BooksPage({Key? key, this.onSelectBook}) : super(key: key);
+  const BooksPage({Key? key, this.onSelectBook}) : super(key: key);
 
   final ValueChanged<Book>? onSelectBook;
 
@@ -11,7 +11,7 @@ class BooksPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Books'),
+        title: const Text('Books'),
       ),
       body: Column(
         children: [
