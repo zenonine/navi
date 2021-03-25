@@ -24,36 +24,41 @@ heavily on Navigator 2.0.
 Key requirements of the API:
 
 * Easy to learn
-* Flexible: easily integrate with other architectural elements, especially, state management (
-  ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it)).
+* Flexible: easily integrate with other architectural elements, especially, state management
+  (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it)).
 * Modularization
-  * friendly projects, which require splitting into multiple teams
-  * each stack can be considered as a module
+  * friendly to projects, which require splitting into multiple teams
+  * each stack can be considered as an isolated module
   * stacks should be reusable in other stacks
   * developers can freely organize stacks in the way they want
 
 To use the library, you only need to know how to use **3 simple** classes:
 
-* [`PageStack`](lib/src/common/page_stack.dart): declare the pages of a stack, which are updated by a state.
-* [`RouteStack`](lib/src/common/route_stack.dart) extends `PageStack` with routing capability.
+* [`PageStack`](https://github.com/zenonine/navi/blob/master/navi/lib/src/common/page_stack.dart):
+  declare the pages of a stack, which are updated accordingly to current state.
+* [`RouteStack`](https://github.com/zenonine/navi/blob/master/navi/lib/src/common/route_stack.dart) extends `PageStack`
+  with routing capability. If you don't need deep linking or target web, `PageStack` is enough for your app.
 
   Note that, routing is currently only working for root stack. Support routing for child stacks and nested stacks will
   be available soon.
-* [`StackOutlet`](lib/src/child/stack_outlet.dart) is a normal widget, which build pages of a stack.
+* [`StackOutlet`](https://github.com/zenonine/navi/blob/master/navi/lib/src/child/stack_outlet.dart) is a normal widget,
+  which build pages of a stack.
 
-Please see this [example](../examples/simple) app.
+Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples/simple) app.
 
 # Nested stack
 
 Because `StackOutlet` is just a normal widget, you only need to use this widget to build nested stacks like you would do
 with other widgets.
 
-It's commonly used together with `BottomNavigationBar`, but it will definitely work with other components and designs.
+It's commonly used together
+with [`BottomNavigationBar`](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html), but it will
+definitely work with other components and designs.
 
 If you want to keep state of nested stacks, you could
 use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.html).
 
-Please see this [example](../examples/simple/lib/app/widgets/book_page.dart).
+Please see this [example](https://github.com/zenonine/navi/blob/master/examples/simple/lib/app/widgets/book_page.dart).
 
 # TODO: Imperative navigation
 
