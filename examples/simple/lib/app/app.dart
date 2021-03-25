@@ -15,7 +15,6 @@ class _AppState extends State<App> {
       title: 'Navi - Declarative navigation API for Flutter',
       routeInformationParser: NaviInformationParser(),
       routerDelegate: NaviRouterDelegate(rootStack: BookStack()),
-      // transitionDelegate:
     );
   }
 }
