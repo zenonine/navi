@@ -24,17 +24,18 @@ heavily on Navigator 2.0.
 Key requirements of the API:
 
 * Easy to learn
-* Flexible: easily integrate with other architectural elements, especially, state management (
-  ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it)).
+* Flexible: easily integrate with other architectural elements, especially, state management
+  (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it)).
 * Modularization
-  * friendly projects, which require splitting into multiple teams
-  * each stack can be considered as a module
+  * friendly to projects, which require splitting into multiple teams
+  * each stack can be considered as an isolated module
   * stacks should be reusable in other stacks
   * developers can freely organize stacks in the way they want
 
 To use the library, you only need to know how to use **3 simple** classes:
 
-* [`PageStack`](lib/src/common/page_stack.dart): declare the pages of a stack, which are updated by a state.
+* [`PageStack`](lib/src/common/page_stack.dart):
+  declare the pages of a stack, which are updated accordingly to current state.
 * [`RouteStack`](lib/src/common/route_stack.dart) extends `PageStack` with routing capability.
 
   Note that, routing is currently only working for root stack. Support routing for child stacks and nested stacks will
