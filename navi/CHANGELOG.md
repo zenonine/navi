@@ -1,3 +1,7 @@
+## [0.0.3] - 25.03.2021
+
+* Implement declarative API (without routing capability in child and nested stacks)
+
 ## [0.0.2] - 07.03.2021
 
 * Reorganize repository structure
