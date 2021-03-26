@@ -1,4 +1,4 @@
-Navi - a declarative navigation framework for Flutter.
+Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
 # Declarative navigation
 
@@ -44,7 +44,7 @@ To use the library, you only need to know how to use **3 simple** classes:
 * [`StackOutlet`](https://github.com/zenonine/navi/blob/master/navi/lib/src/child/stack_outlet.dart) is a normal widget,
   which build pages of a stack.
 
-Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples/simple) app.
+Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple) app.
 
 # Nested stack
 
@@ -58,7 +58,8 @@ definitely work with other components and designs.
 If you want to keep state of nested stacks, you could
 use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.html).
 
-Please see this [example](https://github.com/zenonine/navi/blob/master/examples/simple/lib/app/widgets/book_page.dart).
+Please see
+this [example](https://github.com/zenonine/navi/blob/master/examples/bookstore-simple/lib/app/widgets/book_page.dart).
 
 # TODO: Imperative navigation
 

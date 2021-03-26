@@ -1,4 +1,4 @@
-[Full example source code](https://github.com/zenonine/navi/blob/master/examples/simple/lib/main.dart)
+For more details, please check [provided examples](https://github.com/zenonine/navi/blob/master/examples).
 
 pubspec.xml
 
