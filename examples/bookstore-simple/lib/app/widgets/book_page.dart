@@ -25,10 +25,7 @@ class _BookPageState extends State<BookPage>
   final Map<BookTab, BackButtonController> _backButtonControllers =
       Map.fromEntries(
     BookTab.values.map(
-      (tab) => MapEntry(
-        tab,
-        BackButtonController(),
-      ),
+      (tab) => MapEntry(tab, BackButtonController()),
     ),
   );
 

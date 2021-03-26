@@ -88,3 +88,8 @@ You will have 2 options to choose:
   validate and convert to your types.
 * Use code generator to generate typesafe interfaces, which allow you to sync path parameters and query parameters to
   your variable in the defined types automatically.
+
+# TODO: Manipulation of the chronological history Stack
+
+Browser back button and system back button should behave the same way, according
+to [material navigation guideline](https://material.io/design/navigation/understanding-navigation.html#reverse-navigation)
