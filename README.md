@@ -4,4 +4,5 @@ Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
 * [Documentation](navi/README.md)
 * [Examples](examples)
-  * [Simple](examples/simple)
+  * [bookstore-simple](examples/bookstore-simple)
+  * [authentication](examples/uxr/3a-authentication-home)
