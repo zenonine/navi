@@ -1,5 +1,10 @@
 Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
+# [Examples](https://github.com/zenonine/navi/tree/master/examples)
+
+* [bookstore-simple](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
+* [authentication](https://github.com/zenonine/navi/tree/master/examples/uxr/3a-authentication-home)
+
 # Declarative navigation
 
 Declarative navigation is an example of [declarative programming](https://en.wikipedia.org/wiki/Declarative_programming)
@@ -44,7 +49,7 @@ To use the library, you only need to know how to use **3 simple** classes:
 * [`StackOutlet`](https://github.com/zenonine/navi/blob/master/navi/lib/src/child/stack_outlet.dart) is a normal widget,
   which build pages of a stack.
 
-Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple) app.
+Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples) app.
 
 # Nested stack
 
