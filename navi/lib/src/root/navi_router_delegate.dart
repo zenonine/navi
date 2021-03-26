@@ -46,8 +46,6 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
 
   @override
   Widget build(BuildContext context) {
-    print('NaviRouterDelegate.build $rootStack');
-
     return Navigator(
       key: navigatorKey,
       pages: _initialized

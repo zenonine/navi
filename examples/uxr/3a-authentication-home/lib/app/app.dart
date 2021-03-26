@@ -13,6 +13,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Navi - Declarative navigation API for Flutter',
+      debugShowCheckedModeBanner: false,
       routeInformationParser: NaviInformationParser(),
       routerDelegate: NaviRouterDelegate(rootStack: RootStack()),
     );
