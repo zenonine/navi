@@ -1,4 +1,4 @@
-Navi - a declarative navigation framework for Flutter.
+Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
 # Declarative navigation
 
