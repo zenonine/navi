@@ -19,9 +19,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
-            onPressed: () {
-              _authService.logout();
-            },
+            onPressed: () => _authService.logout(),
           ),
         ],
       ),

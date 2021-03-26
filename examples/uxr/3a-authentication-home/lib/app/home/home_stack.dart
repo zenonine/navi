@@ -3,8 +3,8 @@ import 'package:navi/navi.dart';
 
 import '../index.dart';
 
-class HomeStack extends PageStack<HomeStackState> {
-  HomeStack() : super(initialState: HomeStackState());
+class HomeStack extends PageStack<void> {
+  HomeStack() : super(initialState: null);
 
   @override
   List<Page> pages(BuildContext context) {

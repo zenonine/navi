@@ -3,8 +3,8 @@ import 'package:navi/navi.dart';
 
 import '../index.dart';
 
-class AuthStack extends PageStack<User> {
-  AuthStack() : super(initialState: User());
+class AuthStack extends PageStack<void> {
+  AuthStack() : super(initialState: null);
 
   @override
   List<Page> pages(BuildContext context) {

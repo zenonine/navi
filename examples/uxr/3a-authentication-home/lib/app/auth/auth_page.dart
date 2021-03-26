@@ -19,40 +19,50 @@ class _AuthPageState extends State<AuthPage> {
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 300),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  hintText: 'user',
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 300),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Username',
+                    hintText: 'user',
+                  ),
                 ),
-              ),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'user',
+                TextField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    hintText: 'user',
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _authService.login(
-                      _usernameController.text,
-                      _passwordController.text,
-                    );
-                  },
-                  child: const Text('Login'),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _authService.login(
+                          _usernameController.text,
+                          _passwordController.text,
+                        );
+                      },
+                      child: const Text('Login'),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                const Text('Correct username/password: user/user'),
+                const Text(
+                  'Note: 3x slow motion to recognize page transition.',
+                ),
+              ],
+            ),
           ),
         ),
       ),
