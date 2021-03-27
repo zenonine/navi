@@ -14,18 +14,14 @@ class _AppState extends State<App> {
     return MaterialApp.router(
       title: 'Navi - Declarative navigation API for Flutter',
       debugShowCheckedModeBanner: false,
-      routeInformationParser: NaviInformationParser(),
-      routerDelegate: NaviRouterDelegate(
-        rootStack: InlinePageStack(
-          pages: (BuildContext context) =>
-          [
-            MaterialPage<dynamic>(
-              key: const ValueKey('Root'),
-              child: RootPage(),
-            ),
-          ],
+      theme: ThemeData(
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionColor: Colors.white70,
+          cursorColor: Colors.white30,
         ),
       ),
+      routeInformationParser: NaviInformationParser(),
+      routerDelegate: NaviRouterDelegate(rootStack: BooksStack()),
     );
   }
 }
