@@ -36,6 +36,7 @@ Key requirements of the API:
   * each stack can be considered as an isolated module
   * stacks should be reusable in other stacks
   * developers can freely organize stacks in the way they want
+* Imperative navigation API is also supported.
 
 To use the library, you only need to know how to use **3 simple** classes:
 
