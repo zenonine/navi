@@ -9,8 +9,10 @@ Note that, I purposely slow down the animation duration 3 times, so you can test
 
 # Main scenarios (one scenario per app)
 
-1. Deep Linking - Path Parameters
-2. Deep Linking - Query Parameters
+1. [Deep Linking - Path Parameters](1-deep-linking-path-parameters)
+   NOTE: Currently, deep linking only works on root stack. Support for child stacks is in TODO list.
+2. [Deep Linking - Query Parameters](2-deep-linking-query-parameters)
+   NOTE: Currently, deep linking only works on root stack. Support for child stacks is in TODO list.
 3. Login/Logout/Sign-up Routing
 
 * [Home requires logging in](3a-authentication-home)
