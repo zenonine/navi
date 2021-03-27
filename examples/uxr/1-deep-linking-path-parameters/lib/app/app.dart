@@ -15,17 +15,7 @@ class _AppState extends State<App> {
       title: 'Navi - Declarative navigation API for Flutter',
       debugShowCheckedModeBanner: false,
       routeInformationParser: NaviInformationParser(),
-      routerDelegate: NaviRouterDelegate(
-        rootStack: InlinePageStack(
-          pages: (BuildContext context) =>
-          [
-            MaterialPage<dynamic>(
-              key: const ValueKey('Root'),
-              child: RootPage(),
-            ),
-          ],
-        ),
-      ),
+      routerDelegate: NaviRouterDelegate(rootStack: BooksStack()),
     );
   }
 }
