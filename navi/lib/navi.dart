@@ -4,6 +4,7 @@ export 'src/main.dart'
         NaviRouterDelegate,
         RouteInfo,
         PageStack,
+        InlinePageStack,
         RouteStack,
         StackOutlet,
         BackButtonController;

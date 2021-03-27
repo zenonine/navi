@@ -14,7 +14,16 @@ class _AppState extends State<App> {
     return MaterialApp.router(
       title: 'Navi - Declarative navigation API for Flutter',
       routeInformationParser: NaviInformationParser(),
-      routerDelegate: NaviRouterDelegate(rootStack: RootStack()),
+      routerDelegate: NaviRouterDelegate(
+        rootStack: InlinePageStack(
+          pages: (BuildContext context) => [
+            MaterialPage<dynamic>(
+              key: const ValueKey('Root'),
+              child: HomePage(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

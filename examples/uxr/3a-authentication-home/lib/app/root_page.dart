@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:navi/navi.dart';
 
-import '../index.dart';
+import 'index.dart';
 
 class RootPage extends StatefulWidget {
   @override
