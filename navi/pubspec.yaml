@@ -1,6 +1,6 @@
 name: navi
 description: A declarative navigation framework for Flutter, based on Navigator 2.0.
-version: 0.0.5
+version: 0.0.6
 homepage: https://github.com/zenonine/navi
 
 environment:

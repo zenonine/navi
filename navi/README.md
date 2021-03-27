@@ -3,7 +3,9 @@ Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 # [Examples](https://github.com/zenonine/navi/tree/master/examples)
 
 * [bookstore-simple](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
-* [authentication](https://github.com/zenonine/navi/tree/master/examples/uxr/3a-authentication-home)
+* [Authentication](https://github.com/zenonine/navi/tree/master/examples/uxr/3a-authentication-home)
+* [Deep Linking - Path Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/1-deep-linking-path-parameters)
+* [Deep Linking - Query Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/2-deep-linking-query-parameters)
 
 # Declarative navigation
 
@@ -45,8 +47,7 @@ To use the library, you only need to know how to use **3 simple** classes:
 * [`RouteStack`](https://github.com/zenonine/navi/blob/master/navi/lib/src/common/route_stack.dart) extends `PageStack`
   with routing capability. If you don't need deep linking or target web, `PageStack` is enough for your app.
 
-  Note that, routing is currently only working for root stack. Support routing for child stacks and nested stacks will
-  be available soon.
+  Note that, deep linking is currently only working for root stack. Support child stacks will be available soon.
 * [`StackOutlet`](https://github.com/zenonine/navi/blob/master/navi/lib/src/child/stack_outlet.dart) is a normal widget,
   which build pages of a stack.
 
@@ -66,6 +67,36 @@ use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.
 
 Please see
 this [example](https://github.com/zenonine/navi/blob/master/examples/bookstore-simple/lib/app/widgets/book_page.dart).
+
+# TODO: Reusable stacks
+
+Each stack can generate only pages related to its domain. Sometime you would like to have a stack which contains pages
+from other stacks.
+
+For example, you have 2 stacks:
+
+* `CategoryStack` has 3
+  pages `[CategoryPage('Computer & Accessories'), CategoryPage('Data Storage'), CategoryPage('External Data Storage')]`
+* `ProductStack` has 2 pages `[ProductOverviewPage(), ProductDetailsPage()]`
+
+If you want to open `ProductDetailsPage`, you might want to have also pages from `CategoryStack` in your hierarchy. The
+result you want could
+be `[CategoryPage('Computer & Accessories'), CategoryPage('Data Storage'), CategoryPage('External Data Storage'), ProductOverviewPage(), ProductDetailsPage()]`
+.
+
+The code snippet below explains how you can achieve that:
+
+```
+class ProductStack extends PageStack {
+  List<PageStack> upperStacks(BuildContext context) {
+    return [CategoryStack()];
+  }
+
+  List<Page> pages(BuildContext context) {
+    return [ProductOverviewPage(), ProductDetailsPage()];
+  }
+}
+```
 
 # TODO: Imperative navigation
 
