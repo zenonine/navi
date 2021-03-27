@@ -36,3 +36,7 @@ Note that, I purposely slow down the animation duration 3 times, so you can test
 3. Replacing a url
 
 # TODO: All scenarios in a single app
+
+While one scenario per app examples above can show the concepts, they could not show how it works in real apps.
+
+An app for all scenarios example is needed to expose the pros and cons of the library.

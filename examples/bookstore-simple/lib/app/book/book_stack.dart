@@ -18,7 +18,7 @@ class BookStack extends RouteStack<BookStackState> {
         ),
         if (state.book != null)
           MaterialPage<dynamic>(
-            key: ValueKey(state),
+            key: ValueKey(state.book),
             child: BookPage(
               book: state.book!,
               tab: state.tab,

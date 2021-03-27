@@ -24,7 +24,7 @@ abstract class PageStack<State> extends ChangeNotifier {
 
     if (route.isFirst) {
       // Forward pop to parent navigator
-      Navigator.of(context).pop(result);
+      Navigator.pop(context, result);
       return false;
     }
 
