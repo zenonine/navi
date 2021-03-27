@@ -34,7 +34,7 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
       (rootStack as RouteStack).routeInfo = configuration;
     }
 
-    // TODO: https://github.com/flutter/flutter/issues/78999
+    // TODO: Hot reload/restart resets to false https://github.com/flutter/flutter/issues/78999
     _initialized = true;
   }
 

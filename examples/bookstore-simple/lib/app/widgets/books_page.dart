@@ -18,8 +18,7 @@ class BooksPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              'Note that, animation duration is currently set to 3 times slower'
-              ' to easily recognize page transition.',
+              'Note: 3x slow motion to recognize page transition.',
               style: Theme.of(context).textTheme.headline5,
             ),
           ),
