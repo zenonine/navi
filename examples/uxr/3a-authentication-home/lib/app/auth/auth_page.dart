@@ -6,7 +6,7 @@ class AuthPage extends StatelessWidget {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final _authService = authService;
+  final _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {

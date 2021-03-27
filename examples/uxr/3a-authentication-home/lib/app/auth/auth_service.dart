@@ -1,6 +1,12 @@
 import 'package:flutter/foundation.dart';
 
-class _AuthService extends ChangeNotifier {
+class AuthService extends ChangeNotifier {
+  factory AuthService() => _instance;
+
+  AuthService._internal();
+
+  static final AuthService _instance = AuthService._internal();
+
   bool _authenticated = false;
 
   bool get authenticated => _authenticated;
@@ -17,5 +23,3 @@ class _AuthService extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-final authService = _AuthService();

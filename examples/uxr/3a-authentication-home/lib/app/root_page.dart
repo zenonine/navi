@@ -9,7 +9,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  final _authService = authService;
+  final _authService = AuthService();
   late final VoidCallback _authListener;
 
   @override
