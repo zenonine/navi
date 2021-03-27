@@ -1,3 +1,8 @@
+# [0.0.6] - 27.03.2021
+
+* Add `InlinePageStack` class
+* Add more examples
+
 # [0.0.5] - 26.03.2021
 
 * Update docs
