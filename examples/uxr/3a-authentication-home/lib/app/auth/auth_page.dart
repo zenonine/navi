@@ -47,17 +47,36 @@ class _AuthPageState extends State<AuthPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: ElevatedButton(
-                      onPressed: () {
-                        _authService.login(
+                      onPressed: () async {
+                        await _authService.login(
                           _usernameController.text,
                           _passwordController.text,
                         );
+
+                        if (!_authService.authenticated) {
+                          showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Invalid username/password'),
+                              content: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Column(
+                                  children: const [
+                                    Text('Correct username: user'),
+                                    Text('Correct password: user'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }
                       },
                       child: const Text('Login'),
                     ),
                   ),
                 ),
-                const Text('Correct username/password: user/user'),
+                const Text('Correct username: user'),
+                const Text('Correct password: user'),
                 const Text(
                   'Note: 3x slow motion to recognize page transition.',
                 ),
