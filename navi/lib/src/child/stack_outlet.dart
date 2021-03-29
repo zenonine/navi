@@ -23,6 +23,8 @@ class _StackOutletState extends State<StackOutlet> {
     navigatorKey: widget.navigatorKey,
   );
 
+  List<PageStack> _parentStacks = [];
+
   bool _takePriority = true;
   ChildBackButtonDispatcher? _backButtonDispatcher;
   BackButtonDispatcher? _parentBackButtonDispatcher;
@@ -48,6 +50,10 @@ class _StackOutletState extends State<StackOutlet> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    // update parent stacks
+    _parentStacks = context.stacks;
+
+    // handle back button dispatcher
     final parentBackButtonDispatcher = Router.of(context).backButtonDispatcher;
     if (parentBackButtonDispatcher != _parentBackButtonDispatcher) {
       _backButtonDispatcher?.parent.forget(_backButtonDispatcher!);
@@ -67,9 +73,12 @@ class _StackOutletState extends State<StackOutlet> {
     if (_takePriority) {
       _backButtonDispatcher?.takePriority();
     }
-    return Router<dynamic>(
-      routerDelegate: _routerDelegate,
-      backButtonDispatcher: _backButtonDispatcher,
+    return InheritedStack(
+      stacks: _parentStacks + [widget.stack],
+      child: Router<dynamic>(
+        routerDelegate: _routerDelegate,
+        backButtonDispatcher: _backButtonDispatcher,
+      ),
     );
   }
 }

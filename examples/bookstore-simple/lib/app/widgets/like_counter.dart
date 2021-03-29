@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:navi/navi.dart';
 
 class LikeCounter extends StatefulWidget {
   const LikeCounter({Key? key, required this.title, this.onNextComment})
@@ -13,6 +14,12 @@ class LikeCounter extends StatefulWidget {
 
 class _LikeCounterState extends State<LikeCounter> {
   int count = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('LikeCounter ${context.stacks}');
+  }
 
   @override
   Widget build(BuildContext context) {

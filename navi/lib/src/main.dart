@@ -2,6 +2,7 @@ export 'child/back_button_controller.dart';
 export 'child/child_router_delegate.dart';
 export 'child/empty_stack_outlet.dart';
 export 'child/stack_outlet.dart';
+export 'common/inherited_stack.dart';
 export 'common/inline_page_stack.dart';
 export 'common/page_stack.dart';
 export 'common/route_info.dart';

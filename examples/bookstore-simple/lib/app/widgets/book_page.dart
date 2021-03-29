@@ -50,6 +50,12 @@ class _BookPageState extends State<BookPage>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('BookPage ${context.stacks}');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _tab == BookTab.like ? Colors.green : Colors.red,
@@ -61,12 +67,12 @@ class _BookPageState extends State<BookPage>
         opacity: _animation,
         child: IndexedStack(
           index: _tab.index,
-          children: BookTab.values
-              .map((tab) => StackOutlet(
-                    backButtonController: _backButtonControllers[tab],
-                    stack: BookCommentStack(initialState: 0),
-                  ))
-              .toList(),
+          children: BookTab.values.map((tab) {
+            return StackOutlet(
+              backButtonController: _backButtonControllers[tab],
+              stack: BookCommentStack(initialState: 0),
+            );
+          }).toList(),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

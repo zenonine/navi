@@ -1,7 +1,13 @@
 import 'package:flutter/widgets.dart';
 
 abstract class PageStack<State> extends ChangeNotifier {
-  PageStack({required State initialState}) : _state = initialState;
+  PageStack({String? name, required State initialState})
+      : _name = name,
+        _state = initialState;
+
+  final String? _name;
+
+  String? get name => _name;
 
   State _state;
 
@@ -33,4 +39,9 @@ abstract class PageStack<State> extends ChangeNotifier {
   }
 
   void beforePop(BuildContext context, Route route, dynamic result) {}
+
+  @override
+  String toString() {
+    return '$runtimeType{name: $name, state: $state}';
+  }
 }

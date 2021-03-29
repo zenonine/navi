@@ -7,4 +7,5 @@ export 'src/main.dart'
         InlinePageStack,
         RouteStack,
         StackOutlet,
-        BackButtonController;
+        BackButtonController,
+        InheritedStackExt;

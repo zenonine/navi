@@ -1,7 +1,8 @@
 import '../main.dart';
 
 abstract class RouteStack<State> extends PageStack<State> {
-  RouteStack({required State initialState}) : super(initialState: initialState);
+  RouteStack({String? name, required State initialState})
+      : super(initialState: initialState, name: name);
 
   RouteInfo get routeInfo;
 

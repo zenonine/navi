@@ -45,13 +45,16 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      pages: _initialized
-          ? rootStack.pages(context)
-          : [MaterialPage<dynamic>(child: EmptyStackOutlet())],
-      onPopPage: (route, dynamic result) =>
-          rootStack.onPopPage(context, route, result),
+    return InheritedStack(
+      stacks: [rootStack],
+      child: Navigator(
+        key: navigatorKey,
+        pages: _initialized
+            ? rootStack.pages(context)
+            : [MaterialPage<dynamic>(child: EmptyStackOutlet())],
+        onPopPage: (route, dynamic result) =>
+            rootStack.onPopPage(context, route, result),
+      ),
     );
   }
 }
