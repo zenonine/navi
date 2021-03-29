@@ -52,7 +52,10 @@ class _BookPageState extends State<BookPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print('BookPage ${context.stacks}');
+    print('BookPage stacks ${context.stacks}');
+
+    final bookStack = context.stack<BookStack>();
+    print('BookPage bookStack $bookStack');
   }
 
   @override

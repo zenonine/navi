@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:navi/navi.dart';
 
+import '../index.dart';
+
 class LikeCounter extends StatefulWidget {
   const LikeCounter({Key? key, required this.title, this.onNextComment})
       : super(key: key);
@@ -18,7 +20,13 @@ class _LikeCounterState extends State<LikeCounter> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print('LikeCounter ${context.stacks}');
+    print('LikeCounter stacks ${context.stacks}');
+
+    final bookCommentsStack = context.stack<BookCommentStack>();
+    print('LikeCounter bookCommentsStack $bookCommentsStack');
+
+    final bookStack = context.stack<BookStack>();
+    print('LikeCounter bookStack $bookStack');
   }
 
   @override
