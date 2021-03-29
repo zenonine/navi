@@ -103,12 +103,10 @@ class ProductStack extends PageStack {
 Basically, you will not need this legacy approach if you can split your app into manageable stacks. However, it will
 still be useful in many cases and will be supported.
 
+* `context.navi.stack<ProductStack>().state = 1`: navigate to product stack with productId = 1.
 * `context.navi.byUrl('details')`: navigate to relative URL
 * `context.navi.byUrl('/products/1')`: navigate to absolute URL (begin with a slash)
 * `context.navi.byUrl('/products/:id', pathParams: {'id': 1})`
-* `context.navi.byStack(ProductStack(id: 1))`
-* `context.navi.byStack(ProductStack(id: 1, categoryId: 3))`
-* `context.navi.byStack(ProductStack(id: 1, onNavigated: () {}), onFailure: () {})`
 * `context.navi.pop()`: move up one level in the current stack or exit if there's no upper page.
 * `context.navi.back()`: move back to the previous page in the history.
 
