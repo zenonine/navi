@@ -14,10 +14,20 @@ import 'package:flutter/material.dart';
 import 'package:navi/navi.dart';
 
 void main() {
-  runApp(MaterialApp.router(
-    title: 'Navi - Declarative navigation API for Flutter',
-    routeInformationParser: NaviInformationParser(),
-    routerDelegate: NaviRouterDelegate(rootStack: BookStack()),
-  ));
+  runApp(App());
+}
+
+class App extends StatelessWidget {
+  final _informationParser = NaviInformationParser();
+  final _routerDelegate = NaviRouterDelegate(rootStack: BookStack());
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Navi - Declarative navigation API for Flutter',
+      routeInformationParser: _informationParser,
+      routerDelegate: _routerDelegate,
+    );
+  }
 }
 ```

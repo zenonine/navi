@@ -3,12 +3,10 @@ import 'package:navi/navi.dart';
 
 import 'index.dart';
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
+class App extends StatelessWidget {
+  final _informationParser = NaviInformationParser();
+  final _routerDelegate = NaviRouterDelegate(rootStack: BooksStack());
 
-class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -20,8 +18,8 @@ class _AppState extends State<App> {
           cursorColor: Colors.white30,
         ),
       ),
-      routeInformationParser: NaviInformationParser(),
-      routerDelegate: NaviRouterDelegate(rootStack: BooksStack()),
+      routeInformationParser: _informationParser,
+      routerDelegate: _routerDelegate,
     );
   }
 }
