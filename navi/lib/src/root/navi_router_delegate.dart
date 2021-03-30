@@ -13,6 +13,10 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
       notifyListeners();
     };
     rootStack.addListener(_stackListener);
+
+    NaviState().addListener(() {
+      notifyListeners();
+    });
   }
 
   @override
@@ -23,9 +27,7 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
 
   @override
   RouteInfo get currentConfiguration {
-    return rootStack is RouteStack
-        ? (rootStack as RouteStack).routeInfo
-        : const RouteInfo();
+    return NaviState().routeInfo;
   }
 
   @override

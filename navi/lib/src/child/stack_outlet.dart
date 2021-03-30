@@ -53,6 +53,8 @@ class _StackOutletState extends State<StackOutlet> {
     // update parent stacks
     _parentStacks = context.stacks;
 
+    widget.stack.parents = _parentStacks;
+
     // handle back button dispatcher
     final parentBackButtonDispatcher = Router.of(context).backButtonDispatcher;
     if (parentBackButtonDispatcher != _parentBackButtonDispatcher) {

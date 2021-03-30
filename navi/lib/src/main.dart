@@ -4,6 +4,7 @@ export 'child/empty_stack_outlet.dart';
 export 'child/stack_outlet.dart';
 export 'common/inherited_stack.dart';
 export 'common/inline_page_stack.dart';
+export 'common/navi_state.dart';
 export 'common/page_stack.dart';
 export 'common/route_info.dart';
 export 'common/route_stack.dart';

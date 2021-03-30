@@ -8,6 +8,7 @@ abstract class RouteStack<State> extends PageStack<State> {
 
   set routeInfo(RouteInfo newRouteInfo) {
     state = routeInfoToState(newRouteInfo);
+    // TODO: for all children, child.routeInfo = newRouteInfo - this.routeInfo
   }
 
   State routeInfoToState(RouteInfo routeInfo);

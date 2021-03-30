@@ -36,7 +36,6 @@ class WishlistStack extends RouteStack<Wishlist?> {
     state = null;
   }
 
-  // TODO: how to update browser URL?
   @override
   Wishlist? routeInfoToState(RouteInfo routeInfo) {
     final id = routeInfo.pathSegments.firstOrNull?.trim();
