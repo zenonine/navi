@@ -15,4 +15,7 @@ class InlinePageStack extends PageStack<void> {
 
   @override
   List<Page> pages(BuildContext context) => _pagesBuilder(context);
+
+  @override
+  void beforePop(BuildContext context, Route<dynamic> route, dynamic result) {}
 }

@@ -5,16 +5,7 @@ import 'index.dart';
 
 class App extends StatelessWidget {
   final _informationParser = NaviInformationParser();
-  final _routerDelegate = NaviRouterDelegate(
-    rootStack: InlinePageStack(
-      pages: (BuildContext context) => [
-        MaterialPage<dynamic>(
-          key: const ValueKey('Root'),
-          child: RootPage(),
-        ),
-      ],
-    ),
-  );
+  final _routerDelegate = NaviRouterDelegate(rootStack: RootStack());
 
   @override
   Widget build(BuildContext context) {

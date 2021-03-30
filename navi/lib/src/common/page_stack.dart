@@ -13,13 +13,15 @@ abstract class PageStack<State> extends ChangeNotifier {
 
   State get state => _state;
 
-  @protected
   set state(State newState) {
-    _state = newState;
+    _state = beforeSetState(newState);
     notifyListeners();
   }
 
   List<Page> pages(BuildContext context);
+
+  @protected
+  State beforeSetState(State newState) => newState;
 
   bool onPopPage(BuildContext context, Route route, dynamic result) {
     final didPopSuccess = route.didPop(result);
@@ -38,7 +40,7 @@ abstract class PageStack<State> extends ChangeNotifier {
     return true;
   }
 
-  void beforePop(BuildContext context, Route route, dynamic result) {}
+  void beforePop(BuildContext context, Route route, dynamic result);
 
   @override
   String toString() {

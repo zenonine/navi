@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import '../main.dart';
 
-// TODO: use InheritedModel to improve performance when listen for a Type and a name
+// TODO: improve performance by checking for both Type and name
 class InheritedStack extends InheritedModel<Type> {
   const InheritedStack({
     Key? key,
@@ -39,10 +39,19 @@ class InheritedStack extends InheritedModel<Type> {
 extension InheritedStackExt on BuildContext {
   List<PageStack> get stacks => InheritedStack.of(this);
 
-  T? stack<T extends PageStack<dynamic>>([String? name]) {
+  T stack<T extends PageStack<dynamic>>([String? name]) {
     final pageStack = InheritedStack.of(this, T).lastWhereOrNull((stack) {
       return (name == null || stack.name == name) && stack.runtimeType == T;
     }) as T?;
-    return pageStack;
+
+    assert(() {
+      if (pageStack == null) {
+        throw FlutterError(
+            'Navi operation requested with a context that does not include stack $T${name == null ? '' : '(name: $name)'}.');
+      }
+      return true;
+    }());
+
+    return pageStack!;
   }
 }

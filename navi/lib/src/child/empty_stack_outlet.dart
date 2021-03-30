@@ -18,4 +18,7 @@ class EmptyStack extends PageStack<void> {
     // TODO: use CupertinoPage on iOS
     return [MaterialPage<dynamic>(child: Container())];
   }
+
+  @override
+  void beforePop(BuildContext context, Route<dynamic> route, dynamic result) {}
 }
