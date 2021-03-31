@@ -3,7 +3,7 @@ import 'package:navi/navi.dart';
 
 import 'index.dart';
 
-class SectionTabStack extends PageStack<void> {
+class SectionTabStack extends RouteStack<void> {
   SectionTabStack({
     required this.section,
     required this.tab,
@@ -13,8 +13,7 @@ class SectionTabStack extends PageStack<void> {
   final SectionTab tab;
 
   @override
-  List<Page> pages(BuildContext context) =>
-      [
+  List<Page> pages(BuildContext context) => [
         // TODO: multiple pages to check behavior of BackButtonDispatcher and "nested" in-app back button.
         MaterialPage<dynamic>(
           key: ValueKey(section.toString() + '/' + tab.toString()),

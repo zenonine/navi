@@ -3,7 +3,7 @@ import 'package:navi/navi.dart';
 
 import '../index.dart';
 
-class HomeStack extends PageStack<void> {
+class HomeStack extends RouteStack<void> {
   HomeStack() : super(initialState: null);
 
   @override

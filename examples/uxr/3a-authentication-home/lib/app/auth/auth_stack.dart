@@ -3,7 +3,7 @@ import 'package:navi/navi.dart';
 
 import '../index.dart';
 
-class AuthStack extends PageStack<void> {
+class AuthStack extends RouteStack<void> {
   AuthStack() : super(initialState: null);
 
   @override

@@ -3,9 +3,5 @@ export 'src/main.dart'
         NaviInformationParser,
         NaviRouterDelegate,
         RouteInfo,
-        PageStack,
-        InlinePageStack,
         RouteStack,
-        StackOutlet,
-        BackButtonController,
-        InheritedStackExt;
+        RootRouteStack;

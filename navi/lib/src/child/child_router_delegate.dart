@@ -2,30 +2,36 @@ import 'package:flutter/widgets.dart';
 
 import '../main.dart';
 
-class ChildRouterDelegate extends RouterDelegate<dynamic>
+class ChildRouterDelegate<T> extends RouterDelegate<dynamic>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<dynamic> {
   ChildRouterDelegate({
-    required this.stack,
     GlobalKey<NavigatorState>? navigatorKey,
+    required this.pages,
+    required this.stackState,
+    required this.onPopPage,
   }) : navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>() {
     _stackListener = () {
       notifyListeners();
     };
-    stack.addListener(_stackListener);
+    stackState.addListener(_stackListener);
   }
 
   @override
   final GlobalKey<NavigatorState> navigatorKey;
-  final PageStack stack;
+  final PagesBuilder<T> pages;
+  late final StackState<T> stackState;
   late final VoidCallback _stackListener;
+  final NaviPopPageCallback onPopPage;
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      pages: stack.pages(context),
-      onPopPage: (route, dynamic result) =>
-          stack.onPopPage(context, route, result),
+    return InheritedStack(
+      state: stackState,
+      child: Navigator(
+        key: navigatorKey,
+        pages: pages(context, stackState.state),
+        onPopPage: (route, dynamic result) => onPopPage(context, route, result),
+      ),
     );
   }
 
@@ -36,7 +42,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
 
   @override
   void dispose() {
-    stack.removeListener(_stackListener);
+    stackState.removeListener(_stackListener);
     super.dispose();
   }
 }

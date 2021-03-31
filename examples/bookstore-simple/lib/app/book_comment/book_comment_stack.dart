@@ -3,7 +3,7 @@ import 'package:navi/navi.dart';
 
 import '../index.dart';
 
-class BookCommentStack extends PageStack<int> {
+class BookCommentStack extends RouteStack<int> {
   BookCommentStack({required int initialState})
       : super(initialState: initialState);
 
@@ -20,5 +20,5 @@ class BookCommentStack extends PageStack<int> {
       );
 
   @override
-  void beforePop(context, route, dynamic result) => state--;
+  void updateStateBeforePop(context, route, dynamic result) => state--;
 }

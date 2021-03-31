@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 class RouteInfo {
   const RouteInfo({
     this.pathSegments = const [],
@@ -31,12 +33,53 @@ class RouteInfo {
     );
   }
 
-  // TODO: use path package?
   List<String> get normalizedPathSegments => pathSegments
       .expand((segment) => segment.split('/'))
       .map((segment) => segment.trim())
       .where((segment) => segment.isNotEmpty)
       .toList();
+
+  RouteInfo operator +(RouteInfo other) {
+    return RouteInfo(
+      pathSegments: normalizedPathSegments + other.normalizedPathSegments,
+      // TODO: queryParams
+      queryParams: queryParams,
+      // TODO: fragment
+      fragment: fragment,
+    );
+  }
+
+  /// ```
+  /// [a, b, c] - [a, b] = [c]
+  /// [a, b, c] - [a, b, c] = []
+  /// [a, b, c] - [a, b, d] = []
+  /// [a, b, c] - [a, b, c, d] = []
+  /// [a, b, c] - [d] = []
+  /// ```
+  RouteInfo operator -(RouteInfo other) {
+    final thisPathSegments = normalizedPathSegments;
+    final otherPathSegments = other.normalizedPathSegments;
+
+    List<String> newPathSegments = [];
+    if (otherPathSegments.length < thisPathSegments.length) {
+      final equals = const ListEquality<String>().equals(
+        otherPathSegments,
+        thisPathSegments.sublist(0, otherPathSegments.length),
+      );
+
+      if (equals) {
+        newPathSegments = thisPathSegments.sublist(otherPathSegments.length);
+      }
+    }
+
+    return RouteInfo(
+      pathSegments: newPathSegments,
+      // TODO: queryParams
+      queryParams: queryParams,
+      // TODO: fragment
+      fragment: fragment,
+    );
+  }
 
   @override
   String toString() {
