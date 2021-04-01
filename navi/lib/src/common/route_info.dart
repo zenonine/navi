@@ -33,11 +33,34 @@ class RouteInfo {
     );
   }
 
-  List<String> get normalizedPathSegments => pathSegments
-      .expand((segment) => segment.split('/'))
-      .map((segment) => segment.trim())
-      .where((segment) => segment.isNotEmpty)
-      .toList();
+  List<String> get normalizedPathSegments =>
+      _normalizedPathSegments(pathSegments);
+
+  List<String> _normalizedPathSegments(List<String> pathSegments) =>
+      pathSegments
+          .expand((segment) => segment.split('/'))
+          .map((segment) => segment.trim())
+          .where((segment) => segment.isNotEmpty)
+          .toList();
+
+  bool isPrefixed(List<String> pathSegments) {
+    final _normalizedSegments = _normalizedPathSegments(pathSegments);
+
+    if (normalizedPathSegments.length < _normalizedSegments.length) {
+      return false;
+    }
+
+    return const ListEquality<String>().equals(
+      _normalizedSegments,
+      normalizedPathSegments.sublist(0, _normalizedSegments.length),
+    );
+  }
+
+  String? pathSegmentAt(int position) {
+    if (normalizedPathSegments.length > position) {
+      return normalizedPathSegments[position];
+    }
+  }
 
   RouteInfo operator +(RouteInfo other) {
     return RouteInfo(
