@@ -13,6 +13,7 @@ class RouteStack<T> extends StatefulWidget {
     this.updateRouteOnNewState,
     this.updateStateBeforePop,
     // TODO: this.beforeSetState, // ex. redirection by change the guard or navigate to another stack
+    // TODO: this.controller, // at the time of creating RouteStack, stack state object is not yet available
   }) : super(key: key);
 
   final GlobalKey<NavigatorState>? navigatorKey;

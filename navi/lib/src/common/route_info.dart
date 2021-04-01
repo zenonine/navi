@@ -65,11 +65,25 @@ class RouteInfo {
   RouteInfo operator +(RouteInfo other) {
     return RouteInfo(
       pathSegments: normalizedPathSegments + other.normalizedPathSegments,
-      // TODO: queryParams
-      queryParams: queryParams,
+      queryParams: _mergeQueryParams(queryParams, other.queryParams),
       // TODO: fragment
       fragment: fragment,
     );
+  }
+
+  Map<String, List<String>> _mergeQueryParams(
+    Map<String, List<String>> first,
+    Map<String, List<String>> second,
+  ) {
+    final Map<String, List<String>> result = {};
+
+    result.addAll(first);
+
+    second.forEach((key, value) {
+      result[key] = (result[key] ?? []) + value;
+    });
+
+    return result;
   }
 
   /// ```
