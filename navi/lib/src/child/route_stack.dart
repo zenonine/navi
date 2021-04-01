@@ -8,16 +8,17 @@ class RouteStack<T> extends StatefulWidget {
     Key? key,
     this.navigatorKey,
     this.marker,
+    this.controller,
     required this.pages,
     required this.updateStateOnNewRoute,
     this.updateRouteOnNewState,
     this.updateStateBeforePop,
     // TODO: this.beforeSetState, // ex. redirection by change the guard or navigate to another stack
-    // TODO: this.controller, // at the time of creating RouteStack, stack state object is not yet available
   }) : super(key: key);
 
   final GlobalKey<NavigatorState>? navigatorKey;
   final StackMarker<T>? marker;
+  final StackController<T>? controller;
   final PagesBuilder<T> pages;
   final RouteInfoBuilder<T>? updateRouteOnNewState;
   final OnNewRoute<T> updateStateOnNewRoute;
@@ -31,15 +32,42 @@ class RouteStackState<T> extends State<RouteStack<T>> {
   ChildRouterDelegate? _routerDelegate;
   StackState<T>? _stackState;
 
+  late bool _activated;
+
   int _newRouteCount = 0;
 
   ChildBackButtonDispatcher? _backButtonDispatcher;
   BackButtonDispatcher? _parentBackButtonDispatcher;
 
   @override
+  void initState() {
+    super.initState();
+
+    final stateController = widget.controller?.stateController;
+    stateController?.addListener(() {
+      _stackState?.state = stateController.state;
+    });
+
+    final activationController = widget.controller?.activationController;
+    _activated = activationController?.activated ?? true;
+    activationController?.addListener(() {
+      _activated = activationController.activated;
+
+      // TODO: how to deal with RouterState?
+
+      if (_activated) {
+        _backButtonDispatcher?.takePriority();
+      } else {
+        _backButtonDispatcher?.parent.forget(_backButtonDispatcher!);
+      }
+    });
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    // handle stack state
     if (context.internalNavi.newRouteCount != _newRouteCount) {
       _newRouteCount = context.internalNavi.newRouteCount;
 
@@ -51,6 +79,10 @@ class RouteStackState<T> extends State<RouteStack<T>> {
           initialState: widget.updateStateOnNewRoute(initialRouteInfo),
           routeInfoBuilder: widget.updateRouteOnNewState,
         );
+
+        _stackState!.addListener(() {
+          widget.controller?.stateController.state = _stackState!.state;
+        });
       } else {
         _stackState!.setStateWithoutNotifyRouter(
             widget.updateStateOnNewRoute(initialRouteInfo));
@@ -71,6 +103,7 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       });
     }
 
+    // handle router delegate
     _routerDelegate ??= ChildRouterDelegate<T>(
       navigatorKey: widget.navigatorKey,
       pages: widget.pages,
@@ -107,6 +140,18 @@ class RouteStackState<T> extends State<RouteStack<T>> {
     }
 
     return true;
+  }
+
+  @override
+  void dispose() {
+    widget.controller?.dispose();
+    _stackState?.dispose();
+    _stackState = null;
+    _routerDelegate?.dispose();
+    _routerDelegate = null;
+    _backButtonDispatcher = null;
+    _parentBackButtonDispatcher = null;
+    super.dispose();
   }
 
   @override

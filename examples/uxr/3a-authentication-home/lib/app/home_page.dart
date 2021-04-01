@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../index.dart';
+import 'index.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,10 +16,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Home'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              primary: Colors.white,
+              padding: const EdgeInsets.all(16),
+            ),
             onPressed: () => _authService.logout(),
+            icon: const Icon(Icons.logout),
+            label: const Text('Logout'),
           ),
         ],
       ),

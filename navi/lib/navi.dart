@@ -5,4 +5,5 @@ export 'src/main.dart'
         RouteInfo,
         RouteStack,
         StackMarker,
+        StackController,
         NaviContext;

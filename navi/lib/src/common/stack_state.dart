@@ -34,9 +34,11 @@ class StackState<T> extends ChangeNotifier implements StackStateInterface<T> {
   }
 
   void setStateWithoutNotifyRouter(T newState) {
-    _state = newState;
-    _updateRouteInfo();
-    notifyListeners();
+    if (_state != newState) {
+      _state = newState;
+      _updateRouteInfo();
+      notifyListeners();
+    }
   }
 
   late RouteInfo _routeInfo;

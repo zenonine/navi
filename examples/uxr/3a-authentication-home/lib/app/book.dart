@@ -1,5 +1,3 @@
-import 'package:collection/collection.dart';
-
 class Book {
   const Book({required this.id, required this.title, required this.author});
 
@@ -10,7 +8,7 @@ class Book {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Book && runtimeType == other.runtimeType && id == other.id;
+      other is Book && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -38,17 +36,3 @@ const List<Book> books = [
     author: 'Ray Bradbury',
   ),
 ];
-
-enum BookTab { like, dislike }
-
-const defaultBookTab = BookTab.like;
-
-String bookTabName(BookTab bookTab) =>
-    bookTab.toString().replaceAll(RegExp(r'.*\.'), '');
-
-BookTab? fromBookTabName(String? name) =>
-    name
-        ?.trim()
-        .isNotEmpty == true
-        ? BookTab.values.firstWhereOrNull((tab) => bookTabName(tab) == name)
-        : null;
