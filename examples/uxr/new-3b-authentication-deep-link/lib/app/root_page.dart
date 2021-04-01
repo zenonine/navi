@@ -8,10 +8,15 @@ class RootPage extends StatefulWidget {
   _RootPageState createState() => _RootPageState();
 }
 
+class RootStackMarker extends StackMarker<bool> {
+  RootStackMarker() : super();
+}
+
 class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return RouteStack<bool>(
+      marker: RootStackMarker(),
       pages: (context, state) {
         return [
           const MaterialPage<dynamic>(
@@ -69,8 +74,9 @@ class HomePage extends StatelessWidget {
       body: Center(
           child: ElevatedButton(
         onPressed: () {
-          // TODO: navigate to child?
-          print('Open child');
+          // context.navi.stack<StackMarker>('root').state = true;
+          context.navi.stack(RootStackMarker()).state = true;
+          // context.navi.parentStack.state = true;
         },
         child: const Text('Child'),
       )),

@@ -7,14 +7,16 @@ class RouteStack<T> extends StatefulWidget {
   const RouteStack({
     Key? key,
     this.navigatorKey,
+    this.marker,
     required this.pages,
     required this.updateStateOnNewRoute,
     this.updateRouteOnNewState,
     this.updateStateBeforePop,
-    // TODO: this.beforeSetState, // ex. local redirection
+    // TODO: this.beforeSetState, // ex. redirection by change the guard or navigate to another stack
   }) : super(key: key);
 
   final GlobalKey<NavigatorState>? navigatorKey;
+  final StackMarker<T>? marker;
   final PagesBuilder<T> pages;
   final RouteInfoBuilder<T>? updateRouteOnNewState;
   final OnNewRoute<T> updateStateOnNewRoute;
@@ -37,31 +39,29 @@ class RouteStackState<T> extends State<RouteStack<T>> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (context.newRouteCount != _newRouteCount) {
-      _newRouteCount = context.newRouteCount;
+    if (context.internalNavi.newRouteCount != _newRouteCount) {
+      _newRouteCount = context.internalNavi.newRouteCount;
 
-      final initialRouteInfo = context.stackState.childRouteInfo;
+      final initialRouteInfo = context.internalNavi.parentStack.childRouteInfo;
 
       if (_stackState == null) {
         _stackState = StackState<T>(
+          marker: widget.marker,
           initialState: widget.updateStateOnNewRoute(initialRouteInfo),
           routeInfoBuilder: widget.updateRouteOnNewState,
         );
       } else {
-        _stackState!.state = widget.updateStateOnNewRoute(initialRouteInfo);
+        _stackState!.setStateWithoutNotifyRouter(
+            widget.updateStateOnNewRoute(initialRouteInfo));
       }
 
       _stackState!.parentRouteInfos =
-          context.stackState.parentRouteInfos + [context.stackState.routeInfo];
+          context.internalNavi.parentStack.parentRouteInfos +
+              [context.internalNavi.parentStack.routeInfo];
 
       final currentRouteInfo = _stackState!.routeInfo;
 
       _stackState!.childRouteInfo = initialRouteInfo - currentRouteInfo;
-      print('initialRouteInfo $initialRouteInfo');
-      print('currentRouteInfo $currentRouteInfo');
-      print('parentRouteInfos ${_stackState!.parentRouteInfos}');
-      print('routeInfo ${_stackState!.routeInfo}');
-      print('childRouteInfo ${_stackState!.childRouteInfo}');
 
       // avoid error setState() or markNeedsBuild() called during build.
       // TODO: might need to control https://api.flutter.dev/flutter/scheduler/SchedulingStrategy.html
@@ -103,7 +103,6 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       final newState = widget.updateStateBeforePop!
           .call(context, route, result, _stackState!.state);
       _stackState!.state = newState;
-      RouterState().state = _stackState;
     }
 
     return true;

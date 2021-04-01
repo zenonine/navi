@@ -2,8 +2,17 @@ import 'package:flutter/foundation.dart';
 
 import '../main.dart';
 
-class StackState<T> extends ChangeNotifier {
+abstract class StackStateInterface<T> {
+  T get state;
+
+  set state(T newState);
+
+  RouteInfo get routeInfo;
+}
+
+class StackState<T> extends ChangeNotifier implements StackStateInterface<T> {
   StackState({
+    this.marker,
     required T initialState,
     RouteInfoBuilder<T>? routeInfoBuilder,
   })  : _state = initialState,
@@ -11,11 +20,20 @@ class StackState<T> extends ChangeNotifier {
     _updateRouteInfo();
   }
 
+  final StackMarker<T>? marker;
+
   T _state;
 
+  @override
   T get state => _state;
 
+  @override
   set state(T newState) {
+    setStateWithoutNotifyRouter(newState);
+    RouterState().state = this;
+  }
+
+  void setStateWithoutNotifyRouter(T newState) {
     _state = newState;
     _updateRouteInfo();
     notifyListeners();
@@ -23,6 +41,7 @@ class StackState<T> extends ChangeNotifier {
 
   late RouteInfo _routeInfo;
 
+  @override
   RouteInfo get routeInfo => _routeInfo;
 
   final RouteInfoBuilder<T>? _routeInfoBuilder;
@@ -36,7 +55,18 @@ class StackState<T> extends ChangeNotifier {
   RouteInfo childRouteInfo = const RouteInfo();
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is StackState &&
+          runtimeType == other.runtimeType &&
+          marker == other.marker &&
+          state == other.state;
+
+  @override
+  int get hashCode => marker.hashCode ^ state.hashCode;
+
+  @override
   String toString() {
-    return 'StackState{state: $state}';
+    return 'StackState{marker: $marker, state: $state}';
   }
 }

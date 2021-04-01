@@ -4,4 +4,5 @@ export 'src/main.dart'
         NaviRouterDelegate,
         RouteInfo,
         RouteStack,
-        RootRouteStack;
+        StackMarker,
+        NaviContext;

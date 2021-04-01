@@ -4,8 +4,6 @@ import '../main.dart';
 
 typedef VoidPageBuilder = Page Function(BuildContext context);
 
-typedef VoidPagesBuilder = List<Page> Function(BuildContext context);
-
 typedef PagesBuilder<T> = List<Page> Function(BuildContext context, T state);
 
 typedef NaviPopPageCallback = bool Function(

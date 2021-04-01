@@ -41,7 +41,7 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
     NaviPopPageCallback? onPopPage,
     Page? uninitializedPage,
   }) : this(
-    navigatorKey: navigatorKey,
+          navigatorKey: navigatorKey,
           onPopPage: onPopPage,
           rootPage: (context) => CupertinoPage<dynamic>(
             key: const ValueKey('Root'),
@@ -69,7 +69,6 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
 
   @override
   RouteInfo get currentConfiguration {
-    print('currentConfiguration $_routerState');
     final stackState = _routerState.state;
     final parentRouteInfos = stackState?.parentRouteInfos ?? [];
     final currentRouteInfo = stackState?.routeInfo ?? const RouteInfo();
@@ -87,16 +86,19 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
   @override
   Widget build(BuildContext context) {
     if (_newRouteCount > 0) {
-      print('newRouteCount $_newRouteCount ${_rootStackState.childRouteInfo}');
       return InheritedNewRouteCount(
         count: _newRouteCount,
-        child: InheritedStack(
-          state: _rootStackState,
-          child: Navigator(
-            key: navigatorKey,
-            pages: [rootPage(context)],
-            onPopPage: (route, dynamic result) =>
-                onPopPage?.call(context, route, result) ?? route.didPop(result),
+        child: InheritedStackMarker(
+          states: [_rootStackState],
+          child: InheritedStack(
+            state: _rootStackState,
+            child: Navigator(
+              key: navigatorKey,
+              pages: [rootPage(context)],
+              onPopPage: (route, dynamic result) =>
+                  onPopPage?.call(context, route, result) ??
+                  route.didPop(result),
+            ),
           ),
         ),
       );

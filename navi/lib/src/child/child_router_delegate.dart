@@ -25,12 +25,16 @@ class ChildRouterDelegate<T> extends RouterDelegate<dynamic>
 
   @override
   Widget build(BuildContext context) {
-    return InheritedStack(
-      state: stackState,
-      child: Navigator(
-        key: navigatorKey,
-        pages: pages(context, stackState.state),
-        onPopPage: (route, dynamic result) => onPopPage(context, route, result),
+    return InheritedStackMarker(
+      states: context.internalNavi.parentStacks + [stackState],
+      child: InheritedStack(
+        state: stackState,
+        child: Navigator(
+          key: navigatorKey,
+          pages: pages(context, stackState.state),
+          onPopPage: (route, dynamic result) =>
+              onPopPage(context, route, result),
+        ),
       ),
     );
   }
