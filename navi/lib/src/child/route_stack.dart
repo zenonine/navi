@@ -103,6 +103,8 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (_stackState != null) {
           RouterState().state = _stackState;
+          // reset childRouteInfo immediately, so next time it doesn't use the old value.
+          context.internalNavi.parentStack.childRouteInfo = const RouteInfo();
         }
       });
     }
