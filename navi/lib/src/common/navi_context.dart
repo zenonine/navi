@@ -14,6 +14,15 @@ class Navi {
 
   StackStateInterface<T> stack<T>(StackMarker<T> marker) =>
       InheritedStackMarker.singleOf<T>(context, marker);
+
+  Future<void> byUrl(String location) {
+    final uri = Uri.parse(location);
+    return byRoute(RouteInfo.fromUri(uri));
+  }
+
+  Future<void> byRoute(RouteInfo routeInfo) async {
+    // TODO: implement byRoute
+  }
 }
 
 class InternalNavi extends Navi {
