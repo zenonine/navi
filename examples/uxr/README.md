@@ -10,26 +10,16 @@ Note that, I purposely slow down the animation duration 3 times, so you can test
 # Main scenarios (one scenario per app)
 
 1. [Deep Linking - Path Parameters](1-deep-linking-path-parameters)
-
-NOTE: Currently, deep linking only works on root stack. Support for child stacks is in TODO list.
-
 2. [Deep Linking - Query Parameters](2-deep-linking-query-parameters)
-
-NOTE: Currently, deep linking only works on root stack. Support for child stacks is in TODO list.
-
-3. Login/Logout/Sign-up Routing
-
-* [Home requires logging in](3a-authentication-home)
-* Deep link
-
-4. Nested Routing
+3. [Login/Logout/Sign-up Routing](3-sign-in-routing)
+4. WIP: Nested Routing
 
 * With tabs
 * With modal dialog
 
-5. Skipping Stacks
-6. Dynamic Linking
-7. Manipulation of the History Stack - Remove Duplicate Pages
+5. [Skipping Stacks](5-skipping-stacks)
+6. [Dynamic Linking](6-dynamic-linking)
+7. WIP: Manipulation of the History Stack - Remove Duplicate Pages
 
 # Additional scenarios (one scenario per app)
 
