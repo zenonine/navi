@@ -19,7 +19,7 @@ class BooksStack extends StatelessWidget {
             child: BooksPage(),
           ),
       ],
-      updateStateOnNewRoute: (routeInfo) => routeInfo.isPrefixed(['books']),
+      updateStateOnNewRoute: (routeInfo) => routeInfo.hasPrefixes(['books']),
       updateRouteOnNewState: (state) =>
           RouteInfo(pathSegments: state ? ['books'] : []),
       updateStateBeforePop: (context, route, dynamic result, state) => false,

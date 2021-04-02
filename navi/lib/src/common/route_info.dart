@@ -43,7 +43,7 @@ class RouteInfo {
           .where((segment) => segment.isNotEmpty)
           .toList();
 
-  bool isPrefixed(List<String> pathSegments) {
+  bool hasPrefixes(List<String> pathSegments) {
     final _normalizedSegments = _normalizedPathSegments(pathSegments);
 
     if (normalizedPathSegments.length < _normalizedSegments.length) {
