@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../index.dart';
+import 'index.dart';
 
 class AuthPage extends StatelessWidget {
   final _usernameController = TextEditingController();

@@ -5,7 +5,7 @@ import 'index.dart';
 
 class App extends StatelessWidget {
   final _informationParser = NaviInformationParser();
-  final _routerDelegate = NaviRouterDelegate(rootStack: RootStack());
+  final _routerDelegate = NaviRouterDelegate.material(rootPage: RootPage());
 
   @override
   Widget build(BuildContext context) {
