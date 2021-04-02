@@ -4,11 +4,9 @@ import 'package:navi/navi.dart';
 import '../index.dart';
 
 class LikeCounter extends StatefulWidget {
-  const LikeCounter({Key? key, required this.title, this.onNextComment})
-      : super(key: key);
+  const LikeCounter({Key? key, required this.title}) : super(key: key);
 
   final String title;
-  final void Function()? onNextComment;
 
   @override
   _LikeCounterState createState() => _LikeCounterState();
@@ -16,18 +14,6 @@ class LikeCounter extends StatefulWidget {
 
 class _LikeCounterState extends State<LikeCounter> {
   int count = 0;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print('LikeCounter stacks ${context.stacks}');
-
-    final bookCommentsStack = context.stack<BookCommentStack>();
-    print('LikeCounter bookCommentsStack $bookCommentsStack');
-
-    final bookStack = context.stack<BookStack>();
-    print('LikeCounter bookStack $bookStack');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +37,12 @@ class _LikeCounterState extends State<LikeCounter> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                  // TODO: support pop on any specified stack, not just the current stack
+                  // context.navi.stack(CommentStackMarker()).pop();
+                },
                 child: const Text('Previous'),
               ),
               ElevatedButton(
@@ -59,7 +50,9 @@ class _LikeCounterState extends State<LikeCounter> {
                 child: const Text('+'),
               ),
               ElevatedButton(
-                onPressed: () => widget.onNextComment?.call(),
+                onPressed: () {
+                  context.navi.stack(CommentStackMarker()).state++;
+                },
                 child: const Text('Next'),
               ),
             ],

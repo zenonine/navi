@@ -10,6 +10,7 @@ abstract class StackStateInterface<T> {
   RouteInfo get routeInfo;
 
 // TODO: activate/deactivate methods
+// TODO: pop method to pop directly on any stack
 }
 
 class StackState<T> extends ChangeNotifier implements StackStateInterface<T> {

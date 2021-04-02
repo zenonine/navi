@@ -135,6 +135,8 @@ class RouteStackState<T> extends State<RouteStack<T>> {
     }
 
     if (route.isFirst) {
+      print('pop on first page');
+
       // Forward pop to parent navigator
       Navigator.pop(context, result);
       return false;

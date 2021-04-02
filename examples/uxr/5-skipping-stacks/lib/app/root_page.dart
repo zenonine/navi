@@ -28,7 +28,7 @@ class RootPage extends StatelessWidget {
         }
       },
       updateStateOnNewRoute: (routeInfo) {
-        if (routeInfo.isPrefixed(['authors'])) {
+        if (routeInfo.hasPrefixes(['authors'])) {
           return RootStackId.authors;
         }
 

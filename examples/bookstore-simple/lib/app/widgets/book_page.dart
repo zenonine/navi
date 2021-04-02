@@ -4,16 +4,10 @@ import 'package:navi/navi.dart';
 import '../index.dart';
 
 class BookPage extends StatefulWidget {
-  const BookPage({
-    Key? key,
-    required this.book,
-    this.tab,
-    this.onSelectBookTab,
-  }) : super(key: key);
+  const BookPage({Key? key, required this.book, this.tab}) : super(key: key);
 
   final Book book;
   final BookTab? tab;
-  final ValueChanged<BookTab>? onSelectBookTab;
 
   @override
   _BookPageState createState() => _BookPageState();
@@ -22,10 +16,12 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage>
     with SingleTickerProviderStateMixin {
   late BookTab _tab = widget.tab ?? BookTab.like;
-  final Map<BookTab, BackButtonController> _backButtonControllers =
-      Map.fromEntries(
+
+  final Map<BookTab, int> _currentCommentId = {};
+
+  final Map<BookTab, StackController<int>> _stackControllers = Map.fromEntries(
     BookTab.values.map(
-      (tab) => MapEntry(tab, BackButtonController()),
+      (tab) => MapEntry(tab, StackController<int>()),
     ),
   );
 
@@ -44,18 +40,17 @@ class _BookPageState extends State<BookPage>
   }
 
   @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  void didUpdateWidget(BookPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _tab = widget.tab ?? defaultBookTab;
+    _animationController.forward(from: 0);
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print('BookPage stacks ${context.stacks}');
-
-    final bookStack = context.stack<BookStack>();
-    print('BookPage bookStack $bookStack');
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,9 +66,19 @@ class _BookPageState extends State<BookPage>
         child: IndexedStack(
           index: _tab.index,
           children: BookTab.values.map((tab) {
-            return StackOutlet(
-              backButtonController: _backButtonControllers[tab],
-              stack: BookCommentStack(initialState: 0),
+            return RouteStack<int>(
+              marker: CommentStackMarker(),
+              controller: _stackControllers[tab],
+              pages: (context, state) => List.generate(
+                state + 1,
+                (index) => MaterialPage<dynamic>(
+                  key: ValueKey(index),
+                  child: LikeCounter(title: 'Comment #$index'),
+                ),
+              ),
+              updateStateOnNewRoute: (routeInfo) => _currentCommentId[tab] ?? 0,
+              updateStateBeforePop: (context, route, dynamic result, state) =>
+                  state - 1,
             );
           }).toList(),
         ),
@@ -90,14 +95,19 @@ class _BookPageState extends State<BookPage>
           setState(() {
             _tab =
                 tabIndex == BookTab.like.index ? BookTab.like : BookTab.dislike;
-            widget.onSelectBookTab?.call(_tab);
+
+            // Update stack state
+            context.navi.stack(RootStackMarker()).state =
+                RootStackState(book: widget.book, tab: _tab);
+
             _animationController.forward(from: 0);
 
-            _backButtonControllers.forEach((tab, controller) {
+            // Handle system back button
+            _stackControllers.forEach((tab, controller) {
               if (tab == _tab) {
-                controller.takePriority();
+                controller.activationController.activate();
               } else {
-                controller.removePriority();
+                controller.activationController.deactivate();
               }
             });
           });
@@ -106,3 +116,5 @@ class _BookPageState extends State<BookPage>
     );
   }
 }
+
+class CommentStackMarker extends StackMarker<int> {}

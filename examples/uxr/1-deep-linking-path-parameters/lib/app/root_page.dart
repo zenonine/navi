@@ -21,7 +21,7 @@ class RootPage extends StatelessWidget {
           ),
       ],
       updateStateOnNewRoute: (routeInfo) {
-        if (routeInfo.isPrefixed(['books'])) {
+        if (routeInfo.hasPrefixes(['books'])) {
           final bookId = int.tryParse(routeInfo.pathSegmentAt(1) ?? '');
           if (bookId != null) {
             return books.firstWhereOrNull((book) => book.id == bookId);

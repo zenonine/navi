@@ -4,13 +4,8 @@ import 'package:navi/navi.dart';
 import '../index.dart';
 
 class BooksPage extends StatelessWidget {
-  const BooksPage({Key? key, this.onSelectBook}) : super(key: key);
-
-  final ValueChanged<Book>? onSelectBook;
-
   @override
   Widget build(BuildContext context) {
-    print('BooksPage ${context.stacks}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Books'),
@@ -28,10 +23,13 @@ class BooksPage extends StatelessWidget {
             child: ListView(
               children: books
                   .map((book) => ListTile(
-                title: Text(book.title),
-                subtitle: Text(book.author),
-                onTap: () => onSelectBook?.call(book),
-              ))
+                        title: Text(book.title),
+                        subtitle: Text(book.author),
+                        onTap: () {
+                          context.navi.stack(RootStackMarker()).state =
+                              RootStackState(book: book);
+                        },
+                      ))
                   .toList(),
             ),
           ),
