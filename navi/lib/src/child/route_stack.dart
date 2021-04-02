@@ -43,7 +43,7 @@ class RouteStackState<T> extends State<RouteStack<T>> {
   void initState() {
     super.initState();
 
-    final stateController = widget.controller?.stateController;
+    final stateController = widget.controller;
     stateController?.addListener(() {
       _stackState?.state = stateController.state;
     });
@@ -80,9 +80,11 @@ class RouteStackState<T> extends State<RouteStack<T>> {
           routeInfoBuilder: widget.updateRouteOnNewState,
         );
 
-        _stackState!.addListener(() {
-          widget.controller?.stateController.state = _stackState!.state;
-        });
+        if (widget.controller != null) {
+          _stackState!.addListener(() {
+            widget.controller?.state = _stackState!.state;
+          });
+        }
       } else {
         _stackState!.setStateWithoutNotifyRouter(
             widget.updateStateOnNewRoute(initialRouteInfo));

@@ -8,6 +8,8 @@ abstract class StackStateInterface<T> {
   set state(T newState);
 
   RouteInfo get routeInfo;
+
+// TODO: activate/deactivate methods
 }
 
 class StackState<T> extends ChangeNotifier implements StackStateInterface<T> {

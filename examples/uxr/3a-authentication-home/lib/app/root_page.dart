@@ -18,8 +18,7 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
 
-    _authListener = () =>
-        _stackController.stateController.state = _authService.authenticated;
+    _authListener = () => _stackController.state = _authService.authenticated;
 
     _authService.addListener(_authListener);
   }

@@ -1,28 +1,21 @@
 import 'package:flutter/widgets.dart';
 
-class StackController<T> {
+class StackController<T> extends ChangeNotifier {
   StackController({bool activated = true})
       : _activationController = StackActivationController(activated: activated);
 
-  final _stateController = StackStateController<T>();
   final StackActivationController _activationController;
-
-  StackStateController<T> get stateController => _stateController;
 
   StackActivationController get activationController => _activationController;
 
-  void dispose() {
-    _stateController.dispose();
-    _activationController.dispose();
-  }
-}
-
-class StackStateController<T> extends ChangeNotifier {
   late T _state;
 
   bool _initialized = false;
 
-  T get state => _state;
+  T get state {
+    assert(_initialized, 'Accessing uninitialized stack state.');
+    return _state;
+  }
 
   set state(T newState) {
     if (!_initialized) {
@@ -33,6 +26,12 @@ class StackStateController<T> extends ChangeNotifier {
       _state = newState;
       notifyListeners();
     }
+  }
+
+  @override
+  void dispose() {
+    _activationController.dispose();
+    super.dispose();
   }
 }
 
