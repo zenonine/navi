@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:navi/navi.dart';
 
 import '../index.dart';
 
 class BooksPage extends StatelessWidget {
-  const BooksPage({Key? key, this.onSelectBook}) : super(key: key);
-
-  final ValueChanged<Book>? onSelectBook;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +25,10 @@ class BooksPage extends StatelessWidget {
                   .map((book) => ListTile(
                         title: Text(book.title),
                         subtitle: Text(book.author),
-                        onTap: () => onSelectBook?.call(book),
+                        onTap: () {
+                          context.navi.stack(RootStackMarker()).state =
+                              RootStackState(book: book);
+                        },
                       ))
                   .toList(),
             ),

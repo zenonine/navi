@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:navi/navi.dart';
 
 import 'index.dart';
 
 class BooksPage extends StatelessWidget {
-  const BooksPage({this.onSearchStart});
+  const BooksPage({this.searchTerm});
 
-  final ValueChanged<String>? onSearchStart;
+  final String? searchTerm;
 
   @override
   Widget build(BuildContext context) {
+    final matchedBooks = searchTerm?.trim().isNotEmpty == true
+        ? books.where((book) =>
+            book.title.toLowerCase().contains(searchTerm!.toLowerCase()) ||
+            book.author.toLowerCase().contains(searchTerm!.toLowerCase()))
+        : books;
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 300),
-            child: _SearchField(onSearchStart: onSearchStart),
+            child: _SearchField(searchTerm ?? ''),
           ),
         ),
       ),
@@ -27,7 +34,7 @@ class BooksPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView(
-                    children: books
+                    children: matchedBooks
                         .map((book) => ListTile(
                               title: Text(book.title),
                               subtitle: Text(book.author),
@@ -52,15 +59,17 @@ class BooksPage extends StatelessWidget {
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({this.onSearchStart});
+  _SearchField(String initialValue)
+      : _controller = TextEditingController(text: initialValue);
 
-  final ValueChanged<String>? onSearchStart;
+  final TextEditingController _controller;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      onSubmitted: (term) {
-        onSearchStart?.call(term);
+      controller: _controller,
+      onSubmitted: (searchTerm) {
+        context.navi.stack(BookStackMarker()).state = searchTerm;
       },
       style: Theme.of(context).accentTextTheme.headline6,
       decoration: InputDecoration(

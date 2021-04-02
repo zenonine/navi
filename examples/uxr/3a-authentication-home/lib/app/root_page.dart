@@ -9,14 +9,16 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  final _authService = authService;
+  final _authService = AuthService();
   late final VoidCallback _authListener;
+
+  final _stackController = StackController<bool>();
 
   @override
   void initState() {
     super.initState();
 
-    _authListener = () => setState(() {});
+    _authListener = () => _stackController.state = _authService.authenticated;
 
     _authService.addListener(_authListener);
   }
@@ -29,11 +31,24 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: _authService.authenticated
-          ? StackOutlet(stack: HomeStack())
-          : StackOutlet(stack: AuthStack()),
+    return RouteStack<bool>(
+      controller: _stackController,
+      pages: (context, state) => [
+        // true means authenticated
+        if (state)
+          MaterialPage<dynamic>(
+            key: const ValueKey('Home'),
+            child: HomePage(),
+          )
+        else
+          MaterialPage<dynamic>(
+            key: const ValueKey('Auth'),
+            child: AuthPage(),
+          ),
+      ],
+      updateStateOnNewRoute: (routeInfo) => _authService.authenticated,
+      updateRouteOnNewState: (state) =>
+          RouteInfo(pathSegments: state ? [] : ['auth']),
     );
   }
 }

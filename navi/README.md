@@ -1,5 +1,7 @@
 Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
+Note that, imperative navigation API is also supported as an extra layer beyond the declarative API at lower layer.
+
 # [Examples](https://github.com/zenonine/navi/tree/master/examples)
 
 * [bookstore-simple](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
@@ -23,22 +25,29 @@ approach is usually more difficult in this case.
 Chain of pages scenario (also known as flow of pages) is just one case, you can use with Navi. This library is
 definitely much more than that.
 
-# About
+# Introduction and Milestones
 
 The goal of **Navi** package is to create a friendly **declarative** navigation API for Flutter projects. It depends
 heavily on Navigator 2.0.
 
-Key requirements of the API:
-
-* Easy to learn
-* Flexible: easily integrate with other architectural elements, especially, state management
-  (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it)).
-* Modularization
-  * friendly to projects, which require splitting into multiple teams
-  * each stack can be considered as an isolated module
-  * stacks should be reusable in other stacks
-  * developers can freely organize stacks in the way they want
-* Imperative navigation API is also supported.
+* Milestone 1 (currently WIP):
+  * Easy to learn, simple to maintain and organize application code based on split domains.
+  * Keep boilerplate code at reasonable level. More optimization will be in next milestones.
+  * Flexible: easily integrate with other architectural elements, especially, state management
+    (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it).
+  * Modularization
+    * friendly to projects, which require splitting into multiple teams
+    * each stack can be considered as an isolated module
+    * stacks should be reusable in other stacks
+    * developers can freely organize stacks in the way they want
+  * Imperative navigation API is also supported.
+* Milestone 2:
+  * Optimize to remove boilerplate code for common/general scenarios
+  * Optimize performance
+  * Test coverage at least 90%
+  * Evaluate edge cases
+* Milestone 3:
+  * Code generator to even remove more boilerplate code
 
 To use the library, you only need to know how to use **3 simple** classes:
 
@@ -103,12 +112,10 @@ class ProductStack extends PageStack {
 Basically, you will not need this legacy approach if you can split your app into manageable stacks. However, it will
 still be useful in many cases and will be supported.
 
+* `context.navi.stack<ProductStack>().state = 1`: navigate to product stack with productId = 1.
 * `context.navi.byUrl('details')`: navigate to relative URL
 * `context.navi.byUrl('/products/1')`: navigate to absolute URL (begin with a slash)
 * `context.navi.byUrl('/products/:id', pathParams: {'id': 1})`
-* `context.navi.byStack(ProductStack(id: 1))`
-* `context.navi.byStack(ProductStack(id: 1, categoryId: 3))`
-* `context.navi.byStack(ProductStack(id: 1, onNavigated: () {}), onFailure: () {})`
 * `context.navi.pop()`: move up one level in the current stack or exit if there's no upper page.
 * `context.navi.back()`: move back to the previous page in the history.
 
