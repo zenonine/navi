@@ -11,6 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Navi - Declarative navigation API for Flutter',
+      debugShowCheckedModeBanner: false,
       routeInformationParser: _informationParser,
       routerDelegate: _routerDelegate,
     );

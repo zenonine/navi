@@ -102,6 +102,7 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       // TODO: might need to control https://api.flutter.dev/flutter/scheduler/SchedulingStrategy.html
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (_stackState != null) {
+          // TODO: it would be better, if RouterState is updated only at the last RouteStack widget
           RouterState().state = _stackState;
           // reset childRouteInfo immediately, so next time it doesn't use the old value.
           context.internalNavi.parentStack.childRouteInfo = const RouteInfo();

@@ -18,10 +18,13 @@ class BookPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(book.title),
+            Text(
+              book.title,
+              style: Theme.of(context).textTheme.headline4,
+            ),
             ElevatedButton(
               onPressed: () {
-                // TODO: option 1a: navigate by absolute URL
+                // Option 1a: navigate by absolute URL
                 context.navi.byUrl('/authors/${book.author.id}');
 
                 // TODO: option 1b: navigate by relative URL

@@ -20,7 +20,7 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
     _routerState.addListener(_routerListener);
 
     _rootStackListener = () {
-      _rootStackState.childRouteInfo = _rootStackController.childRouteInfo;
+      setNewRoutePath(_rootStackController.childRouteInfo);
       notifyListeners();
     };
     _rootStackController.addListener(_rootStackListener);
