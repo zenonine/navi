@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:navi/navi.dart';
 
 import 'index.dart';
 
@@ -27,7 +28,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: const Center(child: Text('Home')),
+      body: Center(
+          child: ElevatedButton(
+        onPressed: () {
+          context.navi.stack(BookStackMarker()).state = true;
+        },
+        child: const Text('Bookshelf'),
+      )),
     );
   }
 }

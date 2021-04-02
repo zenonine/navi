@@ -31,14 +31,16 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: how to navigate to requested page, instead of home?
+
     return RouteStack<bool>(
       controller: _stackController,
       pages: (context, state) => [
-        // true means signed in
+        // true means authenticated
         if (state)
           MaterialPage<dynamic>(
             key: const ValueKey('Home'),
-            child: HomePage(),
+            child: BooksStack(),
           )
         else
           MaterialPage<dynamic>(

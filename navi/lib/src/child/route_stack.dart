@@ -101,7 +101,9 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       // avoid error setState() or markNeedsBuild() called during build.
       // TODO: might need to control https://api.flutter.dev/flutter/scheduler/SchedulingStrategy.html
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        RouterState().state = _stackState;
+        if (_stackState != null) {
+          RouterState().state = _stackState;
+        }
       });
     }
 
@@ -146,11 +148,14 @@ class RouteStackState<T> extends State<RouteStack<T>> {
 
   @override
   void dispose() {
-    widget.controller?.dispose();
-    _stackState?.dispose();
-    _stackState = null;
     _routerDelegate?.dispose();
     _routerDelegate = null;
+
+    _stackState?.dispose();
+    _stackState = null;
+
+    widget.controller?.dispose();
+
     _backButtonDispatcher = null;
     _parentBackButtonDispatcher = null;
     super.dispose();
@@ -158,7 +163,9 @@ class RouteStackState<T> extends State<RouteStack<T>> {
 
   @override
   Widget build(BuildContext context) {
-    _backButtonDispatcher?.takePriority();
+    if (_activated) {
+      _backButtonDispatcher?.takePriority();
+    }
     return Router<dynamic>(
       routerDelegate: _routerDelegate!,
       backButtonDispatcher: _backButtonDispatcher,

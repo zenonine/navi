@@ -34,7 +34,7 @@ class _RootPageState extends State<RootPage> {
     return RouteStack<bool>(
       controller: _stackController,
       pages: (context, state) => [
-        // true means signed in
+        // true means authenticated
         if (state)
           MaterialPage<dynamic>(
             key: const ValueKey('Home'),
