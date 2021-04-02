@@ -58,20 +58,28 @@ class RootPage extends StatelessWidget {
 
 # Architecture layers
 
-TBD.
+| Packages                  | Layers                     | Plan                                                        | Explanation                                                   |
+| :-----------------------: | :------------------------: | :---------------------------------------------------------- | :------------------------------------------------------------ |
+| Navi                      | Code Generator             | After release 1.0                                           | Generate boilerplate code                                     |
+| Navi                      | Configurator               | Before release 1.0 if possible, otherwise after release 1.0 | Comparable to URL mapping approaches like Angular or Vue      |
+| Navi                      | Imperative API             | Before release 1.0                                          | Useful when declarative is not needed                         |
+| Navi                      | High-level declarative API | WIP                                                         | Simple and easy to use yet keep the powerful of Navigator 2.0 |
+| Flutter SDK Navigator 2.0 | Low-level declarative API  | N/A                                                         | Too complex and difficult to use                              |
 
 # Declarative navigation
 
-Declarative navigation is an example of [declarative programming](https://en.wikipedia.org/wiki/Declarative_programming)
-, that expresses the logic of a computation without describing its control flow.
+If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative).
+
+Declarative navigation is similar as it allows you to describe your navigation system by the current UI state. Updating
+your current UI state to tell Navi figures out where to navigate to.
 
 Using declarative navigation is only powerful if
 
 * the provided API is simple enough
 * your application is reasonable split into manageable domains (or stacks in this library)
 
-An example, where declarative shines is to manage a chain of pages to complete a task is quite common. Using imperative
-approach is usually more difficult in this case.
+An example, where declarative shines is to manage a chain of pages to complete a single task (ex. registration form with
+multiple pages). Using imperative approach is usually more difficult in this case.
 
 Chain of pages scenario (also known as flow of pages) is just one case, you can use with Navi. This library is
 definitely much more than that.
@@ -81,7 +89,7 @@ definitely much more than that.
 The goal of **Navi** package is to create a friendly **declarative** navigation API for Flutter projects. It depends
 heavily on Navigator 2.0.
 
-* Milestone 1 (currently WIP)
+* Milestone 1 (WIP)
   * Easy to learn, simple to maintain and organize application code based on split domains.
   * Keep boilerplate code at reasonable level. More optimization will be in next milestones.
   * Flexible: easily integrate with other architectural elements, especially, state management
@@ -92,14 +100,15 @@ heavily on Navigator 2.0.
     * stacks should be reusable in other stacks
     * developers can freely organize stacks in the way they want
   * Imperative navigation API is also supported.
-* Milestone 2
+* Milestone 2 (Plan: before release 1.0)
   * Optimize to remove boilerplate code for common/general scenarios
   * Optimize performance
   * Test coverage at least 90%
   * Evaluate edge cases
-* Milestone 3
-  * Implement a configurator, which fits to common scenarios. For more control, use high level declarative API.
-* Milestone 4
+* Milestone 3 (Plan: before release 1.0 if possible, otherwise after release 1.0)
+  * Implement a configurator, which fits to common scenarios. For more control, please use the high level declarative
+    API.
+* Milestone 4 (Plan: after release 1.0)
   * Implement code generator to even remove more boilerplate code
 
 Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples) app.
@@ -116,19 +125,69 @@ definitely work with other components and designs.
 If you want to keep state of nested stacks, you could
 use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.html).
 
-Please see
+For example, you have a bookstore with 2 pages: book list page and book page. Their URLs are `/books` and `/books/:id`.
+
+In book page, you spit the content into 3 tabs: overview, details and reviews. Their URLs are `/books/:id/overview`
+, `/books/:id/details`, `/books/:id/reviews`.
+
+In this case, you can create 2 stacks:
+
+```
+// This stack is your root stack, maybe directly under your MaterialApp.
+RouteStack(
+  pages: (context, state) => [BookListPage(), BookPage()],
+  updateRouteOnNewState: (state) {
+    // map /books to BookListPage()
+    // map /books/:id to BookPage()
+  },
+);
+
+
+// This stack is child widget of BookPage widget
+RouteStack(
+  pages: (context, state) => [BookOverviewPage(), BookDetailsPage(), BookReviewsPage()],
+  updateRouteOnNewState: (state) {
+    // map /overview to BookOverviewPage()
+    // map /details to BookDetailsPage()
+    // map /reviews to BookReviewsPage()
+  },
+)
+```
+
+The main idea is that, in the nested stack, you don't need to know the URL of parent stack.
+
+Navi will help you merge the current URL in parent stack (ex. `/books/1`) and nested stack (ex. `/overview`) to generate
+final URL for you (ex. `/books/1/overview`).
+
+You can have unlimited nested stacks as deep as you want and each stack manage only the URL part it should know.
+
+Please see more in
 this [example](https://github.com/zenonine/navi/blob/master/examples/bookstore-simple/lib/app/widgets/book_page.dart).
 
-# Imperative navigation
+# TODO: Flatten list of stacks to a single stack
+
+```
+FlatRouteStack(
+  children: [
+    RouteStack(),
+    RouteStack(),
+    // ...
+  ]
+)
+```
+
+`FlatRouteStack` merges all pages of child stacks into a single stack.
+
+# How to navigate?
 
 * Completed
-  * `context.navi.stack(ProductStackMarker())).state = 1`: navigate to product stack with productId = 1.
+  * `context.navi.stack(ProductStackMarker()).state = 1`: navigate to product stack with productId = 1.
   * `context.navi.byUrl('/products/1')`: navigate to absolute URL (begin with a slash)
 
 * TODOs:
   * `context.navi.byUrl('details')`: navigate to relative URL
   * `context.navi.pop()`: a shortcut of `Navigator.of(context).pop()`
-  * `context.navi.stack(ProductStackMarker())).state.pop()`:
+  * `context.navi.stack(ProductStackMarker()).state.pop()`:
     move up one level at the specified stack or exit if there's no upper page.
   * `context.navi.back()`: move back to the previous page in the history.
 
