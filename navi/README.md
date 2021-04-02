@@ -2,6 +2,53 @@ Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
 Note that, imperative navigation API is also supported as an extra layer beyond the declarative API at lower layer.
 
+# Quick Setup
+
+To use the library, `RouteStack` widget is everything you need to learn!
+
+```
+void main() {
+  runApp(App());
+}
+
+class App extends StatelessWidget {
+  final _informationParser = NaviInformationParser();
+  final _routerDelegate = NaviRouterDelegate.material(rootPage: RootPage());
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Navi - Declarative navigation API for Flutter',
+      debugShowCheckedModeBanner: false,
+      routeInformationParser: _informationParser,
+      routerDelegate: _routerDelegate,
+    );
+  }
+}
+```
+
+```
+class YourStackState {}
+
+class RootPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // you can nest RouteStack under another RouteStack without limitation to create nested routes
+    return RouteStack<YourStackState>(
+      // mandatory properties
+      pages: (context, state) => [],
+      updateStateOnNewRoute: (routeInfo) => YourStackState(),
+      
+      // optional properties
+      updateRouteOnNewState: (state) => const RouteInfo(),
+      updateStateBeforePop: (context, route, dynamic result, state) => YourStackState(),
+      marker: const StackMarker<YourStackState>(),
+      controller: StackController<YourStackState>(),
+    );
+  }
+}
+```
+
 # [Examples](https://github.com/zenonine/navi/tree/master/examples)
 
 * [bookstore-simple](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
@@ -10,6 +57,10 @@ Note that, imperative navigation API is also supported as an extra layer beyond 
 * [Login/Logout/Sign-up Routing](https://github.com/zenonine/navi/tree/master/examples/uxr/3-sign-in-routing)
 * [Skipping Stacks](https://github.com/zenonine/navi/tree/master/examples/uxr/5-skipping-stacks)
 * [Dynamic Linking](https://github.com/zenonine/navi/tree/master/examples/uxr/6-dynamic-linking)
+
+# Architecture layers
+
+TBD.
 
 # Declarative navigation
 
@@ -32,7 +83,7 @@ definitely much more than that.
 The goal of **Navi** package is to create a friendly **declarative** navigation API for Flutter projects. It depends
 heavily on Navigator 2.0.
 
-* Milestone 1 (currently WIP):
+* Milestone 1 (currently WIP)
   * Easy to learn, simple to maintain and organize application code based on split domains.
   * Keep boilerplate code at reasonable level. More optimization will be in next milestones.
   * Flexible: easily integrate with other architectural elements, especially, state management
@@ -43,30 +94,21 @@ heavily on Navigator 2.0.
     * stacks should be reusable in other stacks
     * developers can freely organize stacks in the way they want
   * Imperative navigation API is also supported.
-* Milestone 2:
+* Milestone 2
   * Optimize to remove boilerplate code for common/general scenarios
   * Optimize performance
   * Test coverage at least 90%
   * Evaluate edge cases
-* Milestone 3:
-  * Code generator to even remove more boilerplate code
-
-To use the library, you only need to know how to use **3 simple** classes:
-
-* [`PageStack`](https://github.com/zenonine/navi/blob/master/navi/lib/src/common/page_stack.dart):
-  declare the pages of a stack, which are updated accordingly to current state.
-* [`RouteStack`](https://github.com/zenonine/navi/blob/master/navi/lib/src/common/route_stack.dart) extends `PageStack`
-  with routing capability. If you don't need deep linking or target web, `PageStack` is enough for your app.
-
-  Note that, deep linking is currently only working for root stack. Support child stacks will be available soon.
-* [`StackOutlet`](https://github.com/zenonine/navi/blob/master/navi/lib/src/child/stack_outlet.dart) is a normal widget,
-  which build pages of a stack.
+* Milestone 3
+  * Implement a configurator, which fits to common scenarios. For more control, use high level declarative API.
+* Milestone 4
+  * Implement code generator to even remove more boilerplate code
 
 Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples) app.
 
 # Nested stack
 
-Because `StackOutlet` is just a normal widget, you only need to use this widget to build nested stacks like you would do
+Because `RouteStack` is just a normal widget, you only need to use this widget to build nested stacks like you would do
 with other widgets.
 
 It's commonly used together
@@ -79,56 +121,27 @@ use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.
 Please see
 this [example](https://github.com/zenonine/navi/blob/master/examples/bookstore-simple/lib/app/widgets/book_page.dart).
 
-# TODO: Reusable stacks
+# Imperative navigation
 
-Each stack can generate only pages related to its domain. Sometime you would like to have a stack which contains pages
-from other stacks.
+* Completed
+  * `context.navi.stack(ProductStackMarker())).state = 1`: navigate to product stack with productId = 1.
+  * `context.navi.byUrl('/products/1')`: navigate to absolute URL (begin with a slash)
 
-For example, you have 2 stacks:
+* TODOs:
+  * `context.navi.byUrl('details')`: navigate to relative URL
+  * `context.navi.pop()`: a shortcut of `Navigator.of(context).pop()`
+  * `context.navi.stack(ProductStackMarker())).state.pop()`:
+    move up one level at the specified stack or exit if there's no upper page.
+  * `context.navi.back()`: move back to the previous page in the history.
 
-* `CategoryStack` has 3
-  pages `[CategoryPage('Computer & Accessories'), CategoryPage('Data Storage'), CategoryPage('External Data Storage')]`
-* `ProductStack` has 2 pages `[ProductOverviewPage(), ProductDetailsPage()]`
-
-If you want to open `ProductDetailsPage`, you might want to have also pages from `CategoryStack` in your hierarchy. The
-result you want could
-be `[CategoryPage('Computer & Accessories'), CategoryPage('Data Storage'), CategoryPage('External Data Storage'), ProductOverviewPage(), ProductDetailsPage()]`
-.
-
-The code snippet below explains how you can achieve that:
-
-```
-class ProductStack extends PageStack {
-  List<PageStack> upperStacks(BuildContext context) {
-    return [CategoryStack()];
-  }
-
-  List<Page> pages(BuildContext context) {
-    return [ProductOverviewPage(), ProductDetailsPage()];
-  }
-}
-```
-
-# TODO: Imperative navigation
-
-Basically, you will not need this legacy approach if you can split your app into manageable stacks. However, it will
-still be useful in many cases and will be supported.
-
-* `context.navi.stack<ProductStack>().state = 1`: navigate to product stack with productId = 1.
-* `context.navi.byUrl('details')`: navigate to relative URL
-* `context.navi.byUrl('/products/1')`: navigate to absolute URL (begin with a slash)
-* `context.navi.byUrl('/products/:id', pathParams: {'id': 1})`
-* `context.navi.pop()`: move up one level in the current stack or exit if there's no upper page.
-* `context.navi.back()`: move back to the previous page in the history.
-
-# TODO: Sync URL and stack state?
+# Sync URL and stack state
 
 You will have 2 options to choose:
 
 * Don't use code generator: path parameters and query parameters are provided to you as `String`. You need to manually
   validate and convert to your types.
-* Use code generator to generate typesafe interfaces, which allow you to sync path parameters and query parameters to
-  your variable in the defined types automatically.
+* TODO: Use code generator to generate typesafe interfaces, which allow you to sync path parameters and query parameters
+  to your variable in the defined types automatically.
 
 # TODO: Manipulation of the chronological history Stack
 
