@@ -5,7 +5,6 @@ Note that, imperative navigation API is also supported as an extra layer beyond 
 # [Examples](https://github.com/zenonine/navi/tree/master/examples)
 
 * [bookstore-simple](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
-* [Authentication](https://github.com/zenonine/navi/tree/master/examples/uxr/3a-authentication-home)
 * [Deep Linking - Path Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/1-deep-linking-path-parameters)
 * [Deep Linking - Query Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/2-deep-linking-query-parameters)
 * [Login/Logout/Sign-up Routing](https://github.com/zenonine/navi/tree/master/examples/uxr/3-sign-in-routing)
