@@ -11,4 +11,5 @@ export 'common/stack_state.dart';
 export 'root/inherited_new_route_count.dart';
 export 'root/navi_information_parser.dart';
 export 'root/navi_router_delegate.dart';
+export 'root/root_stack_controller.dart';
 export 'root/router_state.dart';

@@ -21,7 +21,7 @@ class Navi {
   }
 
   Future<void> byRoute(RouteInfo routeInfo) async {
-    // TODO: implement byRoute
+    RootStackController().childRouteInfo = routeInfo;
   }
 }
 

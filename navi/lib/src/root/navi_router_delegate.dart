@@ -18,6 +18,12 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
       notifyListeners();
     };
     _routerState.addListener(_routerListener);
+
+    _rootStackListener = () {
+      _rootStackState.childRouteInfo = _rootStackController.childRouteInfo;
+      notifyListeners();
+    };
+    _rootStackController.addListener(_rootStackListener);
   }
 
   NaviRouterDelegate.material({
@@ -61,6 +67,8 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
     initialState: null,
     routeInfoBuilder: (state) => const RouteInfo(),
   );
+  final RootStackController _rootStackController = RootStackController();
+  late final VoidCallback _rootStackListener;
 
   int _newRouteCount = 0;
 
@@ -115,6 +123,7 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
   @override
   void dispose() {
     _routerState.removeListener(_routerListener);
+    _rootStackController.removeListener(_rootStackListener);
     super.dispose();
   }
 }
