@@ -1,3 +1,10 @@
+# [0.1.0] - 03.04.2021
+
+* Add `RouteStack` widget
+* Move from ~~POC~~ phase (0.0.x) to **Development** phase
+* Add architecture documentation
+* Add more examples
+
 # [0.0.6] - 27.03.2021
 
 * Add `InlinePageStack` class
