@@ -102,12 +102,12 @@ class _BookPageState extends State<BookPage>
 
             _animationController.forward(from: 0);
 
-            // Handle system back button
+            // Only one stack should be active to help Navi handle system back button and URL sync correctly.
             _stackControllers.forEach((tab, controller) {
               if (tab == _tab) {
-                controller.activationController.activate();
+                controller.activation.activate();
               } else {
-                controller.activationController.deactivate();
+                controller.activation.deactivate();
               }
             });
           });

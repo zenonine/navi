@@ -2,11 +2,11 @@ import 'package:flutter/widgets.dart';
 
 class StackController<T> extends ChangeNotifier {
   StackController({bool activated = true})
-      : _activationController = StackActivationController(activated: activated);
+      : _activation = StackActivationController(activated: activated);
 
-  final StackActivationController _activationController;
+  final StackActivationController _activation;
 
-  StackActivationController get activationController => _activationController;
+  StackActivationController get activation => _activation;
 
   late T _state;
 
@@ -30,7 +30,7 @@ class StackController<T> extends ChangeNotifier {
 
   @override
   void dispose() {
-    _activationController.dispose();
+    _activation.dispose();
     super.dispose();
   }
 }
