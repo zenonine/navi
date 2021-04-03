@@ -2,6 +2,8 @@ Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
 Note that, imperative navigation API is also supported as an extra layer beyond the declarative API at lower layer.
 
+<a href="https://pub.dev/packages/navi"><img src="https://img.shields.io/pub/v/navi.svg" alt="pub package"></a>
+
 # Quick Setup
 
 To use the library, `RouteStack` widget is everything you need to learn!
@@ -34,14 +36,14 @@ class RootPage extends StatelessWidget {
     // you can nest RouteStack under another RouteStack without limitation to create nested routes
     return RouteStack<YourStackState>(
       // mandatory properties
-      pages: (context, state) => [],
-      updateStateOnNewRoute: (routeInfo) => YourStackState(),
-      
+      pages: (context, state) => [], // which pages to show for current state
+      updateStateOnNewRoute: (routeInfo) => YourStackState(), // If user enter a URL manually, what is the initial state for the given URL
+
       // optional properties
-      updateRouteOnNewState: (state) => const RouteInfo(),
-      updateStateBeforePop: (context, route, dynamic result, state) => YourStackState(),
-      marker: const StackMarker<YourStackState>(),
-      controller: StackController<YourStackState>(),
+      updateRouteOnNewState: (state) => const RouteInfo(), // what is the URL for current state
+      updateStateBeforePop: (context, route, dynamic result, state) => YourStackState(), // what is the state when user click in-app back button / pop()
+      marker: const StackMarker<YourStackState>(), // if you need to access your stack in a deeper child widget
+      controller: StackController<YourStackState>(), // if you need to control this stack in RootPage widget
     );
   }
 }
@@ -49,7 +51,7 @@ class RootPage extends StatelessWidget {
 
 # [Examples](https://github.com/zenonine/navi/tree/master/examples)
 
-* [bookstore-simple](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
+* [Bookstore](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
 * [Deep Linking - Path Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/1-deep-linking-path-parameters)
 * [Deep Linking - Query Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/2-deep-linking-query-parameters)
 * [Login/Logout/Sign-up Routing](https://github.com/zenonine/navi/tree/master/examples/uxr/3-sign-in-routing)
@@ -58,13 +60,13 @@ class RootPage extends StatelessWidget {
 
 # Architecture layers
 
-| Packages                  | Layers                     | Plan                                                        | Explanation                                                   |
-| :-----------------------: | :------------------------: | :---------------------------------------------------------- | :------------------------------------------------------------ |
-| Navi                      | Code Generator             | After release 1.0                                           | Generate boilerplate code                                     |
-| Navi                      | Configurator               | Before release 1.0 if possible, otherwise after release 1.0 | Comparable to URL mapping approaches like Angular or Vue      |
-| Navi                      | Imperative API             | Before release 1.0                                          | Useful when declarative is not needed                         |
-| Navi                      | High-level declarative API | WIP                                                         | Simple and easy to use yet keep the powerful of Navigator 2.0 |
-| Flutter SDK Navigator 2.0 | Low-level declarative API  | N/A                                                         | Too complex and difficult to use                              |
+| Packages                  | Layers                         | Plan                                                        | Explanation                                                   |
+| :-----------------------: | :----------------------------: | :---------------------------------------------------------- | :------------------------------------------------------------ |
+| Navi                      | Code Generator                 | After release 1.0                                           | Generate boilerplate code                                     |
+| Navi                      | Configurator                   | Before release 1.0 if possible, otherwise after release 1.0 | Comparable to URL mapping approaches like Angular or Vue      |
+| Navi                      | Imperative API                 | Before release 1.0                                          | Useful when declarative is not needed                         |
+| Navi                      | **High-level declarative API** | **WIP**                                                     | Simple and easy to use yet keep the powerful of Navigator 2.0 |
+| Flutter SDK Navigator 2.0 | Low-level declarative API      | N/A                                                         | Too complex and difficult to use                              |
 
 # Declarative navigation
 
@@ -86,7 +88,7 @@ definitely much more than that.
 
 # Introduction and Milestones
 
-The goal of **Navi** package is to create a friendly **declarative** navigation API for Flutter projects. It depends
+The goal of **Navi** package is to create a **friendly declarative** navigation API for Flutter projects. It depends
 heavily on Navigator 2.0.
 
 * Milestone 1 (WIP)
@@ -127,13 +129,13 @@ use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.
 
 For example, you have a bookstore with 2 pages: book list page and book page. Their URLs are `/books` and `/books/:id`.
 
-In book page, you spit the content into 3 tabs: overview, details and reviews. Their URLs are `/books/:id/overview`
+In book page, you split the content into 3 tabs: overview, details and reviews. Their URLs are `/books/:id/overview`
 , `/books/:id/details`, `/books/:id/reviews`.
 
 In this case, you can create 2 stacks:
 
 ```
-// This stack is your root stack, maybe directly under your MaterialApp.
+// This stack could be your root stack, maybe directly under your MaterialApp.
 RouteStack(
   pages: (context, state) => [BookListPage(), BookPage()],
   updateRouteOnNewState: (state) {
@@ -143,7 +145,7 @@ RouteStack(
 );
 
 
-// This stack is child widget of BookPage widget
+// This stack is a child widget of BookPage widget
 RouteStack(
   pages: (context, state) => [BookOverviewPage(), BookDetailsPage(), BookReviewsPage()],
   updateRouteOnNewState: (state) {
@@ -157,7 +159,7 @@ RouteStack(
 The main idea is that, in the nested stack, you don't need to know the URL of parent stack.
 
 Navi will help you merge the current URL in parent stack (ex. `/books/1`) and nested stack (ex. `/overview`) to generate
-final URL for you (ex. `/books/1/overview`).
+the final URL for you (ex. `/books/1/overview`).
 
 You can have unlimited nested stacks as deep as you want and each stack manage only the URL part it should know.
 
@@ -178,9 +180,11 @@ FlatRouteStack(
 
 `FlatRouteStack` merges all pages of child stacks into a single stack.
 
+The difference is that, URL of nested stacks are dependent, but URLs of stacks in `FlatRouteStack` are independent.
+
 # How to navigate?
 
-* Completed
+* Implemented
   * `context.navi.stack(ProductStackMarker()).state = 1`: navigate to product stack with productId = 1.
   * `context.navi.byUrl('/products/1')`: navigate to absolute URL (begin with a slash)
 
@@ -204,3 +208,18 @@ You will have 2 options to choose:
 
 Browser back button and system back button should behave the same way, according
 to [material navigation guideline](https://material.io/design/navigation/understanding-navigation.html#reverse-navigation)
+
+# Contributing to Navi
+
+First of all, thank you a lot to visit Navi project!
+
+* Everyone is welcome
+  * to file issues on GitHub
+  * to help people asking for help
+  * click the Github star/watch button
+  * click the [Pub.dev](https://pub.dev/packages/navi) like button
+  * to contribute code via pull requests
+
+The more people interested in the project, the more motivation I will have to speed up the development.
+
+Enjoy to use Navi!
