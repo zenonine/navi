@@ -48,7 +48,7 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       _stackState?.state = stateController.state;
     });
 
-    final activationController = widget.controller?.activationController;
+    final activationController = widget.controller?.activation;
     _activated = activationController?.activated ?? true;
     activationController?.addListener(() {
       _activated = activationController.activated;
