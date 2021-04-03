@@ -101,6 +101,7 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       // avoid error setState() or markNeedsBuild() called during build.
       // TODO: might need to control https://api.flutter.dev/flutter/scheduler/SchedulingStrategy.html
       WidgetsBinding.instance!.addPostFrameCallback((_) {
+        // TODO: https://github.com/zenonine/navi/issues/29 https://github.com/flutter/flutter/issues/63364
         if (_stackState != null) {
           // TODO: it would be better, if RouterState is updated only at the last RouteStack widget
           RouterState().state = _stackState;
@@ -135,8 +136,6 @@ class RouteStackState<T> extends State<RouteStack<T>> {
     }
 
     if (route.isFirst) {
-      print('pop on first page');
-
       // Forward pop to parent navigator
       Navigator.pop(context, result);
       return false;
