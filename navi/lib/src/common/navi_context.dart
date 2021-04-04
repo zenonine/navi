@@ -28,8 +28,6 @@ class Navi {
 class InternalNavi extends Navi {
   InternalNavi(BuildContext context) : super(context);
 
-  int get newRouteCount => InheritedNewRouteCount.of(context);
-
   @override
   StackState get parentStack => super.parentStack as StackState;
 
