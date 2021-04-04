@@ -5,12 +5,7 @@ import 'index.dart';
 
 final List<Wishlist> wishlists = [];
 
-class RootPage extends StatefulWidget {
-  @override
-  _RootPageState createState() => _RootPageState();
-}
-
-class _RootPageState extends State<RootPage> {
+class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RouteStack<Wishlist?>(

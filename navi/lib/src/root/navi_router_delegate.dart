@@ -89,24 +89,21 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
   Future<void> setNewRoutePath(RouteInfo configuration) async {
     _newRouteCount++;
     _rootStackState.childRouteInfo = configuration;
+    NewRouteCountNotifier().count = _newRouteCount;
   }
 
   @override
   Widget build(BuildContext context) {
     if (_newRouteCount > 0) {
-      return InheritedNewRouteCount(
-        count: _newRouteCount,
-        child: InheritedStackMarker(
-          states: [_rootStackState],
-          child: InheritedStack(
-            state: _rootStackState,
-            child: Navigator(
-              key: navigatorKey,
-              pages: [rootPage(context)],
-              onPopPage: (route, dynamic result) =>
-                  onPopPage?.call(context, route, result) ??
-                  route.didPop(result),
-            ),
+      return InheritedStackMarker(
+        states: [_rootStackState],
+        child: InheritedStack(
+          state: _rootStackState,
+          child: Navigator(
+            key: navigatorKey,
+            pages: [rootPage(context)],
+            onPopPage: (route, dynamic result) =>
+                onPopPage?.call(context, route, result) ?? route.didPop(result),
           ),
         ),
       );

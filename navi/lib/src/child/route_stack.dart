@@ -35,6 +35,8 @@ class RouteStackState<T> extends State<RouteStack<T>> {
   late bool _activated;
 
   int _newRouteCount = 0;
+  final _newRouteCountNotifier = NewRouteCountNotifier();
+  late final VoidCallback _newRouteCountListener;
 
   ChildBackButtonDispatcher? _backButtonDispatcher;
   BackButtonDispatcher? _parentBackButtonDispatcher;
@@ -42,6 +44,16 @@ class RouteStackState<T> extends State<RouteStack<T>> {
   @override
   void initState() {
     super.initState();
+
+    _newRouteCountListener = () {
+      if (_stackState != null &&
+          mounted &&
+          _newRouteCount != _newRouteCountNotifier.count) {
+        _newRouteCount = _newRouteCountNotifier.count;
+        _handleNewRoute();
+      }
+    };
+    _newRouteCountNotifier.addListener(_newRouteCountListener);
 
     final stateController = widget.controller;
     stateController?.addListener(() {
@@ -67,27 +79,22 @@ class RouteStackState<T> extends State<RouteStack<T>> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // handle stack state
-    if (context.internalNavi.newRouteCount != _newRouteCount) {
-      _newRouteCount = context.internalNavi.newRouteCount;
+    // handle stack state for the first time
+    if (_stackState == null) {
+      _newRouteCount = _newRouteCountNotifier.count;
 
       final initialRouteInfo = context.internalNavi.parentStack.childRouteInfo;
 
-      if (_stackState == null) {
-        _stackState = StackState<T>(
-          marker: widget.marker,
-          initialState: widget.updateStateOnNewRoute(initialRouteInfo),
-          routeInfoBuilder: widget.updateRouteOnNewState,
-        );
+      _stackState = StackState<T>(
+        marker: widget.marker,
+        initialState: widget.updateStateOnNewRoute(initialRouteInfo),
+        routeInfoBuilder: widget.updateRouteOnNewState,
+      );
 
-        if (widget.controller != null) {
-          _stackState!.addListener(() {
-            widget.controller?.state = _stackState!.state;
-          });
-        }
-      } else {
-        _stackState!.setStateWithoutNotifyRouter(
-            widget.updateStateOnNewRoute(initialRouteInfo));
+      if (widget.controller != null) {
+        _stackState!.addListener(() {
+          widget.controller?.state = _stackState!.state;
+        });
       }
 
       _stackState!.parentRouteInfos =
@@ -104,7 +111,7 @@ class RouteStackState<T> extends State<RouteStack<T>> {
         if (_stackState != null) {
           // TODO: it would be better, if RouterState is updated only at the last RouteStack widget
           RouterState().state = _stackState;
-          // reset childRouteInfo immediately, so next time it doesn't use the old value.
+          // reset childRouteInfo immediately, so next time it doesn't use the old value?
           context.internalNavi.parentStack.childRouteInfo = const RouteInfo();
         }
       });
@@ -135,8 +142,6 @@ class RouteStackState<T> extends State<RouteStack<T>> {
     }
 
     if (route.isFirst) {
-      print('pop on first page');
-
       // Forward pop to parent navigator
       Navigator.pop(context, result);
       return false;
@@ -159,6 +164,8 @@ class RouteStackState<T> extends State<RouteStack<T>> {
     _stackState?.dispose();
     _stackState = null;
 
+    _newRouteCountNotifier.removeListener(_newRouteCountListener);
+
     widget.controller?.dispose();
 
     _backButtonDispatcher = null;
@@ -175,5 +182,23 @@ class RouteStackState<T> extends State<RouteStack<T>> {
       routerDelegate: _routerDelegate!,
       backButtonDispatcher: _backButtonDispatcher,
     );
+  }
+
+  void _handleNewRoute() {
+    final initialRouteInfo = context.internalNavi.parentStack.childRouteInfo;
+
+    _stackState!.state = widget.updateStateOnNewRoute(initialRouteInfo);
+
+    _stackState!.parentRouteInfos =
+        context.internalNavi.parentStack.parentRouteInfos +
+            [context.internalNavi.parentStack.routeInfo];
+
+    final currentRouteInfo = _stackState!.routeInfo;
+
+    _stackState!.childRouteInfo = initialRouteInfo - currentRouteInfo;
+
+    // reset childRouteInfo immediately, so next time it doesn't use the old value.
+    // the problem is that, this reset would introduce again https://github.com/zenonine/navi/issues/29
+    // context.internalNavi.parentStack.childRouteInfo = const RouteInfo();
   }
 }

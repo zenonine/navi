@@ -1,6 +1,9 @@
+# [0.1.1] - 03.04.2021
+
+* Fix bug: https://github.com/zenonine/navi/issues/29
+
 # [0.1.0] - 03.04.2021
 
-* Move from ~~POC~~ phase (0.0.x) to **Development** phase
 * Add `RouteStack` widget as replacement of the old `RouteStack` class
 * Remove `StackOutlet` widget
 * Add architecture documentation
