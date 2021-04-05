@@ -1,4 +1,4 @@
-# [0.1.2] - xx.xx.2021
+# [0.1.2] - 05.04.2021
 
 * Fix bug: stack controller should be notified with the initial state
 
