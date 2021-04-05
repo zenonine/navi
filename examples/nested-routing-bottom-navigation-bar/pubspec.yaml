@@ -1,5 +1,5 @@
 name: navi_uxr_example
-description: Navi - UXR - 4a - nested routing - with tabs
+description: Navi - Nested Routing - Bottom Navigation Bar
 publish_to: 'none'
 
 environment:
@@ -17,7 +17,7 @@ dev_dependencies:
 
 dependency_overrides:
   navi:
-    path: ../../../navi
+    path: ../../navi
 
 flutter:
   uses-material-design: true

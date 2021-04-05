@@ -56,7 +56,7 @@ class RootPage extends StatelessWidget {
 * [Login/Logout/Sign-up Routing](https://github.com/zenonine/navi/tree/master/examples/uxr/3-sign-in-routing)
 * [Skipping Stacks](https://github.com/zenonine/navi/tree/master/examples/uxr/5-skipping-stacks)
 * [Dynamic Linking](https://github.com/zenonine/navi/tree/master/examples/uxr/6-dynamic-linking)
-* [Bookstore](https://github.com/zenonine/navi/tree/master/examples/bookstore-simple)
+* [Nested Routing - Bottom Navigation Bar](https://github.com/zenonine/navi/tree/master/examples/nested-routing-bottom-navigation-bar)
 
 # Architecture layers
 
