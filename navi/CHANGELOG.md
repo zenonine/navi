@@ -1,3 +1,7 @@
+# [0.1.2] - 05.04.2021
+
+* Fix bug: stack controller should be notified with the initial state
+
 # [0.1.1] - 03.04.2021
 
 * Fix bug: https://github.com/zenonine/navi/issues/29
