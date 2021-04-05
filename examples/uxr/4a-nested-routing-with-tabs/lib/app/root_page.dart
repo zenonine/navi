@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:navi/navi.dart';
 
-enum AppTab { books, settings }
+import 'index.dart';
 
 class RootPage extends StatefulWidget {
   @override
@@ -8,31 +10,50 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  var _currentTab = AppTab.books;
+  final _stackController = StackController<AppTab>();
+  var _currentTab = AppTab.home;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bookstore'),
+      body: RouteStack<AppTab>(
+        controller: _stackController,
+        pages: (context, state) {
+          return [
+            TabPage(
+              key: ValueKey(state),
+              child: InnerStack(config: tabConfigs[state]!),
+            )
+          ];
+        },
+        updateRouteOnNewState: (state) {
+          return RouteInfo(pathSegments: [tabConfigs[state]!.path]);
+        },
+        updateStateOnNewRoute: (routeInfo) {
+          final path = routeInfo.pathSegmentAt(0);
+          final config = tabConfigs.values
+              .firstWhereOrNull((config) => config.path == path);
+          return config?.tab ?? AppTab.home;
+        },
       ),
-      body: Text('$_currentTab'),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentTab.index,
         onTap: (tabIndex) {
           setState(() {
-            _currentTab = tabIndex == 0 ? AppTab.books : AppTab.settings;
+            _currentTab =
+                AppTab.values.firstWhere((tab) => tab.index == tabIndex);
+            _stackController.state = _currentTab;
           });
         },
-        items: const [
-          BottomNavigationBarItem(
-            label: 'Books',
-            icon: Icon(Icons.chrome_reader_mode),
-          ),
-          BottomNavigationBarItem(
-            label: 'Settings',
-            icon: Icon(Icons.settings),
-          ),
+        selectedItemColor: tabConfigs[_currentTab]!.color,
+        unselectedItemColor: Colors.grey,
+        items: [
+          ...tabConfigs.values.map(
+            (config) => BottomNavigationBarItem(
+              label: config.title,
+              icon: Icon(config.icon),
+            ),
+          )
         ],
       ),
     );
