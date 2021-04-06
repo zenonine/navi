@@ -35,7 +35,20 @@ class _RootPageState extends State<RootPage> {
       controller: _stackController,
       pages: (context, state) {
         return [
-          // TODO: remember state of each tab?
+          // To remember state, keep the page in the stack behind the active page
+          // When trying to render multiple tabs to remember state, there are some bugs:
+          // TODO: sometime get error !_needsLayout is not true
+          // TODO: always use path segments of the initial URL for child pages, ex.
+          //   * enter initial URL /school/5 to open the app
+          //   * open tab flight, the url is correct `/flight`, but the state is wrong.
+          //   * reason: the nested stack for inactive tab still parse the URL to get initial state.
+          // TODO: make sure pop will always be redirected to parent router
+          ...tabConfigs.entries.where((entry) => entry.key != state).map(
+                (entry) => TabPage(
+                  key: ValueKey(entry.key),
+                  child: InnerStack(config: entry.value),
+                ),
+              ),
           TabPage(
             key: ValueKey(state),
             child: InnerStack(config: tabConfigs[state]!),

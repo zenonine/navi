@@ -38,6 +38,8 @@ class TabFirstPage extends StatelessWidget {
                 title: Text(entry.value),
                 onTap: () {
                   context.navi.stack(InnerStackMarker()).state = entry.key;
+                  // context.navi.byRoute(
+                  //     RouteInfo(pathSegments: [config.path, '${entry.key}']));
                 },
               ))
         ],

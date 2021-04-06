@@ -16,6 +16,7 @@ class InnerStack extends StatelessWidget {
     return RouteStack<int?>(
       marker: InnerStackMarker(),
       pages: (context, state) {
+        print('InnerStackMarker $state');
         return [
           MaterialPage<dynamic>(
             key: const ValueKey('TabFirstPage'),
