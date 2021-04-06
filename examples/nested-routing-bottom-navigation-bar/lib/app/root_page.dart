@@ -12,23 +12,21 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   var _currentTab = AppTab.home;
   final _stackController = StackController<AppTab>();
-  late final VoidCallback _stackListener;
 
   @override
   void initState() {
     super.initState();
 
-    _stackListener = () {
+    _stackController.addListener(() {
       setState(() {
         _currentTab = _stackController.state;
       });
-    };
-    _stackController.addListener(_stackListener);
+    });
   }
 
   @override
   void dispose() {
-    _stackController.removeListener(_stackListener);
+    _stackController.dispose();
     super.dispose();
   }
 
