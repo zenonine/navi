@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../main.dart';
 
@@ -99,11 +98,15 @@ class NaviRouterDelegate extends RouterDelegate<RouteInfo>
         states: [_rootStackState],
         child: InheritedStack(
           state: _rootStackState,
-          child: Navigator(
-            key: navigatorKey,
-            pages: [rootPage(context)],
-            onPopPage: (route, dynamic result) =>
-                onPopPage?.call(context, route, result) ?? route.didPop(result),
+          child: InheritedPageActivation(
+            active: true,
+            child: Navigator(
+              key: navigatorKey,
+              pages: [rootPage(context)],
+              onPopPage: (route, dynamic result) =>
+                  onPopPage?.call(context, route, result) ??
+                  route.didPop(result),
+            ),
           ),
         ),
       );

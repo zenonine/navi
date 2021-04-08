@@ -19,7 +19,7 @@ class RouteStack<T> extends StatefulWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final StackMarker<T>? marker;
   final StackController<T>? controller;
-  final PagesBuilder<T> pages;
+  final NaviPagesBuilder<T> pages;
   final RouteInfoBuilder<T>? updateRouteOnNewState;
   final OnNewRoute<T> updateStateOnNewRoute;
   final BeforePop<T>? updateStateBeforePop;
@@ -79,6 +79,8 @@ class RouteStackState<T> extends State<RouteStack<T>> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    print(context.internalNavi.isActivatedPage);
+
     // handle stack state for the first time
     if (_stackState == null) {
       _newRouteCount = _newRouteCountNotifier.count;
@@ -123,7 +125,7 @@ class RouteStackState<T> extends State<RouteStack<T>> {
     // handle router delegate
     _routerDelegate ??= ChildRouterDelegate<T>(
       navigatorKey: widget.navigatorKey,
-      pages: widget.pages,
+      naviPages: widget.pages,
       stackState: _stackState!,
       onPopPage: onPopPage,
     );

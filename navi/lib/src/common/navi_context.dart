@@ -37,6 +37,8 @@ class InternalNavi extends Navi {
   @override
   StackState<T> stack<T>(StackMarker<T> marker) =>
       super.stack(marker) as StackState<T>;
+
+  bool get isActivatedPage => InheritedPageActivation.of(context);
 }
 
 extension NaviContext on BuildContext {

@@ -44,15 +44,17 @@ class _RootPageState extends State<RootPage> {
           //   * reason: the nested stack for inactive tab still parse the URL to get initial state.
           // TODO: make sure pop will always be redirected to parent router
           ...tabConfigs.entries.where((entry) => entry.key != state).map(
-                (entry) => TabPage(
+                (entry) => NaviPage(
                   key: ValueKey(entry.key),
                   child: InnerStack(config: entry.value),
+                  pageBuilder: (key, child) => TabPage(key: key, child: child),
                 ),
               ),
-          TabPage(
+          NaviPage(
             key: ValueKey(state),
             child: InnerStack(config: tabConfigs[state]!),
-          )
+            pageBuilder: (key, child) => TabPage(key: key, child: child),
+          ),
         ];
       },
       updateRouteOnNewState: (state) {

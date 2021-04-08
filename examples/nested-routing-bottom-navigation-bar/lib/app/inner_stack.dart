@@ -18,7 +18,7 @@ class InnerStack extends StatelessWidget {
       pages: (context, state) {
         print('InnerStackMarker $state');
         return [
-          MaterialPage<dynamic>(
+          NaviPage.material(
             key: const ValueKey('TabFirstPage'),
             child: TabFirstPage(
               config: config,
@@ -26,7 +26,7 @@ class InnerStack extends StatelessWidget {
             ),
           ),
           if (state != null)
-            MaterialPage<dynamic>(
+            NaviPage.material(
               key: ValueKey(state),
               child: TabSecondPage(
                 config: config,

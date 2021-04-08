@@ -1,4 +1,6 @@
 export 'child/child_router_delegate.dart';
+export 'child/inherited_page_activation.dart';
+export 'child/navi_page.dart';
 export 'child/route_stack.dart';
 export 'child/stack_controller.dart';
 export 'child/stack_marker.dart';
