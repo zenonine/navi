@@ -1,4 +1,4 @@
-class StackMarker<T> {
+class StackMarker {
   const StackMarker([this.id]);
 
   final String? id;

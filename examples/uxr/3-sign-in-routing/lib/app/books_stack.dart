@@ -3,28 +3,44 @@ import 'package:navi/navi.dart';
 
 import 'index.dart';
 
-class BooksStack extends StatelessWidget {
+class BooksStack extends StatefulWidget {
+  @override
+  _BooksStackState createState() => _BooksStackState();
+}
+
+class _BooksStackState extends State<BooksStack>
+    with NaviRouteMixin<BooksStack> {
+  bool _showBooks = false;
+
+  @override
+  void onNewRoute(NaviRoute unprocessedRoute) {
+    setState(() {
+      _showBooks = unprocessedRoute.hasPrefixes(['books']);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RouteStack<bool>(
-      marker: BookStackMarker(),
-      pages: (context, state) => [
-        MaterialPage<dynamic>(
+    return NaviStack(
+      pages: (context) => [
+        NaviPage.material(
           key: const ValueKey('Home'),
-          child: HomePage(),
+          child: HomePagelet(),
         ),
-        if (state)
-          MaterialPage<dynamic>(
+        if (_showBooks)
+          NaviPage.material(
             key: const ValueKey('Books'),
-            child: BooksPage(),
+            route: const NaviRoute(path: ['books']),
+            child: BooksPagelet(),
           ),
       ],
-      updateStateOnNewRoute: (routeInfo) => routeInfo.hasPrefixes(['books']),
-      updateRouteOnNewState: (state) =>
-          RouteInfo(pathSegments: state ? ['books'] : []),
-      updateStateBeforePop: (context, route, dynamic result, state) => false,
+      onPopPage: (context, route, dynamic result) {
+        if (_showBooks) {
+          setState(() {
+            _showBooks = false;
+          });
+        }
+      },
     );
   }
 }
-
-class BookStackMarker extends StackMarker<bool> {}

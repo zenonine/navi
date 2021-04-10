@@ -1,11 +1,11 @@
 export 'app.dart';
 export 'author.dart';
-export 'authors/author_page.dart';
-export 'authors/authors_page.dart';
+export 'authors/author_pagelet.dart';
+export 'authors/authors_pagelet.dart';
 export 'authors/authors_stack.dart';
 export 'book.dart';
-export 'books/book_page.dart';
-export 'books/books_page.dart';
+export 'books/book_pagelet.dart';
+export 'books/books_pagelet.dart';
 export 'books/books_stack.dart';
 export 'data.dart';
-export 'root_page.dart';
+export 'root_stack.dart';

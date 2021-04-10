@@ -7,38 +7,42 @@ class Navi {
 
   final BuildContext context;
 
-  StackStateInterface get parentStack => InheritedStack.of(context);
-
-  List<StackStateInterface> get parentStacks =>
-      InheritedStackMarker.of(context);
-
-  StackStateInterface<T> stack<T>(StackMarker<T> marker) =>
-      InheritedStackMarker.singleOf<T>(context, marker);
-
-  Future<void> byUrl(String location) {
-    final uri = Uri.parse(location);
-    return byRoute(RouteInfo.fromUri(uri));
+  void to(
+    List<String> path, {
+    Map<String, List<String>> queryParams = const {},
+    String fragment = '',
+  }) {
+    RootRouteNotification(
+        route: NaviRoute(
+      path: path,
+      queryParams: queryParams,
+      fragment: fragment,
+    )).dispatch(context);
   }
 
-  Future<void> byRoute(RouteInfo routeInfo) async {
-    RootStackController().childRouteInfo = routeInfo;
+  void relativeTo(
+    List<String> path, {
+    Map<String, List<String>> queryParams = const {},
+    String fragment = '',
+  }) {
+    // TODO: implementation?
   }
+
+  List<NaviRoute> get routes => InheritedRoutes.of(context);
+
+  RootRouteNotifier get rootRouteNotifier =>
+      InheritedRootRouteNotifier.of(context);
+
+  UnprocessedRouteNotifier get unprocessedRouteNotifier =>
+      InheritedUnprocessedRouteNotifier.of(context);
+
+  List<StackMarker> get markers => InheritedStackMarkers.of(context);
 }
 
 class InternalNavi extends Navi {
   InternalNavi(BuildContext context) : super(context);
 
-  @override
-  StackState get parentStack => super.parentStack as StackState;
-
-  @override
-  List<StackState> get parentStacks => super.parentStacks as List<StackState>;
-
-  @override
-  StackState<T> stack<T>(StackMarker<T> marker) =>
-      super.stack(marker) as StackState<T>;
-
-  bool get isActivatedPage => InheritedPageActivation.of(context);
+  bool get isActiveRouteBranch => InheritedActiveRouteBranch.of(context);
 }
 
 extension NaviContext on BuildContext {

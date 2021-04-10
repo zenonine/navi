@@ -4,32 +4,52 @@ import 'package:navi/navi.dart';
 
 import '../index.dart';
 
-class BooksStack extends StatelessWidget {
+class BooksStack extends StatefulWidget {
+  @override
+  _BooksStackState createState() => _BooksStackState();
+}
+
+class _BooksStackState extends State<BooksStack>
+    with NaviRouteMixin<BooksStack> {
+  Book? _selectedBook;
+
+  @override
+  void onNewRoute(NaviRoute unprocessedRoute) {
+    _selectedBook = null;
+    final bookId = int.tryParse(unprocessedRoute.pathSegmentAt(0) ?? '');
+    if (bookId != null) {
+      _selectedBook = books.firstWhereOrNull((book) => book.id == bookId);
+    }
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RouteStack<Book?>(
-      marker: BooksStackMarker(),
-      pages: (context, state) => [
-        const MaterialPage<dynamic>(
-          key: ValueKey('Books'),
-          child: BooksPage(),
+    return NaviStack(
+      pages: (context) => [
+        NaviPage.material(
+          key: const ValueKey('Books'),
+          child: BooksPagelet(
+            onSelectBook: (book) => setState(() {
+              _selectedBook = book;
+            }),
+          ),
         ),
-        if (state != null)
-          MaterialPage<dynamic>(
-            key: ValueKey(state),
-            child: BookPage(book: state),
+        if (_selectedBook != null)
+          NaviPage.material(
+            key: ValueKey(_selectedBook),
+            route: NaviRoute(path: ['${_selectedBook!.id}']),
+            child: BookPagelet(book: _selectedBook!),
           ),
       ],
-      updateStateOnNewRoute: (routeInfo) {
-        final bookId = int.tryParse(routeInfo.pathSegmentAt(0) ?? '');
-        return books.firstWhereOrNull((book) => book.id == bookId);
+      onPopPage: (context, route, dynamic result) {
+        if (_selectedBook != null) {
+          setState(() {
+            _selectedBook = null;
+          });
+        }
       },
-      updateRouteOnNewState: (state) {
-        return RouteInfo(pathSegments: state == null ? [] : ['${state.id}']);
-      },
-      updateStateBeforePop: (context, route, dynamic result, state) => null,
     );
   }
 }
-
-class BooksStackMarker extends StackMarker<Book?> {}

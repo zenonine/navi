@@ -2,9 +2,10 @@ export 'src/main.dart'
     show
         NaviInformationParser,
         NaviRouterDelegate,
-        RouteInfo,
-        RouteStack,
+        NaviRoute,
+        NaviRouteMixin,
+        NaviStack,
         NaviPage,
         StackMarker,
-        StackController,
-        NaviContext;
+        NaviContext,
+        UnprocessedRouteNotifier;

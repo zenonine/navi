@@ -5,16 +5,19 @@ import '../main.dart';
 
 class NaviPage {
   const NaviPage({
-    this.key,
+    required this.key,
+    this.route = const NaviRoute(),
     required this.child,
     required this.pageBuilder,
   });
 
   NaviPage.material({
-    LocalKey? key,
+    required LocalKey key,
+    NaviRoute route = const NaviRoute(),
     required Widget child,
   }) : this(
           key: key,
+          route: route,
           child: child,
           pageBuilder: (key, child) => MaterialPage<dynamic>(
             key: key,
@@ -23,10 +26,12 @@ class NaviPage {
         );
 
   NaviPage.cupertino({
-    LocalKey? key,
+    required LocalKey key,
+    NaviRoute route = const NaviRoute(),
     required Widget child,
   }) : this(
           key: key,
+          route: route,
           child: child,
           pageBuilder: (key, child) => CupertinoPage<dynamic>(
             key: key,
@@ -34,7 +39,8 @@ class NaviPage {
           ),
         );
 
-  final LocalKey? key;
+  final LocalKey key;
+  final NaviRoute route;
   final Widget child;
   final PageBuilder pageBuilder;
 }
