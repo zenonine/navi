@@ -82,14 +82,28 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     _unprocessedRouteNotifier.setRoute(configuration);
   }
 
+  void notifyNewRoute(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (!_hasNestedRouteStack) {
+        // reset route if there's no nested stack
+        Router.of(context)
+            .routeInformationProvider!
+            .routerReportsNewRouteInformation(
+                const RouteInformation(location: '/'));
+
+        _unprocessedRouteNotifier.setRoute(const NaviRoute(),
+            updateShouldNotify: false);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     log.finest('build: newRoute ${_unprocessedRouteNotifier.route}');
 
-    // TODO: what to do if _hasNestedRouteStack = false (in case of the most simple app without nested stacks)
-    _hasNestedRouteStack = false;
-
     if (_setNewRouteCount > 0) {
+      notifyNewRoute(context);
+
       return NotificationListener<RootRouteNotification>(
         onNotification: (notification) {
           setNewRoutePath(notification.route);
