@@ -8,4 +8,5 @@ export 'src/main.dart'
         NaviPage,
         StackMarker,
         NaviContext,
-        UnprocessedRouteNotifier;
+        IRootRouteNotifier,
+        IUnprocessedRouteNotifier;

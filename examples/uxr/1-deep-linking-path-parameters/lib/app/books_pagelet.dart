@@ -24,9 +24,16 @@ class BooksPagelet extends StatelessWidget {
                   child: ListView(
                     children: books
                         .map((book) => ListTile(
-                      title: Text(book.title),
+                              title: Text(book.title),
                               subtitle: Text(book.author),
-                              onTap: () => onSelectBook(book),
+                              onTap: () {
+                                // Option 1: update state
+                                onSelectBook(book);
+
+                                // Option 2: navigate to a specific URL (absolute or relative)
+                                // context.navi.to(['books', '${book.id}']);
+                                // context.navi.relativeTo(['${book.id}']);
+                              },
                             ))
                         .toList(),
                   ),

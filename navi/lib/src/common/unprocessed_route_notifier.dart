@@ -2,12 +2,20 @@ import 'package:flutter/widgets.dart';
 
 import '../main.dart';
 
-class UnprocessedRouteNotifier extends ChangeNotifier {
+abstract class IUnprocessedRouteNotifier extends Listenable {
+  NaviRoute get route;
+
+  bool get hasListeners;
+}
+
+class UnprocessedRouteNotifier extends ChangeNotifier
+    implements IUnprocessedRouteNotifier {
   UnprocessedRouteNotifier({NaviRoute initialRoute = const NaviRoute()})
       : _route = initialRoute;
 
   NaviRoute _route;
 
+  @override
   NaviRoute get route => _route;
 
   void setRoute(NaviRoute route, {bool updateShouldNotify = true}) {

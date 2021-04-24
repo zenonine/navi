@@ -44,7 +44,7 @@ class _NaviStackState extends State<NaviStack> {
       marker: widget.marker,
       naviPagesBuilder: widget.pages,
       onBuiltNaviPages: (context, naviPages) {
-        notifyNewRoute(context, naviPages.last.route);
+        _notifyNewRoute(context, naviPages.last.route);
       },
       onPopPage: widget.onPopPage,
     );
@@ -53,6 +53,7 @@ class _NaviStackState extends State<NaviStack> {
   @override
   void didUpdateWidget(covariant NaviStack oldWidget) {
     super.didUpdateWidget(oldWidget);
+    log.finest('didUpdateWidget');
 
     if (widget.active != oldWidget.active) {
       _isActiveRouteBranch =
@@ -87,7 +88,7 @@ class _NaviStackState extends State<NaviStack> {
     super.dispose();
   }
 
-  void notifyNewRoute(BuildContext context, NaviRoute pageRoute) {
+  void _notifyNewRoute(BuildContext context, NaviRoute pageRoute) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       log.finest('conditions before notifying new route: '
           '_isActivatedRouteBranch = $_isActiveRouteBranch'

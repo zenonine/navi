@@ -43,4 +43,9 @@ class NaviPage {
   final NaviRoute route;
   final Widget child;
   final PageBuilder pageBuilder;
+
+  @override
+  String toString() {
+    return 'NaviPage{key: $key, route: $route, child: $child}';
+  }
 }

@@ -1,10 +1,15 @@
 import 'package:flutter/widgets.dart';
 
-class RootRouteNotifier extends ChangeNotifier {
+abstract class IRootRouteNotifier {
+  bool get hasNewRootRoute;
+}
+
+class RootRouteNotifier extends ChangeNotifier implements IRootRouteNotifier {
   RootRouteNotifier();
 
   bool _hasNewRootRoute = false;
 
+  @override
   bool get hasNewRootRoute => _hasNewRootRoute;
 
   void setHasNewRootRoute(bool hasNewRootRoute,

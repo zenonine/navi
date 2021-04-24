@@ -27,7 +27,6 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
   final NaviPopPageCallback? onPopPage;
 
   late bool _isActiveRouteBranch;
-  NaviRoute? _parentUnprocessedRoute;
   Map<LocalKey, UnprocessedRouteNotifier> _unprocessedRouteNotifiers = const {};
   LocalKey? _currentActivePageKey;
 
@@ -39,6 +38,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
   @override
   void dispose() {
     super.dispose();
+    log.finest('dispose');
 
     _unprocessedRouteNotifiers.forEach((key, notifier) {
       notifier.dispose();
@@ -218,9 +218,6 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
     log.finest('build');
 
     _isActiveRouteBranch = context.internalNavi.isActiveRouteBranch;
-
-    _parentUnprocessedRoute ??=
-        context.internalNavi.unprocessedRouteNotifier.route;
 
     final naviPages = naviPagesBuilder(context);
 

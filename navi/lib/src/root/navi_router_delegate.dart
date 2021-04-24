@@ -82,17 +82,18 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     _unprocessedRouteNotifier.setRoute(configuration);
   }
 
-  void notifyNewRoute(BuildContext context) {
+  void _notifyNewRoute(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (!_hasNestedRouteStack) {
         // reset route if there's no nested stack
-        Router.of(context)
-            .routeInformationProvider!
-            .routerReportsNewRouteInformation(
-                const RouteInformation(location: '/'));
+        const newRoute = NaviRoute();
 
-        _unprocessedRouteNotifier.setRoute(const NaviRoute(),
-            updateShouldNotify: false);
+        _reportNewRoute(context, newRoute);
+
+        _unprocessedRouteNotifier.setRoute(
+          newRoute,
+          updateShouldNotify: false,
+        );
       }
     });
   }
@@ -102,12 +103,23 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     log.finest('build: newRoute ${_unprocessedRouteNotifier.route}');
 
     if (_setNewRouteCount > 0) {
-      notifyNewRoute(context);
+      _notifyNewRoute(context);
 
       return NotificationListener<RootRouteNotification>(
         onNotification: (notification) {
-          setNewRoutePath(notification.route);
-          notifyListeners();
+          final newRoute = notification.relative
+              ? NaviRoute(
+                  path: _unprocessedRouteNotifier.route.path +
+                      notification.route.path,
+                  queryParams: notification.route.queryParams,
+                  fragment: notification.route.fragment,
+                )
+              : notification.route;
+
+          setNewRoutePath(newRoute).then((_) {
+            notifyListeners();
+          });
+
           return true;
         },
         child: NotificationListener<ActiveNestedRoutesNotification>(
@@ -118,20 +130,13 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
                 (combinedRoute, route) =>
                     combinedRoute.mergeCombinePath(route));
 
-            if (_unprocessedRouteNotifier.route != mergedRoute) {
-              Router.of(context)
-                  .routeInformationProvider!
-                  .routerReportsNewRouteInformation(RouteInformation(
-                      location:
-                          Uri.decodeComponent(mergedRoute.uri.toString())));
+            _reportNewRoute(context, mergedRoute);
+            log.info('navigated to new route $mergedRoute');
 
-              _unprocessedRouteNotifier.setRoute(mergedRoute,
-                  updateShouldNotify: false);
-
-              log.info('navigated to new route $mergedRoute');
-            } else {
-              log.fine('ignored! No changes to existing route $mergedRoute');
-            }
+            _unprocessedRouteNotifier.setRoute(
+              mergedRoute,
+              updateShouldNotify: false,
+            );
 
             _rootRouteNotifier.setHasNewRootRoute(false,
                 updateShouldNotify: false);
@@ -189,5 +194,15 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
         return true;
       },
     );
+  }
+
+  void _reportNewRoute(BuildContext context, NaviRoute newRoute) {
+    Router.of(context)
+        .routeInformationProvider!
+        .routerReportsNewRouteInformation(
+          RouteInformation(
+            location: Uri.decodeComponent(newRoute.uri.toString()),
+          ),
+        );
   }
 }
