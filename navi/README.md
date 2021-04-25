@@ -1,14 +1,33 @@
-Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
+<div align="center">
+  <a href="https://pub.dev/packages/navi">
+    <img src="https://github.com/zenonine/navi/tree/master/assets/navi-logo-shadow.png" alt="Navi" height="150" />
+  </a>
+
+  <p>
+    A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0.
+  </p>
+
+  <a href="https://pub.dev/packages/navi">
+    <img src="https://img.shields.io/pub/v/navi.svg" alt="pub package">
+  </a>
+</div>
+
+---
 
 If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative) and
-therefore declarative navigation.
+therefore **declarative navigation**.
 
-Note that, imperative navigation API is also supported as an extra layer beyond the declarative API at lower layer.
+**Navigator 2.0** provides a declarative navigation API. Unfortunately, it's **too complex and difficult to use** with a
+lot of **boilerplate**. Not only that, it requires to keep a **single state** to manage the whole navigation system of
+your application. It's not a good architecture, and definitely **does not fit in large scale applications**.
 
-<a href="https://pub.dev/packages/navi"><img src="https://img.shields.io/pub/v/navi.svg" alt="pub package"></a>
+**Navi** helps you keep all the powerful of Navigator 2.0 but with a **simple and easy to learn API**. It helps you
+manage your navigation system in **split and isolated domains**.
+
+Note that, **imperative navigation API is also supported** as an extra layer beyond the declarative API.
 
 * [Quick example](#quick-example)
-* [More examples](#examples)
+* [More examples](#more-examples)
 * [Architecture layers](#architecture-layers)
 * [Declarative navigation](#declarative-navigation)
 * [Navigate to a new route](#navigate-to-a-new-route)
@@ -238,7 +257,7 @@ To use a custom page, use the default constructors:
 # TODO: Flatten list of stacks to a single stack
 
 ```
-FlatRouteStack(
+FlatNaviStack(
   children: [
     NaviStack(),
     NaviStack(),
@@ -247,9 +266,9 @@ FlatRouteStack(
 )
 ```
 
-`FlatRouteStack` merges all pages of child stacks into a single stack.
+`FlatNaviStack` merges all pages of child stacks into a single stack.
 
-The difference is that, URL of nested stacks are dependent, but URLs of stacks in `FlatRouteStack` are independent.
+The difference is that, URL of nested stacks are dependent, but URLs of stacks in `FlatNaviStack` are independent.
 
 # TODO: Manipulation of the chronological history Stack
 
@@ -263,6 +282,7 @@ heavily on Navigator 2.0.
 
 * Milestone 1 (WIP)
   * Easy to learn, simple to maintain and organize application code based on split domains.
+  * Easy to migrate from non-web app to web app.
   * Keep boilerplate code at reasonable level. More optimization will be in next milestones.
   * Flexible: easily integrate with other architectural elements, especially, state management
     (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it))
@@ -285,12 +305,13 @@ heavily on Navigator 2.0.
 
 First of all, thank you a lot to visit Navi project!
 
-* Everyone is welcome
-  * to file issues on GitHub
-  * to help people asking for help
-  * click the GitHub star/watch button
-  * click the [Pub.dev](https://pub.dev/packages/navi) like button
-  * to contribute code via pull requests
+Everyone is welcome to
+
+* file issues on GitHub
+* help people asking for help
+* click the GitHub star/watch button
+* click the [Pub.dev](https://pub.dev/packages/navi) like button
+* contribute code via pull requests
 
 The more people interested in the project, the more motivation I will have to speed up the development.
 
