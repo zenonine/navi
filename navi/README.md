@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://pub.dev/packages/navi">
-    <img src="assets/navi-logo-shadow.png" alt="Navi" height="150" />
+    <img src="https://github.com/zenonine/navi/tree/master/assets/navi-logo-shadow.png" alt="Navi" height="150" />
   </a>
 
   <p>
@@ -135,8 +135,7 @@ class _BooksStackState extends State<BooksStack> with NaviRouteMixin<BooksStack>
 | Navi                      | Code Generator                 | After release 1.0                                           | Generate boilerplate code                                     |
 | Navi                      | Configurator                   | Before release 1.0 if possible, otherwise after release 1.0 | Comparable to URL mapping approaches like Angular or Vue      |
 | Navi                      | Imperative API                 | Before release 1.0                                          | Useful when declarative is not needed                         |
-| Navi                      | **High-level declarative API** | **
-WIP**                                                     | Simple and easy to use yet keep the powerful of Navigator 2.0 |
+| Navi                      | **High-level declarative API** | **WIP**                                                     | Simple and easy to use yet keep the powerful of Navigator 2.0 |
 | Flutter SDK Navigator 2.0 | Low-level declarative API      | N/A                                                         | Too complex and difficult to use                              |
 
 # Declarative navigation
