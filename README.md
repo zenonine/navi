@@ -1,12 +1,16 @@
+<div style="display: flex; justify-content: center;">
 <img src="assets/navi-logo-shadow.png" alt="Navi" />
+
+<p>
+  Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
+</p>
 
 <a href="https://pub.dev/packages/navi">
   <img src="https://img.shields.io/pub/v/navi.svg" alt="pub package">
 </a>
+</div>
 
 ---
-
-Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
 If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative) and
 therefore **declarative navigation**.
