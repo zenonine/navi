@@ -10,9 +10,9 @@ class InheritedStackMarkers extends InheritedWidget {
     required this.markers,
   }) : super(key: key, child: child);
 
-  final List<StackMarker> markers;
+  final List<IStackMarker> markers;
 
-  static List<StackMarker> of(BuildContext context) {
+  static List<IStackMarker> of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<InheritedStackMarkers>()!
         .markers;
@@ -20,7 +20,7 @@ class InheritedStackMarkers extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant InheritedStackMarkers oldWidget) {
-    return !(const ListEquality<StackMarker>()
+    return !(const ListEquality<IStackMarker>()
         .equals(markers, oldWidget.markers));
   }
 }

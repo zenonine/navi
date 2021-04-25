@@ -1,7 +1,12 @@
-class StackMarker<T> {
-  const StackMarker([this.id]);
+import 'package:flutter/foundation.dart';
 
-  final T? id;
+abstract class IStackMarker {}
+
+@immutable
+class StackMarker<T> implements IStackMarker {
+  const StackMarker(this.id);
+
+  final T id;
 
   @override
   bool operator ==(Object other) =>

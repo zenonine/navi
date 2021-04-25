@@ -21,7 +21,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
 
   @override
   final GlobalKey<NavigatorState> navigatorKey;
-  final StackMarker? marker;
+  final IStackMarker? marker;
   final NaviPagesBuilder naviPagesBuilder;
   final OnBuiltNaviPages onBuiltNaviPages;
   final NaviPopPageCallback? onPopPage;
@@ -65,8 +65,6 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
 
           _log.finest('build page for $currentMergedRoute');
 
-          final isActivePage = _currentActivePageKey == naviPage.key;
-
           assert(
             _unprocessedRouteNotifiers[naviPage.key] != null,
             "page ${naviPage.key} doesn't have an UnprocessedRouteNotifier",
@@ -80,7 +78,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
               routes: currentRoutes,
               child: NotificationListener<ActiveNestedRoutesNotification>(
                 onNotification: (notification) {
-                  if (isActivePage) {
+                  if (_currentActivePageKey == naviPage.key) {
                     final mergedRoute = notification.routes.reduce(
                         (combinedRoute, route) =>
                             combinedRoute.mergeCombinePath(route));
@@ -102,7 +100,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
                 child: InheritedUnprocessedRouteNotifier(
                   notifier: _unprocessedRouteNotifiers[naviPage.key]!,
                   child: InheritedActiveRouteBranch(
-                    active: isActivePage,
+                    active: _currentActivePageKey == naviPage.key,
                     child: naviPage.child,
                   ),
                 ),

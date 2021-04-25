@@ -14,7 +14,7 @@ class NaviStack extends StatefulWidget {
   }) : super(key: key);
 
   final GlobalKey<NavigatorState>? navigatorKey;
-  final StackMarker? marker;
+  final IStackMarker? marker;
   final NaviPagesBuilder pages;
   final bool active;
   final NaviPopPageCallback? onPopPage;
