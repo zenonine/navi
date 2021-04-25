@@ -2,16 +2,16 @@ import 'package:flutter/widgets.dart';
 
 import '../main.dart';
 
-class NaviInformationParser extends RouteInformationParser<RouteInfo> {
+class NaviInformationParser extends RouteInformationParser<NaviRoute> {
   @override
-  Future<RouteInfo> parseRouteInformation(
+  Future<NaviRoute> parseRouteInformation(
       RouteInformation routeInformation) async {
     final uri = Uri.parse(routeInformation.location ?? '');
-    return RouteInfo.fromUri(uri);
+    return NaviRoute.fromUri(uri);
   }
 
   @override
-  RouteInformation restoreRouteInformation(RouteInfo configuration) {
+  RouteInformation restoreRouteInformation(NaviRoute configuration) {
     final location = Uri.decodeComponent(configuration.uri.toString());
     return RouteInformation(location: location);
   }

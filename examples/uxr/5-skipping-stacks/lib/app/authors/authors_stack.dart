@@ -4,31 +4,49 @@ import 'package:navi/navi.dart';
 
 import '../index.dart';
 
-class AuthorsStack extends StatelessWidget {
+class AuthorsStack extends StatefulWidget {
+  @override
+  _AuthorsStackState createState() => _AuthorsStackState();
+}
+
+class _AuthorsStackState extends State<AuthorsStack>
+    with NaviRouteMixin<AuthorsStack> {
+  Author? _selectedAuthor;
+
+  @override
+  void onNewRoute(NaviRoute unprocessedRoute) {
+    final authorId = int.tryParse(unprocessedRoute.pathSegmentAt(0) ?? '');
+    _selectedAuthor =
+        authors.firstWhereOrNull((author) => author.id == authorId);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RouteStack<Author?>(
-      marker: AuthorsStackMarker(),
-      pages: (context, state) => [
-        MaterialPage<dynamic>(
+    return NaviStack(
+      pages: (context) => [
+        NaviPage.material(
           key: const ValueKey('Authors'),
-          child: AuthorsPage(),
+          child: AuthorsPagelet(
+            onSelectAuthor: (author) => setState(() {
+              _selectedAuthor = author;
+            }),
+          ),
         ),
-        if (state != null)
-          MaterialPage<dynamic>(
-            key: ValueKey(state),
-            child: AuthorPage(author: state),
+        if (_selectedAuthor != null)
+          NaviPage.material(
+            key: ValueKey(_selectedAuthor),
+            route: NaviRoute(path: ['${_selectedAuthor!.id}']),
+            child: AuthorPagelet(author: _selectedAuthor!),
           ),
       ],
-      updateStateOnNewRoute: (routeInfo) {
-        final authorId = int.tryParse(routeInfo.pathSegmentAt(0) ?? '');
-        return authors.firstWhereOrNull((author) => author.id == authorId);
+      onPopPage: (context, route, dynamic result) {
+        if (_selectedAuthor != null) {
+          setState(() {
+            _selectedAuthor = null;
+          });
+        }
       },
-      updateRouteOnNewState: (state) =>
-          RouteInfo(pathSegments: state == null ? [] : ['${state.id}']),
-      updateStateBeforePop: (context, route, dynamic result, state) => null,
     );
   }
 }
-
-class AuthorsStackMarker extends StackMarker<Author?> {}

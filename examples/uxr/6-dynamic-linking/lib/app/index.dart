@@ -1,5 +1,5 @@
 export 'app.dart';
-export 'root_page.dart';
 export 'wishlist.dart';
-export 'wishlist_page.dart';
-export 'wishlists_page.dart';
+export 'wishlist_pagelet.dart';
+export 'wishlists_pagelet.dart';
+export 'wishlists_stack.dart';
