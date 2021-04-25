@@ -56,7 +56,7 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
   final Page _uninitializedPage;
   final NaviRootPopPageCallback? onPopPage;
 
-  late final log = logger(this);
+  late final _log = logger(this);
 
   int _setNewRouteCount = 0;
   bool _hasNestedRouteStack = false;
@@ -66,13 +66,13 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
 
   @override
   NaviRoute get currentConfiguration {
-    log.info('currentConfiguration ${_unprocessedRouteNotifier.route}');
+    _log.info('currentConfiguration ${_unprocessedRouteNotifier.route}');
     return _unprocessedRouteNotifier.route;
   }
 
   @override
   Future<void> setNewRoutePath(NaviRoute configuration) async {
-    log.info('setNewRoutePath $configuration');
+    _log.info('setNewRoutePath $configuration');
     if (_setNewRouteCount > 0) {
       // do not consider launching app as new root
       // hasNewRootRoute is true only the when app receives a new root route while running
@@ -100,7 +100,7 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
 
   @override
   Widget build(BuildContext context) {
-    log.finest('build: newRoute ${_unprocessedRouteNotifier.route}');
+    _log.finest('build: newRoute ${_unprocessedRouteNotifier.route}');
 
     if (_setNewRouteCount > 0) {
       _notifyNewRoute(context);
@@ -124,14 +124,14 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
         },
         child: NotificationListener<ActiveNestedRoutesNotification>(
           onNotification: (notification) {
-            log.fine('new routes ${notification.routes}');
+            _log.fine('new routes ${notification.routes}');
 
             final mergedRoute = notification.routes.reduce(
                 (combinedRoute, route) =>
                     combinedRoute.mergeCombinePath(route));
 
             _reportNewRoute(context, mergedRoute);
-            log.info('navigated to new route $mergedRoute');
+            _log.info('navigated to new route $mergedRoute');
 
             _unprocessedRouteNotifier.setRoute(
               mergedRoute,

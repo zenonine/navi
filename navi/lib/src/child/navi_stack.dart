@@ -24,7 +24,7 @@ class NaviStack extends StatefulWidget {
 }
 
 class _NaviStackState extends State<NaviStack> {
-  late final log = logger(this, widget.marker == null ? [] : [widget.marker!]);
+  late final _log = logger(this, widget.marker == null ? [] : [widget.marker!]);
 
   late final ChildRouterDelegate _routerDelegate;
 
@@ -37,7 +37,7 @@ class _NaviStackState extends State<NaviStack> {
   @override
   void initState() {
     super.initState();
-    log.finest('initState');
+    _log.finest('initState');
 
     _routerDelegate = ChildRouterDelegate(
       navigatorKey: widget.navigatorKey,
@@ -53,7 +53,7 @@ class _NaviStackState extends State<NaviStack> {
   @override
   void didUpdateWidget(covariant NaviStack oldWidget) {
     super.didUpdateWidget(oldWidget);
-    log.finest('didUpdateWidget');
+    _log.finest('didUpdateWidget');
 
     if (widget.active != oldWidget.active) {
       _isActiveRouteBranch =
@@ -64,7 +64,7 @@ class _NaviStackState extends State<NaviStack> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    log.finest('didChangeDependencies');
+    _log.finest('didChangeDependencies');
 
     _isActiveRouteBranch =
         widget.active && context.internalNavi.isActiveRouteBranch;
@@ -90,13 +90,13 @@ class _NaviStackState extends State<NaviStack> {
 
   void _notifyNewRoute(BuildContext context, NaviRoute pageRoute) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      log.finest('conditions before notifying new route: '
+      _log.finest('conditions before notifying new route: '
           '_isActivatedRouteBranch = $_isActiveRouteBranch'
           ', _hasNestedRouteStack = $_hasNestedRouteStack');
 
       if (_isActiveRouteBranch && !_hasNestedRouteStack) {
         // notify root router to change the current route
-        log.finer('notified new route $pageRoute');
+        _log.finer('notified new route $pageRoute');
         ActiveNestedRoutesNotification(routes: [pageRoute]).dispatch(context);
       }
     });
@@ -104,7 +104,7 @@ class _NaviStackState extends State<NaviStack> {
 
   @override
   Widget build(BuildContext context) {
-    log.finest('build');
+    _log.finest('build');
 
     if (_isActiveRouteBranch) {
       _backButtonDispatcher?.takePriority();
