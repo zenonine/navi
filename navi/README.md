@@ -249,7 +249,8 @@ heavily on Navigator 2.0.
   * Optimize to remove boilerplate code for common/general scenarios
   * Optimize performance
   * Test coverage at least 90%
-  * Evaluate edge cases * Milestone 3 (Plan: before release 1.0 if possible, otherwise after release 1.0)
+  * Evaluate edge cases
+* Milestone 3 (Plan: before release 1.0 if possible, otherwise after release 1.0)
   * Implement a configurator, which fits to common scenarios. For more flexibility, use the high level declarative API.
 * Milestone 4 (Plan: after release 1.0)
   * Implement code generator to even remove more boilerplate code
