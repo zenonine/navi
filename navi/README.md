@@ -254,8 +254,6 @@ heavily on Navigator 2.0.
 * Milestone 4 (Plan: after release 1.0)
   * Implement code generator to even remove more boilerplate code
 
-Please see this [full source code example](https://github.com/zenonine/navi/tree/master/examples) app.
-
 # Contributing to Navi
 
 First of all, thank you a lot to visit Navi project!
