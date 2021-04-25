@@ -1,11 +1,14 @@
 Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
 
+If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative) and
+therefore declarative navigation.
+
 Note that, imperative navigation API is also supported as an extra layer beyond the declarative API at lower layer.
 
 <a href="https://pub.dev/packages/navi"><img src="https://img.shields.io/pub/v/navi.svg" alt="pub package"></a>
 
-* [Quick Example](#quick-example)
-* [Examples](#examples)
+* [Quick example](#quick-example)
+* [More examples](#examples)
 * [Architecture layers](#architecture-layers)
 * [Declarative navigation](#declarative-navigation)
 * [Navigate to a new route](#navigate-to-a-new-route)
@@ -13,7 +16,7 @@ Note that, imperative navigation API is also supported as an extra layer beyond 
 * [Milestones](#milestones)
 * [Contributing to Navi](#contributing-to-navi)
 
-# Quick Example
+# Quick example
 
 To use the library, controlling `NaviStack` widget is everything you need to learn!
 
@@ -93,7 +96,7 @@ class _BooksStackState extends State<BooksStack> with NaviRouteMixin<BooksStack>
 }
 ```
 
-# Examples
+# More examples
 
 [All examples](https://github.com/zenonine/navi/tree/master/examples)
 
@@ -118,10 +121,9 @@ class _BooksStackState extends State<BooksStack> with NaviRouteMixin<BooksStack>
 
 # Declarative navigation
 
-If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative).
-
-Declarative navigation is similar as it allows you to describe your navigation system by the current UI state. Updating
-your current UI state to tell Navi figures out where to navigate to.
+Declarative navigation is similar to [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative) as
+it allows you to describe your navigation system by the current UI state. Updating your current UI state to tell Navi
+figures out where to navigate to.
 
 Using declarative navigation is only powerful if
 
@@ -154,17 +156,6 @@ widgets. It will rebuild the needed stacks and update URL accordingly.
 
 Because `NaviStack` is just a normal widget, you only need to use this widget to build nested stacks like you would do
 with other widgets.
-
-It's commonly used together
-with [`BottomNavigationBar`](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html)
-and [`TabBar`](https://api.flutter.dev/flutter/material/TabBar-class.html), but it will definitely work with other
-components and designs.
-
-If you want to keep state of nested stacks in `BottomNavigationBar`, you could
-use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.html).
-
-If you want to keep state of nested stacks in `TabBar`, you could
-use [`AutomaticKeepAliveClientMixin`](https://api.flutter.dev/flutter/widgets/AutomaticKeepAliveClientMixin-mixin.html).
 
 For example, you have a bookstore with 2 pages: book list page and book page. Their URLs are `/books` and `/books/:id`.
 
@@ -212,7 +203,36 @@ the final URL for you (ex. `/books/1/overview`).
 
 You can have unlimited nested stacks as deep as you want and each stack manage only the URL part it should know.
 
+It's commonly used together
+with [`BottomNavigationBar`](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html)
+and [`TabBar`](https://api.flutter.dev/flutter/material/TabBar-class.html), but it will definitely work with other
+components and designs.
+
+If you want to keep state of nested stacks in `BottomNavigationBar`, you could
+use [`IndexedStack`](https://api.flutter.dev/flutter/widgets/IndexedStack-class.html).
+
+If you want to keep state of nested stacks in `TabBar`, you could
+use [`AutomaticKeepAliveClientMixin`](https://api.flutter.dev/flutter/widgets/AutomaticKeepAliveClientMixin-mixin.html).
+
+When use with tabs and keeping state of tabs, you keep multiple stack branches in the widget tree. In this case, please
+make sure to set `active: false` to inactive stacks in inactive tabs. Only the current tab set `active: true` to its
+stack. The active stack will report the correct final URL to browser address bar, while inactive stacks don't.
+
 Please see more in [Examples](https://github.com/zenonine/navi/tree/master/examples).
+
+# Custom page
+
+To use default material and cupertino pages, you can use shortcuts:
+
+* `NaviRouterDelegate.material()`
+* `NaviRouterDelegate.cupertino()`
+* `NaviPage.material()`
+* `NaviPage.cupertino()`
+
+To use a custom page, use the default constructors:
+
+* `NaviRouterDelegate(rootPage: () => YourCustomPage())`
+* `NaviPage(pageBuilder: (key, child) => YourCustomPage())`
 
 # TODO: Flatten list of stacks to a single stack
 
