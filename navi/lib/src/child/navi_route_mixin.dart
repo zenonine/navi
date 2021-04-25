@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../main.dart';
 
 mixin NaviRouteMixin<T extends StatefulWidget> on State<T> {
-  late final log = logger(this);
+  late final _log = logger(this);
 
   IUnprocessedRouteNotifier? _unprocessedRouteNotifier;
   VoidCallback? _unprocessedRouteListener;
@@ -13,7 +13,7 @@ mixin NaviRouteMixin<T extends StatefulWidget> on State<T> {
   @mustCallSuper
   void didChangeDependencies() {
     super.didChangeDependencies();
-    log.finest('didChangeDependencies');
+    _log.finest('didChangeDependencies');
 
     if (_unprocessedRouteNotifier != context.navi.unprocessedRouteNotifier) {
       _unprocessedRouteNotifier = context.navi.unprocessedRouteNotifier;
@@ -36,10 +36,22 @@ mixin NaviRouteMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    log.finest('dispose');
+    _log.finest('dispose');
 
     if (_unprocessedRouteListener != null) {
-      _unprocessedRouteNotifier?.removeListener(_unprocessedRouteListener!);
+      bool hasListeners = false;
+      try {
+        hasListeners = _unprocessedRouteNotifier?.hasListeners ?? false;
+      } on FlutterError catch (e) {
+        _log.finest(
+          '_unprocessedRouteNotifier is already disposed, nothing to do',
+          e,
+        );
+      }
+
+      if (hasListeners) {
+        _unprocessedRouteNotifier?.removeListener(_unprocessedRouteListener!);
+      }
     }
 
     super.dispose();

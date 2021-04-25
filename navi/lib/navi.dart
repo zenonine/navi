@@ -6,6 +6,7 @@ export 'src/main.dart'
         NaviRouteMixin,
         NaviStack,
         NaviPage,
+        IStackMarker,
         StackMarker,
         NaviContext,
         IRootRouteNotifier,

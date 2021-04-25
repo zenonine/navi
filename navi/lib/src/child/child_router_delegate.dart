@@ -17,11 +17,11 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
     this.onPopPage,
   }) : navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>();
 
-  late final log = logger(this, marker == null ? [] : [marker!]);
+  late final _log = logger(this, marker == null ? [] : [marker!]);
 
   @override
   final GlobalKey<NavigatorState> navigatorKey;
-  final StackMarker? marker;
+  final IStackMarker? marker;
   final NaviPagesBuilder naviPagesBuilder;
   final OnBuiltNaviPages onBuiltNaviPages;
   final NaviPopPageCallback? onPopPage;
@@ -38,7 +38,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
   @override
   void dispose() {
     super.dispose();
-    log.finest('dispose');
+    _log.finest('dispose');
 
     _unprocessedRouteNotifiers.forEach((key, notifier) {
       notifier.dispose();
@@ -63,9 +63,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
           final currentMergedRoute = currentRoutes.reduce(
               (mergedRoute, route) => mergedRoute.mergeCombinePath(route));
 
-          log.finest('build page for $currentMergedRoute');
-
-          final isActivePage = _currentActivePageKey == naviPage.key;
+          _log.finest('build page for $currentMergedRoute');
 
           assert(
             _unprocessedRouteNotifiers[naviPage.key] != null,
@@ -80,16 +78,16 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
               routes: currentRoutes,
               child: NotificationListener<ActiveNestedRoutesNotification>(
                 onNotification: (notification) {
-                  if (isActivePage) {
+                  if (_currentActivePageKey == naviPage.key) {
                     final mergedRoute = notification.routes.reduce(
                         (combinedRoute, route) =>
                             combinedRoute.mergeCombinePath(route));
 
                     _unprocessedRouteNotifiers[naviPage.key]!
                         .setRoute(mergedRoute, updateShouldNotify: false);
-                    log.finest(
+                    _log.finest(
                         'active page ${naviPage.key} has nested routes: ${notification.routes}');
-                    log.finest(
+                    _log.finest(
                         'active page ${naviPage.key} has nested merged route $mergedRoute');
 
                     ActiveNestedRoutesNotification(
@@ -102,7 +100,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
                 child: InheritedUnprocessedRouteNotifier(
                   notifier: _unprocessedRouteNotifiers[naviPage.key]!,
                   child: InheritedActiveRouteBranch(
-                    active: isActivePage,
+                    active: _currentActivePageKey == naviPage.key,
                     child: naviPage.child,
                   ),
                 ),
@@ -165,14 +163,14 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
         }
       }
 
-      log.finest('page ${naviPage.key} has nested route ${notifier.route}');
+      _log.finest('page ${naviPage.key} has nested route ${notifier.route}');
 
       newNotifiers.putIfAbsent(naviPage.key, () => notifier);
     }
 
-    log.finest('old _unprocessedRouteNotifiers $_unprocessedRouteNotifiers');
+    _log.finest('old _unprocessedRouteNotifiers $_unprocessedRouteNotifiers');
     _unprocessedRouteNotifiers = Map.unmodifiable(newNotifiers);
-    log.finest('new _unprocessedRouteNotifiers $_unprocessedRouteNotifiers');
+    _log.finest('new _unprocessedRouteNotifiers $_unprocessedRouteNotifiers');
   }
 
   void _disposeUnprocessedRouteNotifier(LocalKey pageKey) {
@@ -215,7 +213,7 @@ class ChildRouterDelegate extends RouterDelegate<dynamic>
 
   @override
   Widget build(BuildContext context) {
-    log.finest('build');
+    _log.finest('build');
 
     _isActiveRouteBranch = context.internalNavi.isActiveRouteBranch;
 

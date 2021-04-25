@@ -50,7 +50,7 @@ class InternalNavi extends Navi {
 
   List<NaviRoute> get routes => InheritedRoutes.of(context);
 
-  List<StackMarker> get markers => InheritedStackMarkers.of(context);
+  List<IStackMarker> get markers => InheritedStackMarkers.of(context);
 }
 
 extension NaviContext on BuildContext {
