@@ -4,8 +4,8 @@ If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/ge
 therefore **declarative navigation**.
 
 Navigator 2.0 provides a declarative navigation API. Unfortunately, it's too complex and difficult to use. Not only
-that, it requires to keep a single state to manage the whole navigation system of your app. It's definitely not a good
-architecture for any application, especially in large scale applications.
+that, it requires to keep a single state to manage the whole navigation system of your application. It's definitely not
+a good architecture, especially in large scale applications.
 
 `Navi` helps you keep all the powerful of Navigator 2.0 but with a simple and easy to learn API. It helps you manage
 your navigation system in split and isolate domains.
@@ -123,7 +123,8 @@ class _BooksStackState extends State<BooksStack> with NaviRouteMixin<BooksStack>
 | Navi                      | Code Generator                 | After release 1.0                                           | Generate boilerplate code                                     |
 | Navi                      | Configurator                   | Before release 1.0 if possible, otherwise after release 1.0 | Comparable to URL mapping approaches like Angular or Vue      |
 | Navi                      | Imperative API                 | Before release 1.0                                          | Useful when declarative is not needed                         |
-| Navi                      | **High-level declarative API** | **WIP**                                                     | Simple and easy to use yet keep the powerful of Navigator 2.0 |
+| Navi                      | **High-level declarative API** | **
+WIP**                                                     | Simple and easy to use yet keep the powerful of Navigator 2.0 |
 | Flutter SDK Navigator 2.0 | Low-level declarative API      | N/A                                                         | Too complex and difficult to use                              |
 
 # Declarative navigation
