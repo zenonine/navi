@@ -1,4 +1,18 @@
-Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
+<div align="center">
+  <a href="https://pub.dev/packages/navi">
+    <img src="assets/navi-logo-shadow.png" alt="Navi" height="150" />
+  </a>
+
+  <p>
+    A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0.
+  </p>
+
+  <a href="https://pub.dev/packages/navi">
+    <img src="https://img.shields.io/pub/v/navi.svg" alt="pub package">
+  </a>
+</div>
+
+---
 
 If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative) and
 therefore **declarative navigation**.
@@ -11,8 +25,6 @@ your application. It's not a good architecture, and definitely **does not fit in
 manage your navigation system in **split and isolated domains**.
 
 Note that, **imperative navigation API is also supported** as an extra layer beyond the declarative API.
-
-<a href="https://pub.dev/packages/navi"><img src="https://img.shields.io/pub/v/navi.svg" alt="pub package"></a>
 
 * [Quick example](#quick-example)
 * [More examples](#more-examples)
