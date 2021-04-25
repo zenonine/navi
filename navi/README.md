@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://pub.dev/packages/navi">
-    <img src="https://github.com/zenonine/navi/tree/master/assets/navi-logo-shadow.png" alt="Navi" height="150" />
+    <img src="https://raw.githubusercontent.com/zenonine/navi/master/assets/navi-logo-shadow.png" alt="Navi" height="150" />
   </a>
 
   <p>
