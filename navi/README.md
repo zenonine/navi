@@ -215,8 +215,9 @@ If you want to keep state of nested stacks in `TabBar`, you could
 use [`AutomaticKeepAliveClientMixin`](https://api.flutter.dev/flutter/widgets/AutomaticKeepAliveClientMixin-mixin.html).
 
 When use with tabs and keeping state of tabs, you keep multiple stack branches in the widget tree. In this case, please
-make sure to set `active: false` to inactive stacks in inactive tabs. Only the current tab set `active: true` to its
-stack. The active stack will report the correct final URL to browser address bar, while inactive stacks don't.
+make sure to set `active: false` to inactive stacks in inactive tabs. Only the stack in the current tab
+set `active: true`. The active stack is responsible to report the correct final URL to browser address bar, while
+inactive stacks don't.
 
 Please see more in [Examples](https://github.com/zenonine/navi/tree/master/examples).
 
