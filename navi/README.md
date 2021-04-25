@@ -263,6 +263,7 @@ heavily on Navigator 2.0.
 
 * Milestone 1 (WIP)
   * Easy to learn, simple to maintain and organize application code based on split domains.
+  * Easy to migrate from non-web app to web app.
   * Keep boilerplate code at reasonable level. More optimization will be in next milestones.
   * Flexible: easily integrate with other architectural elements, especially, state management
     (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it))
