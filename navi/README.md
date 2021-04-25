@@ -286,12 +286,13 @@ heavily on Navigator 2.0.
 
 First of all, thank you a lot to visit Navi project!
 
-* Everyone is welcome
-  * to file issues on GitHub
-  * to help people asking for help
-  * click the GitHub star/watch button
-  * click the [Pub.dev](https://pub.dev/packages/navi) like button
-  * to contribute code via pull requests
+Everyone is welcome to
+
+* file issues on GitHub
+* help people asking for help
+* click the GitHub star/watch button
+* click the [Pub.dev](https://pub.dev/packages/navi) like button
+* contribute code via pull requests
 
 The more people interested in the project, the more motivation I will have to speed up the development.
 
