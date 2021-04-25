@@ -140,6 +140,9 @@ definitely much more than that.
 * `context.navi.relativeTo(['details'])`: navigate to relative URL. If current URL is `products/1`, the destination URL
   will be `/products/1/details`.
 
+Beside the API to navigate by URL, you can also update your widget state (or multiple widget states) to rebuild the
+widgets. It will rebuild the needed stacks and update URL accordingly.
+
 * TODOs:
   * `context.navi.stack(ProductsStackMarker()).to(['2', 'overview'])`: navigate to relative URL starting from current
     URL of the given stack. If current URL is `my/path/to/products/1/details` and `ProductsStack` URL
