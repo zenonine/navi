@@ -8,7 +8,7 @@ that, it requires to keep a single state to manage the whole navigation system o
 a good architecture, especially in large scale applications.
 
 `Navi` helps you keep all the powerful of Navigator 2.0 but with a simple and easy to learn API. It helps you manage
-your navigation system in split and isolate domains.
+your navigation system in split and isolated domains.
 
 Note that, **imperative navigation API** is also supported as an extra layer beyond the declarative API.
 
