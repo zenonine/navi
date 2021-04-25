@@ -141,7 +141,9 @@ definitely much more than that.
   will be `/products/1/details`.
 
 * TODOs:
-  * `context.navi.relativeToStack(ProductStackMarker(), ['relative', 'path'])`:
+  * `context.navi.stack(ProductsStackMarker()).to(['2', 'overview'])`: navigate to relative URL starting from current
+    URL of the given stack. If current URL is `my/path/to/products/1/details` and `ProductsStack` URL
+    is `my/path/to/products`, the destination URL will be `my/path/to/products/2/overview`.
   * `context.navi.pop()`: a shortcut of `Navigator.of(context).pop()`
   * `context.navi.back()`: move back to the previous page in the history.
 
