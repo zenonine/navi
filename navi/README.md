@@ -239,7 +239,7 @@ heavily on Navigator 2.0.
   * Easy to learn, simple to maintain and organize application code based on split domains.
   * Keep boilerplate code at reasonable level. More optimization will be in next milestones.
   * Flexible: easily integrate with other architectural elements, especially, state management
-    (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it).
+    (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it)).
   * Modularization
     * friendly to projects, which require splitting into multiple teams
     * each stack can be considered as an isolated module
