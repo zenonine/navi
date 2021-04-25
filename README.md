@@ -11,4 +11,6 @@ Note that, imperative navigation API is also supported as an extra layer beyond 
   * [Login/Logout/Sign-up Routing](examples/uxr/3-sign-in-routing)
   * [Skipping Stacks](examples/uxr/5-skipping-stacks)
   * [Dynamic Linking](examples/uxr/6-dynamic-linking)
-  * [Nested Routing - Bottom Navigation Bar](examples/nested-routing-bottom-navigation-bar)
+  * [Nested Routing - Bottom Navigation Bar - without Keeping State](examples/bottom-navigation-bar-without-keeping-state)
+  * [Nested Routing - Bottom Navigation Bar - Keeping State](examples/bottom-navigation-bar-keeping-state)
+  * [Nested Routing - Tab Bar - Keeping State](examples/tab-bar-keeping-state)
