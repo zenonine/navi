@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/navi-logo-shadow.png" alt="Navi" />
+  <img src="assets/navi-logo-shadow.svg" alt="Navi" height="100" />
 
   <p>
     A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0.
