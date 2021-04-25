@@ -1,7 +1,8 @@
 # [0.2.0-rc+0] - 25.04.2021
 
 * Move from POC phase to development phase. 0.0.x and 0.1.x are just an experiment. Since 0.2, `Navi` is ready to be
-  used in your app. Backward compatibility, performance and stability will be considered.
+  used in your app. Backward compatibility, performance and stability will be considered. Migration documentation will
+  be provided.
 * Replace `RouteStack` with `NaviStack` widget with much simpler API
 * Add `NaviRouteMixin` to receive notification on new route
 
