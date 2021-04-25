@@ -1,13 +1,13 @@
 <div align="center">
-<img src="assets/navi-logo-shadow.png" alt="Navi" />
+  <img src="assets/navi-logo-shadow.png" alt="Navi" />
 
-<p>
-  Navi - A declarative navigation framework for Flutter, based on Navigator 2.0.
-</p>
+  <p>
+    A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0.
+  </p>
 
-<a href="https://pub.dev/packages/navi">
-  <img src="https://img.shields.io/pub/v/navi.svg" alt="pub package">
-</a>
+  <a href="https://pub.dev/packages/navi">
+    <img src="https://img.shields.io/pub/v/navi.svg" alt="pub package">
+  </a>
 </div>
 
 ---
