@@ -8,7 +8,7 @@ Note that, imperative navigation API is also supported as an extra layer beyond 
 <a href="https://pub.dev/packages/navi"><img src="https://img.shields.io/pub/v/navi.svg" alt="pub package"></a>
 
 * [Quick example](#quick-example)
-* [More examples](#examples)
+* [More examples](#more-examples)
 * [Architecture layers](#architecture-layers)
 * [Declarative navigation](#declarative-navigation)
 * [Navigate to a new route](#navigate-to-a-new-route)
