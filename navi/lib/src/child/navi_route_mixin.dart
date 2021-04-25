@@ -39,7 +39,19 @@ mixin NaviRouteMixin<T extends StatefulWidget> on State<T> {
     log.finest('dispose');
 
     if (_unprocessedRouteListener != null) {
-      _unprocessedRouteNotifier?.removeListener(_unprocessedRouteListener!);
+      bool hasListeners = false;
+      try {
+        hasListeners = _unprocessedRouteNotifier?.hasListeners ?? false;
+      } on FlutterError catch (e) {
+        log.finest(
+          '_unprocessedRouteNotifier is already disposed, nothing to do',
+          e,
+        );
+      }
+
+      if (hasListeners) {
+        _unprocessedRouteNotifier?.removeListener(_unprocessedRouteListener!);
+      }
     }
 
     super.dispose();
