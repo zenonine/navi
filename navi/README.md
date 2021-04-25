@@ -238,7 +238,7 @@ To use a custom page, use the default constructors:
 # TODO: Flatten list of stacks to a single stack
 
 ```
-FlatRouteStack(
+FlatNaviStack(
   children: [
     NaviStack(),
     NaviStack(),
@@ -247,9 +247,9 @@ FlatRouteStack(
 )
 ```
 
-`FlatRouteStack` merges all pages of child stacks into a single stack.
+`FlatNaviStack` merges all pages of child stacks into a single stack.
 
-The difference is that, URL of nested stacks are dependent, but URLs of stacks in `FlatRouteStack` are independent.
+The difference is that, URL of nested stacks are dependent, but URLs of stacks in `FlatNaviStack` are independent.
 
 # TODO: Manipulation of the chronological history Stack
 
