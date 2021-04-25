@@ -120,7 +120,7 @@ class NaviRoute {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is NaviRoute &&
+      other is NaviRoute &&
           runtimeType == other.runtimeType &&
           uri.toString() == other.uri.toString();
 

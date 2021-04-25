@@ -13,7 +13,9 @@ class InheritedRoutes extends InheritedWidget {
   final List<NaviRoute> routes;
 
   static List<NaviRoute> of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<InheritedRoutes>()!.routes;
+    return context
+        .dependOnInheritedWidgetOfExactType<InheritedRoutes>()!
+        .routes;
   }
 
   @override
