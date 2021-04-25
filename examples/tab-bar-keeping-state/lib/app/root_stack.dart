@@ -62,6 +62,12 @@ class _RootStackState extends State<RootStack>
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   void onNewRoute(NaviRoute unprocessedRoute) {
     tabs.values.forEachIndexedWhile((tabIndex, tabData) {
       if (unprocessedRoute.hasPrefixes([tabData.path])) {
@@ -99,8 +105,9 @@ class _RootStackState extends State<RootStack>
       children: [
         ...tabs.entries.mapIndexed(
           (index, entry) => TabStack(
-            tabEntry: entry,
+            // IMPORTANT: only one stack should be activated
             active: index == _currentIndex,
+            tabEntry: entry,
           ),
         ),
       ],
