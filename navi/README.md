@@ -113,7 +113,7 @@ class _BooksStackState extends State<BooksStack> with NaviRouteMixin<BooksStack>
 | Navi                      | Code Generator                 | After release 1.0                                           | Generate boilerplate code                                     |
 | Navi                      | Configurator                   | Before release 1.0 if possible, otherwise after release 1.0 | Comparable to URL mapping approaches like Angular or Vue      |
 | Navi                      | Imperative API                 | Before release 1.0                                          | Useful when declarative is not needed                         |
-| Navi                      | **High-level declarative API** | ** WIP**                                                    | Simple and easy to use yet keep the powerful of Navigator 2.0 |
+| Navi                      | **High-level declarative API** | **WIP**                                                     | Simple and easy to use yet keep the powerful of Navigator 2.0 |
 | Flutter SDK Navigator 2.0 | Low-level declarative API      | N/A                                                         | Too complex and difficult to use                              |
 
 # Declarative navigation
@@ -239,7 +239,8 @@ heavily on Navigator 2.0.
   * Easy to learn, simple to maintain and organize application code based on split domains.
   * Keep boilerplate code at reasonable level. More optimization will be in next milestones.
   * Flexible: easily integrate with other architectural elements, especially, state management
-    (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it)).
+    (ex. [Bloc](https://pub.dev/packages/bloc)) and dependency injection (ex. [get_it](https://pub.dev/packages/get_it))
+    .
   * Modularization
     * friendly to projects, which require splitting into multiple teams
     * each stack can be considered as an isolated module
@@ -248,8 +249,7 @@ heavily on Navigator 2.0.
   * Optimize to remove boilerplate code for common/general scenarios
   * Optimize performance
   * Test coverage at least 90%
-  * Evaluate edge cases
-* Milestone 3 (Plan: before release 1.0 if possible, otherwise after release 1.0)
+  * Evaluate edge cases * Milestone 3 (Plan: before release 1.0 if possible, otherwise after release 1.0)
   * Implement a configurator, which fits to common scenarios. For more flexibility, use the high level declarative API.
 * Milestone 4 (Plan: after release 1.0)
   * Implement code generator to even remove more boilerplate code
