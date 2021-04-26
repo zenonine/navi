@@ -37,3 +37,7 @@ jobs:
 
       - name: Run tests
         run: flutter test --coverage
+
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage/lcov.info
