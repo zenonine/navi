@@ -122,10 +122,22 @@ class NaviRoute {
       identical(this, other) ||
       other is NaviRoute &&
           runtimeType == other.runtimeType &&
-          uri.toString() == other.uri.toString();
+          fragment == other.fragment &&
+          const ListEquality<String>().equals(
+            normalizedPathSegments,
+            other.normalizedPathSegments,
+          ) &&
+          const DeepCollectionEquality.unordered().equals(
+            queryParams,
+            other.queryParams,
+          );
 
   @override
-  int get hashCode => uri.toString().hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^
+      fragment.hashCode ^
+      const ListEquality<String>().hash(normalizedPathSegments) ^
+      const DeepCollectionEquality.unordered().hash(queryParams);
 
   @override
   String toString() {
