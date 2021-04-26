@@ -4,6 +4,7 @@ pubspec.lock
 .metadata
 .dart_tool/
 build/
-**/doc/api/
+doc/
 .pub-cache/
 .pub/
+coverage/

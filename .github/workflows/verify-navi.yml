@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build
+name: Verify navi
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,11 +23,8 @@ jobs:
 
       - uses: subosito/flutter-action@v1
 
-      - run: dart --version
+      - run: flutter config --no-analytics
       - run: flutter --version
-
-      - name: Config flutter environment
-        run: flutter config --no-analytics
 
       - name: Install dependencies
         run: flutter packages get
@@ -35,8 +32,8 @@ jobs:
       - name: Verify formatting
         run: flutter format --set-exit-if-changed lib test
 
-#      - name: Analyze project source
-#        run: flutter analyze --fatal-infos
+      - name: Source code static analysis
+        run: flutter analyze --fatal-infos
 
-#      - name: Run tests
-#        run: flutter test
+      - name: Run tests
+        run: flutter test --coverage
