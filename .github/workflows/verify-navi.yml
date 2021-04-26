@@ -39,3 +39,5 @@ jobs:
         run: flutter test --coverage
 
       - uses: codecov/codecov-action@v1.4.1
+        with:
+          files: ./navi/coverage/lcov.info
