@@ -21,8 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
 
       - name: Install dependencies
         run: flutter packages get
