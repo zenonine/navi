@@ -26,7 +26,6 @@ class NaviRoute {
     }
 
     return Uri(
-      // TODO: allow to generate absolute and relative path
       // make sure path will starts with a slash
       pathSegments: ['', ...normalizedPathSegments],
       queryParameters: queryParams.isEmpty ? null : queryParams,
@@ -62,14 +61,11 @@ class NaviRoute {
     }
   }
 
-  // TODO: allow to choose strategy to merge params and fragment
-  NaviRoute mergeCombinePath(NaviRoute other) {
-    return NaviRoute(
-      path: normalizedPathSegments + other.normalizedPathSegments,
-      queryParams: _mergeQueryParams(queryParams, other.queryParams),
-      fragment: fragment.isEmpty ? other.fragment : fragment,
-    );
-  }
+  NaviRoute mergeCombinePath(NaviRoute other) => NaviRoute(
+        path: normalizedPathSegments + other.normalizedPathSegments,
+        queryParams: _mergeQueryParams(queryParams, other.queryParams),
+        fragment: fragment.isEmpty ? other.fragment : fragment,
+      );
 
   Map<String, List<String>> _mergeQueryParams(
     Map<String, List<String>> first,
