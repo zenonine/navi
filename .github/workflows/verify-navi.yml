@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Verify navi
+name: Verify
 
 on:
   push:
@@ -38,6 +38,12 @@ jobs:
       - name: Run tests
         run: flutter test --coverage
 
-      - uses: codecov/codecov-action@v1.4.1
+      - uses: codecov/codecov-action@v1
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./navi/coverage/lcov.info
+
+#      - uses: coverallsapp/github-action@v1
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          path-to-lcov: ./navi/coverage/lcov.info
