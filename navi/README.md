@@ -7,9 +7,14 @@
     A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0.
   </p>
 
-  <a href="https://pub.dev/packages/navi">
-    <img src="https://img.shields.io/pub/v/navi.svg" alt="pub package">
-  </a>
+  <div>
+    <a href="https://pub.dev/packages/navi">
+      <img src="https://img.shields.io/pub/v/navi.svg" alt="pub package">
+    </a>
+    <a href="https://github.com/zenonine/navi/actions/workflows/verify-navi.yml">
+      <img src="https://github.com/zenonine/navi/actions/workflows/verify-navi.yml/badge.svg?branch=master" alt="verify navi">
+    </a>
+  </div>
 </div>
 
 ---
