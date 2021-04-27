@@ -38,6 +38,7 @@ jobs:
       - name: Run tests
         run: flutter test --coverage
 
-      - uses: codecov/codecov-action@v1.4.1
+      - uses: coverallsapp/github-action@v1.1.2
         with:
-          files: ./navi/coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./navi/coverage/lcov.info
