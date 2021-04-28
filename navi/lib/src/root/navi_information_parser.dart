@@ -12,7 +12,8 @@ class NaviInformationParser extends RouteInformationParser<NaviRoute> {
 
   @override
   RouteInformation restoreRouteInformation(NaviRoute configuration) {
-    final location = Uri.decodeComponent(configuration.uri.toString());
+    // Result of Uri.toString() is already encoded automatically
+    final location = configuration.uri.toString();
     return RouteInformation(location: location);
   }
 }
