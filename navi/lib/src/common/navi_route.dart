@@ -8,6 +8,8 @@ class NaviRoute {
   });
 
   factory NaviRoute.fromUri(Uri uri) => NaviRoute(
+        // pathSegments and queryParametersAll are decoded automatically by Uri class
+        // But fragment is NOT decoded automatically by Uri class
         path: uri.pathSegments,
         queryParams: uri.queryParametersAll,
         fragment: Uri.decodeComponent(uri.fragment),
@@ -89,7 +91,6 @@ class NaviRoute {
   /// [a, b, c] - [a, b, c, d] = []
   /// [a, b, c] - [d] = []
   /// ```
-  /// TODO: allow to choose strategy to merge params and fragment
   NaviRoute mergeSubtractPath(NaviRoute other) {
     final thisPathSegments = normalizedPathSegments;
     final otherPathSegments = other.normalizedPathSegments;
