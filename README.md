@@ -14,7 +14,7 @@
     <a href="https://github.com/zenonine/navi/actions/workflows/verify-navi.yml">
       <img src="https://github.com/zenonine/navi/actions/workflows/verify-navi.yml/badge.svg?branch=master" alt="verify navi">
     </a>
-    <a href="https://codecov.io/gh/zenonine/navi">
+    <a href="https://codecov.io/gh/zenonine/navi" target="_blank">
       <img src="https://codecov.io/gh/zenonine/navi/branch/master/graph/badge.svg?token=VSDR3PEJJG" alt="code coverage"/>
     </a>
   </div>
