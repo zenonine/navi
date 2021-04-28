@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Equality', () {
     group(
-        'GIVEN NaviGroups with the same URI path but different input path segments',
+        'GIVEN NaviRoutes with the same URI path but different input path segments',
         () {
       const route1 = NaviRoute(path: ['a', 'b']);
       const route2 = NaviRoute(path: ['a/b']);
@@ -36,7 +36,7 @@ void main() {
     });
 
     group(
-      'GIVEN NaviGroups with the same query params in different order',
+      'GIVEN NaviRoutes with the same query params in different order',
       () {
         const route1 = NaviRoute(
           queryParams: {
@@ -61,7 +61,7 @@ void main() {
       },
     );
 
-    group('GIVEN NaviGroups with the same fragment', () {
+    group('GIVEN NaviRoutes with the same fragment', () {
       const route1 = NaviRoute(fragment: 'a');
       const route2 = NaviRoute(fragment: 'a');
 
@@ -79,7 +79,7 @@ void main() {
     });
 
     group(
-      'GIVEN NaviGroups with same path but different input path segments'
+      'GIVEN NaviRoutes with same path but different input path segments'
       ', same query params in different order and same fragment',
       () {
         const route1 = NaviRoute(
@@ -111,7 +111,7 @@ void main() {
   });
 
   group('Inequality', () {
-    group('GIVEN NaviGroups with the different URI path', () {
+    group('GIVEN NaviRoutes with the different URI path', () {
       const route1 = NaviRoute(path: ['a', 'b']);
       const route2 = NaviRoute(path: ['b', 'a']);
       const route3 = NaviRoute(path: ['a']);
@@ -147,7 +147,7 @@ void main() {
     });
 
     group(
-      'GIVEN NaviGroups with different query params',
+      'GIVEN NaviRoutes with different query params',
       () {
         const route1 = NaviRoute(queryParams: {
           'a': ['a1']
@@ -196,7 +196,7 @@ void main() {
       },
     );
 
-    group('GIVEN NaviGroups with different fragments', () {
+    group('GIVEN NaviRoutes with different fragments', () {
       const route1 = NaviRoute(fragment: 'a');
       const route2 = NaviRoute(fragment: 'a ');
       const route3 = NaviRoute(fragment: ' a');
@@ -256,7 +256,7 @@ void main() {
       expect(route.hasPrefixes(['a', 'b']), true);
     });
 
-    test('/a/b SHOULD has prefixes /b or /b/a or /a/b/c', () {
+    test('/a/b SHOULD NOT has prefixes /b or /b/a or /a/b/c', () {
       const route = NaviRoute(path: ['a', 'b']);
       expect(route.hasPrefixes(['b']), false);
       expect(route.hasPrefixes(['b', 'a']), false);
@@ -283,5 +283,184 @@ void main() {
         expect(route.pathSegmentAt(-1), null);
       });
     });
+  });
+
+  group('mergeCombinePath', () {
+    test('SHOULD join paths of both routes', () {
+      const route1 = NaviRoute(path: ['a']);
+      const route2 = NaviRoute(path: ['b']);
+      const mergedRute = NaviRoute(path: ['a', 'b']);
+      expect(route1.mergeCombinePath(route2), mergedRute);
+    });
+
+    test('SHOULD keep query params of both routes', () {
+      const route1 = NaviRoute(queryParams: {
+        'a': ['a1'],
+        'b': ['b1'],
+      });
+      const route2 = NaviRoute(queryParams: {
+        'a': ['a2'],
+        'c': ['c1'],
+      });
+      const mergedRute = NaviRoute(queryParams: {
+        'a': ['a1', 'a2'],
+        'b': ['b1'],
+        'c': ['c1'],
+      });
+      expect(route1.mergeCombinePath(route2), mergedRute);
+    });
+
+    group(
+      'GIVEN original fragment is empty'
+      ', secondary fragment is empty',
+      () {
+        test('fragment SHOULD be empty', () {
+          const route1 = NaviRoute();
+          const route2 = NaviRoute();
+          expect(route1.mergeCombinePath(route2).fragment, '');
+        });
+      },
+    );
+
+    group(
+      'GIVEN original fragment is not empty'
+      ', secondary fragment is empty',
+      () {
+        test('SHOULD keep fragment of original route', () {
+          const route1 = NaviRoute(fragment: ' 1 ');
+          const route2 = NaviRoute(fragment: ' ');
+          const secondaryRoute = NaviRoute();
+          expect(route1.mergeCombinePath(secondaryRoute).fragment, ' 1 ');
+          expect(route2.mergeCombinePath(secondaryRoute).fragment, ' ');
+        });
+      },
+    );
+
+    group(
+      'GIVEN original fragment is empty'
+      ', secondary fragment is not empty',
+      () {
+        test('SHOULD keep fragment of secondary route', () {
+          const route = NaviRoute();
+          const secondaryRoute1 = NaviRoute(fragment: ' 1 ');
+          const secondaryRoute2 = NaviRoute(fragment: ' ');
+          expect(route.mergeCombinePath(secondaryRoute1).fragment, ' 1 ');
+          expect(route.mergeCombinePath(secondaryRoute2).fragment, ' ');
+        });
+      },
+    );
+  });
+
+  group('mergeSubtractPath', () {
+    group('GIVEN original path /a/b and secondary path /', () {
+      test('merged path SHOULD be /a/b', () {
+        const route1 = NaviRoute(path: ['a', 'b']);
+        const route2 = NaviRoute();
+        const mergedRute = NaviRoute(path: ['a', 'b']);
+        expect(route1.mergeSubtractPath(route2), mergedRute);
+      });
+    });
+
+    group('GIVEN original path /a/b and secondary path /a', () {
+      test('merged path SHOULD be /b', () {
+        const route1 = NaviRoute(path: ['a', 'b']);
+        const route2 = NaviRoute(path: ['a']);
+        const mergedRute = NaviRoute(path: ['b']);
+        expect(route1.mergeSubtractPath(route2), mergedRute);
+      });
+    });
+
+    group('GIVEN original path /a/b and secondary path /a/b', () {
+      test('merged path SHOULD be /', () {
+        const route1 = NaviRoute(path: ['a', 'b']);
+        const route2 = NaviRoute(path: ['a', 'b']);
+        const mergedRute = NaviRoute();
+        expect(route1.mergeSubtractPath(route2), mergedRute);
+      });
+    });
+
+    group('GIVEN original path /a/b and secondary path /a/b/c', () {
+      test('merged path SHOULD be /', () {
+        const route1 = NaviRoute(path: ['a', 'b']);
+        const route2 = NaviRoute(path: ['a', 'b', 'c']);
+        const mergedRute = NaviRoute();
+        expect(route1.mergeSubtractPath(route2), mergedRute);
+      });
+    });
+
+    group('GIVEN original path /a/b and secondary path /b', () {
+      test('merged path SHOULD be /', () {
+        const route1 = NaviRoute(path: ['a', 'b']);
+        const route2 = NaviRoute(path: ['b']);
+        const mergedRute = NaviRoute();
+        expect(route1.mergeSubtractPath(route2), mergedRute);
+      });
+    });
+
+    group('GIVEN original path /a/b and secondary path /c', () {
+      test('merged path SHOULD be /', () {
+        const route1 = NaviRoute(path: ['a', 'b']);
+        const route2 = NaviRoute(path: ['c']);
+        const mergedRute = NaviRoute();
+        expect(route1.mergeSubtractPath(route2), mergedRute);
+      });
+    });
+
+    test('SHOULD keep query params of both routes', () {
+      const route1 = NaviRoute(queryParams: {
+        'a': ['a1'],
+        'b': ['b1'],
+      });
+      const route2 = NaviRoute(queryParams: {
+        'a': ['a2'],
+        'c': ['c1'],
+      });
+      const mergedRute = NaviRoute(queryParams: {
+        'a': ['a1', 'a2'],
+        'b': ['b1'],
+        'c': ['c1'],
+      });
+      expect(route1.mergeSubtractPath(route2), mergedRute);
+    });
+
+    group(
+      'GIVEN original fragment is empty'
+      ', secondary fragment is empty',
+      () {
+        test('fragment SHOULD be empty', () {
+          const route1 = NaviRoute();
+          const route2 = NaviRoute();
+          expect(route1.mergeSubtractPath(route2).fragment, '');
+        });
+      },
+    );
+
+    group(
+      'GIVEN original fragment is not empty'
+      ', secondary fragment is empty',
+      () {
+        test('SHOULD keep fragment of original route', () {
+          const route1 = NaviRoute(fragment: ' 1 ');
+          const route2 = NaviRoute(fragment: ' ');
+          const secondaryRoute = NaviRoute();
+          expect(route1.mergeSubtractPath(secondaryRoute).fragment, ' 1 ');
+          expect(route2.mergeSubtractPath(secondaryRoute).fragment, ' ');
+        });
+      },
+    );
+
+    group(
+      'GIVEN original fragment is empty'
+      ', secondary fragment is not empty',
+      () {
+        test('SHOULD keep fragment of secondary route', () {
+          const route = NaviRoute();
+          const secondaryRoute1 = NaviRoute(fragment: ' 1 ');
+          const secondaryRoute2 = NaviRoute(fragment: ' ');
+          expect(route.mergeSubtractPath(secondaryRoute1).fragment, ' 1 ');
+          expect(route.mergeSubtractPath(secondaryRoute2).fragment, ' ');
+        });
+      },
+    );
   });
 }
