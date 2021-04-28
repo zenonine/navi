@@ -58,7 +58,7 @@ class NaviRoute {
   }
 
   String? pathSegmentAt(int position) {
-    if (normalizedPathSegments.length > position) {
+    if (position >= 0 && normalizedPathSegments.length > position) {
       return normalizedPathSegments[position];
     }
   }
