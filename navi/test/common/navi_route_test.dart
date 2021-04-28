@@ -228,15 +228,15 @@ void main() {
   group('Normalized URI String', () {
     test('SHOULD start with a slash', () {
       expect(const NaviRoute().uri.toString(), '/');
-      expect(const NaviRoute(path: ['']).uri.toString(), '/');
-      expect(const NaviRoute(path: ['a']).uri.toString(), '/a');
-      expect(const NaviRoute(path: ['', 'a']).uri.toString(), '/a');
+      expect(const NaviRoute(path: [' ']).uri.toString(), '/');
+      expect(const NaviRoute(path: [' a ']).uri.toString(), '/a');
+      expect(const NaviRoute(path: [' ', ' a ']).uri.toString(), '/a');
     });
 
     test('SHOULD NOT end with a slash', () {
-      expect(const NaviRoute(path: ['a/']).uri.toString(), '/a');
-      expect(const NaviRoute(path: ['a', '']).uri.toString(), '/a');
-      expect(const NaviRoute(path: ['a/', '']).uri.toString(), '/a');
+      expect(const NaviRoute(path: [' a/']).uri.toString(), '/a');
+      expect(const NaviRoute(path: [' a ', ' ']).uri.toString(), '/a');
+      expect(const NaviRoute(path: [' a/', ' ']).uri.toString(), '/a');
     });
 
     test('SHOULD NOT have redundant slashes', () {
@@ -245,6 +245,43 @@ void main() {
         const NaviRoute(path: ['///a///b///c///']).uri.toString(),
         '/a/b/c',
       );
+    });
+  });
+
+  group('hasPrefixes', () {
+    test('/a/b SHOULD has prefixes / or /a or /a/b', () {
+      const route = NaviRoute(path: ['a', 'b']);
+      expect(route.hasPrefixes([]), true);
+      expect(route.hasPrefixes(['a']), true);
+      expect(route.hasPrefixes(['a', 'b']), true);
+    });
+
+    test('/a/b SHOULD has prefixes /b or /b/a or /a/b/c', () {
+      const route = NaviRoute(path: ['a', 'b']);
+      expect(route.hasPrefixes(['b']), false);
+      expect(route.hasPrefixes(['b', 'a']), false);
+      expect(route.hasPrefixes(['a', 'b', 'c']), false);
+    });
+  });
+
+  group('pathSegmentAt', () {
+    group('GIVEN path /a/b', () {
+      const route = NaviRoute(path: ['/a/b']);
+      test('path segment at 0 SHOULD be a', () {
+        expect(route.pathSegmentAt(0), 'a');
+      });
+
+      test('path segment at 1 SHOULD be b', () {
+        expect(route.pathSegmentAt(1), 'b');
+      });
+
+      test('path segment at 2 SHOULD be null', () {
+        expect(route.pathSegmentAt(2), null);
+      });
+
+      test('path segment at -1 SHOULD be null', () {
+        expect(route.pathSegmentAt(-1), null);
+      });
     });
   });
 }
