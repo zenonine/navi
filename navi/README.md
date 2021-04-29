@@ -93,7 +93,7 @@ class _BooksStackState extends State<BooksStack> with NaviRouteMixin<BooksStack>
         NaviPage.material(
           key: const ValueKey('Books'),
           // without route property, url is '/' by default
-          // BooksPagelet is a normal widget, which shows list of books
+          // BooksPagelet is your widget, which shows list of books
           child: BooksPagelet(
             // you can update state of BooksStack widget to navigate
             // or you can use context.navi to navigate inside BooksPagelet (see 'Navigate to a new route' section below)
@@ -106,7 +106,7 @@ class _BooksStackState extends State<BooksStack> with NaviRouteMixin<BooksStack>
           NaviPage.material(
             key: ValueKey(_selectedBook),
             route: NaviRoute(path: ['${_selectedBook!.id}']), // url is '/:id'
-            // BookPagelet is a normal widget, which shows a book
+            // BookPagelet is your widget, which shows a book
             child: BookPagelet(book: _selectedBook!),
           ),
       ],
