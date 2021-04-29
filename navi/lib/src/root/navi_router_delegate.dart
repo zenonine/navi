@@ -197,12 +197,19 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
   }
 
   void _reportNewRoute(BuildContext context, NaviRoute newRoute) {
-    Router.of(context)
-        .routeInformationProvider!
-        .routerReportsNewRouteInformation(
-          RouteInformation(
-            location: Uri.decodeComponent(newRoute.uri.toString()),
-          ),
-        );
+    final currentRouteInfo = Router.of(context).routeInformationProvider!.value;
+    final currentUri = Uri.parse(currentRouteInfo!.location ?? '');
+    final currentRoute = NaviRoute.fromUri(currentUri);
+
+    if (currentRoute != newRoute) {
+      final newRouteInformation =
+          RouteInformation(location: newRoute.uri.toString());
+
+      Router.of(context)
+          .routeInformationProvider!
+          .routerReportsNewRouteInformation(newRouteInformation);
+
+      _log.finest('Navigated from $currentRoute to $newRoute');
+    }
   }
 }
