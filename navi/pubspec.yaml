@@ -1,6 +1,6 @@
 name: navi
 description: A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0.
-version: 0.2.0
+version: 0.2.1
 homepage: https://github.com/zenonine/navi
 
 environment:
