@@ -1,0 +1,1 @@
+enum NavigationMethod { naviContext, routeInformationProvider }
