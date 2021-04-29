@@ -17,4 +17,5 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  provider: ^5.0.0
   test: ^1.16.0
