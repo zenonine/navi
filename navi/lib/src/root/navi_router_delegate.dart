@@ -212,4 +212,11 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
       _log.finest('Navigated from $currentRoute to $newRoute');
     }
   }
+
+  @override
+  void dispose() {
+    _rootRouteNotifier.dispose();
+    _unprocessedRouteNotifier.dispose();
+    super.dispose();
+  }
 }
