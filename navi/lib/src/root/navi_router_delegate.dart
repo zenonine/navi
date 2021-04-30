@@ -111,7 +111,9 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     final currentUri = Uri.parse(currentRouteInfo!.location ?? '');
     final currentRoute = NaviRoute.fromUri(currentUri);
 
-    if (currentRoute != newRoute) {
+    // update route if there is a new route or the current one is dirty
+    if (currentRoute != newRoute ||
+        currentUri.toString() != newRoute.uri.toString()) {
       final newRouteInformation =
           RouteInformation(location: newRoute.uri.toString());
 
