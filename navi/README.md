@@ -165,12 +165,12 @@ definitely much more than that.
 
 # Navigate to a new route
 
-* `context.navi.to(['products', '1'])`: navigate to absolute URL `/products/1`.
-* `context.navi.relativeTo(['details'])`: navigate to relative URL. If current URL is `products/1`, the destination URL
+* `context.navi.to(['products', '1'])` or `context.navi.to(['products/1'])`: navigate to absolute URL `/products/1`.
+* `context.navi.relativeTo(['details'])`: navigate to relative URL. If current URL is `/products/1`, the destination URL
   will be `/products/1/details`.
 
-Beside the API to navigate by URL, you can also update your widget state (or multiple widget states) to rebuild the
-widgets. It will rebuild the needed stacks and update URL accordingly.
+Beside the imperative API to navigate by URL above, you can also update your widget state (or multiple widget states) to
+rebuild the widgets (declarative). It will rebuild the needed stacks and update URL accordingly.
 
 * TODOs:
   * `context.navi.stack(ProductsStackMarker()).to(['2', 'overview'])`: navigate to relative URL starting from current
@@ -212,11 +212,11 @@ NaviStack(
   pages: (context) => [
     if (pageId == 'overview') NaviPage.material(
       route: NaviRoute(path: ['overview']),
-      child: BookOverviewPage(),
+      child: BookOverviewPagelet(),
     ),
     if (pageId == 'details') NaviPage.material(
       route: NaviRoute(path: ['details']),
-      child: BookDetailsPage(),
+      child: BookDetailsPagelet(),
     ),
   ],
 );
@@ -300,12 +300,13 @@ heavily on Navigator 2.0.
     * each stack can be considered as an isolated module
   * Imperative navigation API is also supported.
 * Milestone 2 (Plan: before release 1.0)
-  * Optimize to remove boilerplate code for common/general scenarios
+  * Optimize to remove more boilerplate code for common/general scenarios
   * Optimize performance
   * Test coverage at least 90%
   * Evaluate edge cases
 * Milestone 3 (Plan: before release 1.0 if possible, otherwise after release 1.0)
-  * Implement a configurator, which fits to common scenarios. For more flexibility, use the high level declarative API.
+  * Implement a configurator, which fits to common scenarios to remove more boilerplate code. For more flexibility, use
+    the high level declarative API.
 * Milestone 4 (Plan: after release 1.0)
   * Implement code generator to even remove more boilerplate code
 
