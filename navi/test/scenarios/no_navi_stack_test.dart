@@ -26,10 +26,18 @@ void main() {
             Router.of(context).routeInformationProvider!.value!.location;
         expect(currentLocation, '/');
 
-        navigationMethod == NavigationMethod.routeInformationProvider
-            ? routeInformationProvider.value =
-                const RouteInformation(location: '/not-exist-2')
-            : context.navi.to(['/not-exist-2']);
+        switch (navigationMethod) {
+          case NavigationMethod.routeInformationProvider:
+            routeInformationProvider.value =
+                const RouteInformation(location: '/not-exist-2');
+            break;
+          case NavigationMethod.naviTo:
+            context.navi.to(['/not-exist-2']);
+            break;
+          case NavigationMethod.naviRelativeTo:
+            context.navi.relativeTo(['/not-exist-3']);
+            break;
+        }
         await tester.pumpAndSettle();
 
         expect(find.text('Home'), findsOneWidget);
