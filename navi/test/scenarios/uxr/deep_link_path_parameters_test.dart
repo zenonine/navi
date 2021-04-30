@@ -178,7 +178,7 @@ void main() {
     group('GIVEN initial route /books/$bookId', () {
       testWidgets('SHOULD shows book pagelet at /books/$bookId',
           (tester) async {
-            final initialRoute = '/books/$bookId';
+        final initialRoute = '/books/$bookId';
         final routeInformationProvider = MockRouteInformationProvider(
           RouteInformation(location: initialRoute),
         );
