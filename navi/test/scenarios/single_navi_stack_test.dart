@@ -68,9 +68,8 @@ void main() {
         expect(currentLocation, '/home');
 
         switch (navigationMethod) {
-          case NavigationMethod.routeInformationProvider:
-            routeInformationProvider.value =
-                const RouteInformation(location: '/child');
+          case NavigationMethod.addressBar:
+            naviByAddressBar(routeInformationProvider, '/child');
             break;
           case NavigationMethod.naviTo:
             context.navi.to(['child']);
@@ -88,9 +87,8 @@ void main() {
         expect(currentLocation, '/child');
 
         switch (navigationMethod) {
-          case NavigationMethod.routeInformationProvider:
-            routeInformationProvider.value =
-                const RouteInformation(location: '/not-exist');
+          case NavigationMethod.addressBar:
+            naviByAddressBar(routeInformationProvider, '/not-exist');
             break;
           case NavigationMethod.naviTo:
             context.navi.to(['not-exist']);

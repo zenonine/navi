@@ -65,9 +65,12 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
       UnprocessedRouteNotifier();
 
   @override
-  NaviRoute get currentConfiguration {
-    _log.info('currentConfiguration ${_unprocessedRouteNotifier.route}');
-    return _unprocessedRouteNotifier.route;
+  NaviRoute? get currentConfiguration {
+    // Because _reportNewRoute will be called right after widget tree is built
+    // return null to avoid redundant reporting here
+    // _log.info('currentConfiguration ${_unprocessedRouteNotifier.route}');
+    // return _unprocessedRouteNotifier.route;
+    return null;
   }
 
   @override
@@ -80,6 +83,10 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     }
     _setNewRouteCount++;
     _unprocessedRouteNotifier.setRoute(configuration);
+
+    // TODO: if new configuration is not normalized (dirty),
+    //  an update is still needed even if the normalized route doesn't change.
+    //  /books/// should be converted to /books
   }
 
   void _notifyNewRoute(BuildContext context) {
@@ -99,11 +106,14 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
   }
 
   void _reportNewRoute(BuildContext context, NaviRoute newRoute) {
+    _log.finest('_reportNewRoute $newRoute');
     final currentRouteInfo = Router.of(context).routeInformationProvider!.value;
     final currentUri = Uri.parse(currentRouteInfo!.location ?? '');
     final currentRoute = NaviRoute.fromUri(currentUri);
 
-    if (currentRoute != newRoute) {
+    // update route if there is a new route or the current one is dirty
+    if (currentRoute != newRoute ||
+        currentUri.toString() != newRoute.uri.toString()) {
       final newRouteInformation =
           RouteInformation(location: newRoute.uri.toString());
 

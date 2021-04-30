@@ -25,17 +25,21 @@ void main() {
         var currentLocation =
             Router.of(context).routeInformationProvider!.value!.location;
         expect(currentLocation, '/');
+        expect(
+          routeInformationProvider.historicalRouterReports
+              .map((e) => e.location),
+          orderedEquals(<String>['/not-exist-1', '/']),
+        );
 
         switch (navigationMethod) {
-          case NavigationMethod.routeInformationProvider:
-            routeInformationProvider.value =
-                const RouteInformation(location: '/not-exist-2');
+          case NavigationMethod.addressBar:
+            naviByAddressBar(routeInformationProvider, '/not-exist-2');
             break;
           case NavigationMethod.naviTo:
-            context.navi.to(['/not-exist-2']);
+            context.navi.to(['/not-exist-3']);
             break;
           case NavigationMethod.naviRelativeTo:
-            context.navi.relativeTo(['/not-exist-3']);
+            context.navi.relativeTo(['/not-exist-4']);
             break;
         }
         await tester.pumpAndSettle();
@@ -45,6 +49,13 @@ void main() {
         currentLocation =
             Router.of(context).routeInformationProvider!.value!.location;
         expect(currentLocation, '/');
+        expect(
+          routeInformationProvider.historicalRouterReports
+              .map((e) => e.location),
+          orderedEquals(navigationMethod == NavigationMethod.addressBar
+              ? <String>['/not-exist-1', '/', '/not-exist-2', '/']
+              : <String>['/not-exist-1', '/']),
+        );
       });
     });
   }
