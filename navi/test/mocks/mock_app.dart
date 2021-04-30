@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:navi/navi.dart';
+import 'package:navi/src/main.dart';
+
+void setupLogger() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((record) {
+    print(
+        '${record.level.name.padRight(7)} ${record.time} ${record.loggerName}: ${record.message}');
+  });
+}
 
 class MockApp extends StatefulWidget {
   const MockApp({
@@ -17,11 +27,22 @@ class MockApp extends StatefulWidget {
 }
 
 class _MockAppState extends State<MockApp> {
+  _MockAppState() {
+    setupLogger();
+  }
+
+  late final log = logger(this);
   final _informationParser = NaviInformationParser();
   late final _routerDelegate = NaviRouterDelegate.material(
     child: widget.child,
     navigatorKey: widget.navigatorKey,
   );
+
+  @override
+  void initState() {
+    log.info('initState');
+    super.initState();
+  }
 
   @override
   void dispose() {
