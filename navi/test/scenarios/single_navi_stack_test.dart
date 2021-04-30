@@ -67,10 +67,18 @@ void main() {
             Router.of(context).routeInformationProvider!.value!.location;
         expect(currentLocation, '/home');
 
-        navigationMethod == NavigationMethod.routeInformationProvider
-            ? routeInformationProvider.value =
-                const RouteInformation(location: '/child')
-            : context.navi.to(['/child']);
+        switch (navigationMethod) {
+          case NavigationMethod.routeInformationProvider:
+            routeInformationProvider.value =
+                const RouteInformation(location: '/child');
+            break;
+          case NavigationMethod.naviTo:
+            context.navi.to(['child']);
+            break;
+          case NavigationMethod.naviRelativeTo:
+            context.navi.relativeTo(['../child']);
+            break;
+        }
         await tester.pumpAndSettle();
 
         expect(find.text('child'), findsOneWidget);
@@ -79,10 +87,18 @@ void main() {
             Router.of(context).routeInformationProvider!.value!.location;
         expect(currentLocation, '/child');
 
-        navigationMethod == NavigationMethod.routeInformationProvider
-            ? routeInformationProvider.value =
-                const RouteInformation(location: '/not-exist')
-            : context.navi.to(['/not-exist']);
+        switch (navigationMethod) {
+          case NavigationMethod.routeInformationProvider:
+            routeInformationProvider.value =
+                const RouteInformation(location: '/not-exist');
+            break;
+          case NavigationMethod.naviTo:
+            context.navi.to(['not-exist']);
+            break;
+          case NavigationMethod.naviRelativeTo:
+            context.navi.relativeTo(['../not-exist']);
+            break;
+        }
         await tester.pumpAndSettle();
 
         expect(find.text('home'), findsOneWidget);

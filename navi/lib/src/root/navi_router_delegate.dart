@@ -98,6 +98,30 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     });
   }
 
+  void _reportNewRoute(BuildContext context, NaviRoute newRoute) {
+    final currentRouteInfo = Router.of(context).routeInformationProvider!.value;
+    final currentUri = Uri.parse(currentRouteInfo!.location ?? '');
+    final currentRoute = NaviRoute.fromUri(currentUri);
+
+    if (currentRoute != newRoute) {
+      final newRouteInformation =
+          RouteInformation(location: newRoute.uri.toString());
+
+      Router.of(context)
+          .routeInformationProvider!
+          .routerReportsNewRouteInformation(newRouteInformation);
+
+      _log.finest('Navigated from $currentRoute to $newRoute');
+    }
+  }
+
+  @override
+  void dispose() {
+    _rootRouteNotifier.dispose();
+    _unprocessedRouteNotifier.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     _log.finest('build: newRoute ${_unprocessedRouteNotifier.route}');
@@ -107,14 +131,15 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
 
       return NotificationListener<RootRouteNotification>(
         onNotification: (notification) {
-          final newRoute = notification.relative
-              ? NaviRoute(
-                  path: _unprocessedRouteNotifier.route.path +
-                      notification.route.path,
-                  queryParams: notification.route.queryParams,
-                  fragment: notification.route.fragment,
-                )
-              : notification.route;
+          final newPathSegments = notification.relative
+              ? _unprocessedRouteNotifier.route.path + notification.route.path
+              : notification.route.path;
+          final newRoute = NaviRoute(
+            path:
+                Uri(path: '/').resolve(newPathSegments.join('/')).pathSegments,
+            queryParams: notification.route.queryParams,
+            fragment: notification.route.fragment,
+          );
 
           setNewRoutePath(newRoute).then((_) {
             notifyListeners();
@@ -194,29 +219,5 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
         return true;
       },
     );
-  }
-
-  void _reportNewRoute(BuildContext context, NaviRoute newRoute) {
-    final currentRouteInfo = Router.of(context).routeInformationProvider!.value;
-    final currentUri = Uri.parse(currentRouteInfo!.location ?? '');
-    final currentRoute = NaviRoute.fromUri(currentUri);
-
-    if (currentRoute != newRoute) {
-      final newRouteInformation =
-          RouteInformation(location: newRoute.uri.toString());
-
-      Router.of(context)
-          .routeInformationProvider!
-          .routerReportsNewRouteInformation(newRouteInformation);
-
-      _log.finest('Navigated from $currentRoute to $newRoute');
-    }
-  }
-
-  @override
-  void dispose() {
-    _rootRouteNotifier.dispose();
-    _unprocessedRouteNotifier.dispose();
-    super.dispose();
   }
 }

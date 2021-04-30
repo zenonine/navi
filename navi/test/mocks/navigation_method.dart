@@ -1,1 +1,1 @@
-enum NavigationMethod { naviContext, routeInformationProvider }
+enum NavigationMethod { routeInformationProvider, naviTo, naviRelativeTo }
