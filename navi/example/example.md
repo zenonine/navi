@@ -1,5 +1,14 @@
 # [All examples](https://github.com/zenonine/navi/blob/master/examples)
 
+* [Deep Linking - Path Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/1-deep-linking-path-parameters)
+* [Deep Linking - Query Parameters](https://github.com/zenonine/navi/tree/master/examples/uxr/2-deep-linking-query-parameters)
+* [Login/Logout/Sign-up Routing](https://github.com/zenonine/navi/tree/master/examples/uxr/3-sign-in-routing)
+* [Skipping Stacks](https://github.com/zenonine/navi/tree/master/examples/uxr/5-skipping-stacks)
+* [Dynamic Linking](https://github.com/zenonine/navi/tree/master/examples/uxr/6-dynamic-linking)
+* [Nested Routing - Bottom Navigation Bar - without Keeping State](https://github.com/zenonine/navi/tree/master/examples/bottom-navigation-bar-without-keeping-state)
+* [Nested Routing - Bottom Navigation Bar - Keeping State](https://github.com/zenonine/navi/tree/master/examples/bottom-navigation-bar-keeping-state)
+* [Nested Routing - Tab Bar - Keeping State](https://github.com/zenonine/navi/tree/master/examples/tab-bar-keeping-state)
+
 # Quick example
 
 Below is an app with 2 pages:
