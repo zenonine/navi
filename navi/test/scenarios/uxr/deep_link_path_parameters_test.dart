@@ -92,7 +92,7 @@ class _BooksStackState extends State<BooksStack>
           NaviPage.material(
             key: ValueKey(_selectedBook),
             route: NaviRoute(path: ['books', '${_selectedBook!.id}']),
-            child: Text('Book ${_selectedBook!.id}'),
+            child: BookPagelet(book: _selectedBook!),
           ),
       ],
       onPopPage: (context, route, dynamic result) {
@@ -131,6 +131,22 @@ class BooksPagelet extends StatelessWidget {
   }
 }
 
+class BookPagelet extends StatelessWidget {
+  const BookPagelet({required this.book});
+
+  final Book book;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Book'),
+      ),
+      body: Text('Book ${book.id}'),
+    );
+  }
+}
+
 void main() {
   const booksInitialRoutes = <String>[
     '/',
@@ -155,19 +171,15 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
+        expect(find.byIcon(Icons.arrow_back), findsNothing);
         expect(find.text('Books'), findsOneWidget);
         expect(find.byKey(const ValueKey('Book 0')), findsOneWidget);
         expect(find.byKey(const ValueKey('Book 1')), findsOneWidget);
         expect(find.byKey(const ValueKey('Book 2')), findsOneWidget);
         expect(find.byKey(const ValueKey('Book 3')), findsNothing);
-        final context = _navigatorKey.currentContext!;
-        final currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, '/books');
-        expect(
-          routeInformationProvider.historicalRouterReports
-              .map((e) => e.location),
-          orderedEquals(<String>[initialRoute, '/books'].toSet()),
+        expectHistoricalRouterReports(
+          _navigatorKey.currentContext!,
+          [initialRoute, '/books'].toSet(),
         );
       });
     });
@@ -191,16 +203,12 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
+        expect(find.byIcon(Icons.arrow_back), findsOneWidget);
         expect(find.text('Books'), findsNothing);
         expect(find.text('Book $bookId'), findsOneWidget);
-        final context = _navigatorKey.currentContext!;
-        final currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, initialRoute);
-        expect(
-          routeInformationProvider.historicalRouterReports
-              .map((e) => e.location),
-          orderedEquals(<String>[initialRoute]),
+        expectHistoricalRouterReports(
+          _navigatorKey.currentContext!,
+          [initialRoute],
         );
       });
     });
@@ -229,32 +237,26 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
+      expect(find.byIcon(Icons.arrow_back), findsNothing);
       expect(find.text('Books'), findsOneWidget);
       expect(find.byKey(const ValueKey('Book 0')), findsOneWidget);
       expect(find.byKey(const ValueKey('Book 1')), findsOneWidget);
       expect(find.byKey(const ValueKey('Book 2')), findsOneWidget);
       expect(find.byKey(const ValueKey('Book 3')), findsNothing);
-      var context = _navigatorKey.currentContext!;
-      var currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/books');
-      expect(
-        routeInformationProvider.historicalRouterReports.map((e) => e.location),
-        orderedEquals(<String>['/', '/books']),
+      expectHistoricalRouterReports(
+        _navigatorKey.currentContext!,
+        ['/', '/books'],
       );
 
       await tester.tap(find.byKey(const ValueKey('Book 1')));
       await tester.pumpAndSettle();
 
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
       expect(find.text('Books'), findsNothing);
       expect(find.text('Book 1'), findsOneWidget);
-      context = _navigatorKey.currentContext!;
-      currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/books/1');
-      expect(
-        routeInformationProvider.historicalRouterReports.map((e) => e.location),
-        orderedEquals(<String>['/', '/books', '/books/1']),
+      expectHistoricalRouterReports(
+        _navigatorKey.currentContext!,
+        ['/', '/books', '/books/1'],
       );
     });
   }

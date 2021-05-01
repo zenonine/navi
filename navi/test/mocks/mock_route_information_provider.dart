@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:navi/src/main.dart';
+import 'package:test/test.dart';
 
 class MockRouteInformationProvider extends RouteInformationProvider
     with ChangeNotifier, Diagnosticable {
@@ -31,4 +32,18 @@ class MockRouteInformationProvider extends RouteInformationProvider
     _value = routeInformation;
     historicalRouterReports += [routeInformation];
   }
+}
+
+void expectHistoricalRouterReports(
+  BuildContext context,
+  Iterable<String> historicalLocations,
+) {
+  final routeInformationProvider = Router.of(context).routeInformationProvider
+      as MockRouteInformationProvider;
+  final currentLocation = routeInformationProvider.value.location;
+  expect(currentLocation, historicalLocations.last);
+  expect(
+    routeInformationProvider.historicalRouterReports.map((ri) => ri.location),
+    orderedEquals(historicalLocations),
+  );
 }
