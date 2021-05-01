@@ -51,8 +51,11 @@ void main() {
         expect(currentLocation, '/');
         expect(
           routeInformationProvider.historicalRouterReports
-              .map((e) => e.location),
+              .map((e) => e.location)
+              .toList(),
           orderedEquals(navigationMethod == NavigationMethod.addressBar
+              // Invalid URL coming from address bar should always appeared in history
+              // While invalid URL by navigating programmatically could be removed from history
               ? <String>['/not-exist-1', '/', '/not-exist-2', '/']
               : <String>['/not-exist-1', '/']),
         );

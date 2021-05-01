@@ -82,15 +82,17 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
       _rootRouteNotifier.setHasNewRootRoute(true, updateShouldNotify: false);
     }
     _setNewRouteCount++;
-    _unprocessedRouteNotifier.setRoute(configuration);
+    final updated = _unprocessedRouteNotifier.setRoute(configuration);
 
     // if route has no change but dirty, report with the normalized route
     // For example, old route is /books and new route is /books///
     // Even they are equal, the normalized route /books should be reported.
-    _reportNewRoute(
-      navigatorKey.currentContext!,
-      _unprocessedRouteNotifier.route,
-    );
+    if (!updated) {
+      _reportNewRoute(
+        navigatorKey.currentContext!,
+        _unprocessedRouteNotifier.route,
+      );
+    }
   }
 
   void _notifyNewRoute(BuildContext context) {
