@@ -1,3 +1,4 @@
+export 'auth_service.dart';
 export 'data/book.dart';
 export 'data/bookstore_service.dart';
 export 'logging.dart';

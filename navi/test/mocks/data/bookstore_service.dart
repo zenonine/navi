@@ -39,5 +39,3 @@ class BookstoreService {
     ];
   }
 }
-
-const bookstoreService = BookstoreService();

@@ -49,6 +49,7 @@ class BooksPagelet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bookstoreService = get<BookstoreService>();
     return Scaffold(
       appBar: AppBar(
         title: TextField(
@@ -64,9 +65,9 @@ class BooksPagelet extends StatelessWidget {
         children: [
           ...bookstoreService.getBooks(filter).map(
                 (book) => ListTile(
-                  title: Text('Book ${book.id}'),
-                ),
-              )
+              title: Text('Book ${book.id}'),
+            ),
+          )
         ],
       ),
     );
@@ -84,8 +85,13 @@ void main() {
     setupLogger();
   });
 
-  tearDown(() {
+  setUp(() {
+    get.registerLazySingleton(() => const BookstoreService());
+  });
+
+  tearDown(() async {
     reset(mockLogger);
+    await get.reset();
   });
 
   const initialRoutes = {

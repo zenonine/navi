@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:navi/navi.dart';
 import 'package:navi/src/main.dart';
 
 import 'mocks.dart';
+
+final get = GetIt.instance;
 
 class MockApp extends StatefulWidget {
   const MockApp({

@@ -18,6 +18,7 @@ class BooksStack extends StatefulWidget {
 
 class _BooksStackState extends State<BooksStack>
     with NaviRouteMixin<BooksStack> {
+  final _bookstoreService = get<BookstoreService>();
   Book? _selectedBook;
 
   @override
@@ -25,7 +26,7 @@ class _BooksStackState extends State<BooksStack>
     _selectedBook = null;
     if (unprocessedRoute.hasPrefixes(['books'])) {
       final bookId = int.tryParse(unprocessedRoute.pathSegmentAt(1) ?? '');
-      _selectedBook = bookstoreService.getBook(bookId);
+      _selectedBook = _bookstoreService.getBook(bookId);
     }
 
     setState(() {});
@@ -40,7 +41,7 @@ class _BooksStackState extends State<BooksStack>
           route: const NaviRoute(path: ['books']),
           child: BooksPagelet(
             onSelectBook: widget.onSelectBook ??
-                (context, book) {
+                    (context, book) {
                   setState(() {
                     _selectedBook = book;
                   });
@@ -72,6 +73,7 @@ class BooksPagelet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bookstoreService = get<BookstoreService>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Books'),
@@ -86,11 +88,11 @@ class BooksPagelet extends StatelessWidget {
         children: bookstoreService
             .getBooks()
             .map((book) => ListTile(
-                  key: ValueKey('Book ${book.id}'),
-                  title: Text(book.title),
-                  subtitle: Text(book.author),
-                  onTap: () => onSelectBook?.call(context, book),
-                ))
+          key: ValueKey('Book ${book.id}'),
+          title: Text(book.title),
+          subtitle: Text(book.author),
+          onTap: () => onSelectBook?.call(context, book),
+        ))
             .toList(),
       ),
     );
@@ -132,8 +134,13 @@ void main() {
     setupLogger();
   });
 
-  tearDown(() {
+  setUp(() {
+    get.registerLazySingleton(() => const BookstoreService());
+  });
+
+  tearDown(() async {
     reset(mockLogger);
+    await get.reset();
   });
 
   const booksInitialRoutes = <String>[
