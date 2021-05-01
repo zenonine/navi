@@ -211,26 +211,26 @@ void main() {
   for (final bookId in validSelectedBookIds) {
     group('GIVEN initial route /books/$bookId', () {
       testWidgets('SHOULD shows book pagelet at /books/$bookId',
-              (tester) async {
-            final initialRoute = '/books/$bookId';
-            final routeInformationProvider = MockRouteInformationProvider(
-              RouteInformation(location: initialRoute),
-            );
-            final _navigatorKey = GlobalKey<NavigatorState>();
+          (tester) async {
+        final initialRoute = '/books/$bookId';
+        final routeInformationProvider = MockRouteInformationProvider(
+          RouteInformation(location: initialRoute),
+        );
+        final _navigatorKey = GlobalKey<NavigatorState>();
 
-            await tester.pumpWidget(MockApp(
-              navigatorKey: _navigatorKey,
-              routeInformationProvider: routeInformationProvider,
-              child: const BooksStack(),
-            ));
-            await tester.pumpAndSettle();
+        await tester.pumpWidget(MockApp(
+          navigatorKey: _navigatorKey,
+          routeInformationProvider: routeInformationProvider,
+          child: const BooksStack(),
+        ));
+        await tester.pumpAndSettle();
 
-            _expectBookPagelet(bookId);
-            expectHistoricalRouterReports(
-              _navigatorKey.currentContext!,
-              [initialRoute],
-            );
-          });
+        _expectBookPagelet(bookId);
+        expectHistoricalRouterReports(
+          _navigatorKey.currentContext!,
+          [initialRoute],
+        );
+      });
     });
   }
 
@@ -244,7 +244,7 @@ void main() {
   for (final onSelectBookActionEntry in onSelectBookActions.entries) {
     testWidgets(
         'tap a book 1 SHOULD navigate (${onSelectBookActionEntry.key})'
-            ' to book pagelet at /books/1', (tester) async {
+        ' to book pagelet at /books/1', (tester) async {
       final routeInformationProvider = MockRouteInformationProvider();
       final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -307,33 +307,33 @@ void main() {
 
   testWidgets(
       'pop from /books SHOULD exit application and dispose router delegate',
-          (tester) async {
-        final routeInformationProvider = MockRouteInformationProvider();
-        final _navigatorKey = GlobalKey<NavigatorState>();
+      (tester) async {
+    final routeInformationProvider = MockRouteInformationProvider();
+    final _navigatorKey = GlobalKey<NavigatorState>();
 
-        await tester.pumpWidget(MockApp(
-          navigatorKey: _navigatorKey,
-          routeInformationProvider: routeInformationProvider,
-          child: const BooksStack(),
-        ));
-        await tester.pumpAndSettle();
+    await tester.pumpWidget(MockApp(
+      navigatorKey: _navigatorKey,
+      routeInformationProvider: routeInformationProvider,
+      child: const BooksStack(),
+    ));
+    await tester.pumpAndSettle();
 
-        _expectBooksPagelet();
-        expectHistoricalRouterReports(
-          _navigatorKey.currentContext!,
-          ['/', '/books'],
-        );
+    _expectBooksPagelet();
+    expectHistoricalRouterReports(
+      _navigatorKey.currentContext!,
+      ['/', '/books'],
+    );
 
-        await tester.tap(find.text('Exit'));
-        await tester.pumpAndSettle();
+    await tester.tap(find.text('Exit'));
+    await tester.pumpAndSettle();
 
-        expect(find.byIcon(Icons.arrow_back), findsNothing);
-        expect(find.text('Books'), findsNothing);
-        expect(find.text('Book'), findsNothing);
+    expect(find.byIcon(Icons.arrow_back), findsNothing);
+    expect(find.text('Books'), findsNothing);
+    expect(find.text('Book'), findsNothing);
 
-        addTearDown(() {
-          verify(mockLogger.info('_MockAppState disposed')).called(1);
-          verify(mockLogger.info('MockNaviRouterDelegate disposed')).called(1);
-        });
-      });
+    addTearDown(() {
+      verify(mockLogger.info('_MockAppState disposed')).called(1);
+      verify(mockLogger.info('MockNaviRouterDelegate disposed')).called(1);
+    });
+  });
 }
