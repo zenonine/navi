@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:navi/navi.dart';
 
-import '../../mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 class RootStack extends StatefulWidget {
   const RootStack();
@@ -13,6 +13,79 @@ class RootStack extends StatefulWidget {
 }
 
 class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
+  bool _showProtected = false;
+
+  @override
+  void onNewRoute(NaviRoute unprocessedRoute) {
+    _showProtected = unprocessedRoute.pathSegmentAt(0) == 'protected';
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return NaviStack(
+      pages: (context) => [
+        if (_showProtected)
+          NaviPage.material(
+            key: const ValueKey('Protected'),
+            child: const ProtectedStack(),
+          )
+        else
+          NaviPage.material(
+            key: const ValueKey('Public'),
+            child: const PublicStack(),
+          )
+      ],
+    );
+  }
+}
+
+class PublicStack extends StatefulWidget {
+  const PublicStack();
+
+  @override
+  _PublicStackState createState() => _PublicStackState();
+}
+
+class _PublicStackState extends State<PublicStack>
+    with NaviRouteMixin<PublicStack> {
+  bool _showNews = false;
+
+  @override
+  void onNewRoute(NaviRoute unprocessedRoute) {
+    _showNews = unprocessedRoute.pathSegmentAt(0) == 'news';
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return NaviStack(
+      pages: (context) => [
+        NaviPage.material(
+          key: const ValueKey('home'),
+          route: const NaviRoute(path: ['home']),
+          child: const Text('Public Home'),
+        ),
+        if (_showNews)
+          NaviPage.material(
+            key: const ValueKey('news'),
+            route: const NaviRoute(path: ['news']),
+            child: const Text('Public News'),
+          ),
+      ],
+    );
+  }
+}
+
+class ProtectedStack extends StatefulWidget {
+  const ProtectedStack();
+
+  @override
+  _ProtectedStackState createState() => _ProtectedStackState();
+}
+
+class _ProtectedStackState extends State<ProtectedStack>
+    with NaviRouteMixin<ProtectedStack> {
   final _authService = get<AuthService>();
   late final VoidCallback _authListener;
 
@@ -37,7 +110,7 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
           NaviPage.material(
             key: const ValueKey('Protected'),
             route: const NaviRoute(path: ['protected']),
-            child: const ProtectedStack(),
+            child: const ProtectedContentStack(),
           )
         else
           NaviPage.material(
@@ -53,15 +126,15 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
   }
 }
 
-class ProtectedStack extends StatefulWidget {
-  const ProtectedStack();
+class ProtectedContentStack extends StatefulWidget {
+  const ProtectedContentStack();
 
   @override
-  _ProtectedStackState createState() => _ProtectedStackState();
+  _ProtectedContentStackState createState() => _ProtectedContentStackState();
 }
 
-class _ProtectedStackState extends State<ProtectedStack>
-    with NaviRouteMixin<ProtectedStack> {
+class _ProtectedContentStackState extends State<ProtectedContentStack>
+    with NaviRouteMixin<ProtectedContentStack> {
   bool _showNews = false;
 
   @override
@@ -90,12 +163,20 @@ class _ProtectedStackState extends State<ProtectedStack>
   }
 }
 
-enum _AppPage { login, protectedHome, protectedNews }
+enum _AppPage { login, publicHome, publicNews, protectedHome, protectedNews }
 
 void _expectPage(_AppPage page) {
   expect(
     find.text('Login'),
     page == _AppPage.login ? findsOneWidget : findsNothing,
+  );
+  expect(
+    find.text('Public Home'),
+    page == _AppPage.publicHome ? findsOneWidget : findsNothing,
+  );
+  expect(
+    find.text('Public News'),
+    page == _AppPage.publicNews ? findsOneWidget : findsNothing,
   );
   expect(
     find.text('Protected Home'),
@@ -119,6 +200,48 @@ void main() {
   tearDown(() async {
     reset(mockLogger);
     await get.reset();
+  });
+
+  testWidgets('Open /home without authenticated SHOULD show to /home',
+      (tester) async {
+    final routeInformationProvider = MockRouteInformationProvider(
+      const RouteInformation(location: '/home'),
+    );
+    final _navigatorKey = GlobalKey<NavigatorState>();
+
+    await tester.pumpWidget(MockApp(
+      navigatorKey: _navigatorKey,
+      routeInformationProvider: routeInformationProvider,
+      child: const RootStack(),
+    ));
+    await tester.pumpAndSettle();
+
+    _expectPage(_AppPage.publicHome);
+    expectHistoricalRouterReports(
+      _navigatorKey.currentContext!,
+      ['/home'],
+    );
+  });
+
+  testWidgets('Open /news without authenticated SHOULD show to /news',
+      (tester) async {
+    final routeInformationProvider = MockRouteInformationProvider(
+      const RouteInformation(location: '/news'),
+    );
+    final _navigatorKey = GlobalKey<NavigatorState>();
+
+    await tester.pumpWidget(MockApp(
+      navigatorKey: _navigatorKey,
+      routeInformationProvider: routeInformationProvider,
+      child: const RootStack(),
+    ));
+    await tester.pumpAndSettle();
+
+    _expectPage(_AppPage.publicNews);
+    expectHistoricalRouterReports(
+      _navigatorKey.currentContext!,
+      ['/news'],
+    );
   });
 
   testWidgets(
