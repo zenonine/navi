@@ -36,6 +36,21 @@ class Navi {
     ).dispatch(context);
   }
 
+  /// shortcut of `Navigator.of(context).canPop()`
+  bool canPop() {
+    return Navigator.of(context).canPop();
+  }
+
+  /// shortcut of `Navigator.of(context).maybePop()`
+  Future<bool> maybePop<T extends Object?>([T? result]) {
+    return Navigator.of(context).maybePop(result);
+  }
+
+  /// shortcut of `Navigator.of(context).pop()`
+  void pop<T extends Object?>([T? result]) {
+    Navigator.of(context).pop(result);
+  }
+
   IRootRouteNotifier get rootRouteNotifier =>
       InheritedRootRouteNotifier.of(context);
 

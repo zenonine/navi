@@ -18,13 +18,17 @@ class UnprocessedRouteNotifier extends ChangeNotifier
   @override
   NaviRoute get route => _route;
 
-  void setRoute(NaviRoute route, {bool updateShouldNotify = true}) {
+  /// Return `false` if new route equals old route.
+  /// Otherwise, return `true`.
+  bool setRoute(NaviRoute route, {bool updateShouldNotify = true}) {
     if (_route != route) {
       _route = route;
       if (updateShouldNotify) {
         notifyListeners();
       }
+      return true;
     }
+    return false;
   }
 
   @override

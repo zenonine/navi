@@ -21,14 +21,10 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('Home'), findsOneWidget);
-        var context = _navigatorKey.currentContext!;
-        var currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, '/');
-        expect(
-          routeInformationProvider.historicalRouterReports
-              .map((e) => e.location),
-          orderedEquals(<String>['/not-exist-1', '/']),
+        final context = _navigatorKey.currentContext!;
+        expectHistoricalRouterReports(
+          context,
+          ['/not-exist-1', '/'],
         );
 
         switch (navigationMethod) {
@@ -45,16 +41,13 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('Home'), findsOneWidget);
-        context = _navigatorKey.currentContext!;
-        currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, '/');
-        expect(
-          routeInformationProvider.historicalRouterReports
-              .map((e) => e.location),
-          orderedEquals(navigationMethod == NavigationMethod.addressBar
+        expectHistoricalRouterReports(
+          _navigatorKey.currentContext!,
+          navigationMethod == NavigationMethod.addressBar
+              // Invalid URL coming from address bar should always appeared in history
+              // While invalid URL by navigating programmatically could be removed from history
               ? <String>['/not-exist-1', '/', '/not-exist-2', '/']
-              : <String>['/not-exist-1', '/']),
+              : <String>['/not-exist-1', '/'],
         );
       });
     });

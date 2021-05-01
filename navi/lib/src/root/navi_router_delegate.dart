@@ -82,11 +82,17 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
       _rootRouteNotifier.setHasNewRootRoute(true, updateShouldNotify: false);
     }
     _setNewRouteCount++;
-    _unprocessedRouteNotifier.setRoute(configuration);
+    final updated = _unprocessedRouteNotifier.setRoute(configuration);
 
-    // TODO: if new configuration is not normalized (dirty),
-    //  an update is still needed even if the normalized route doesn't change.
-    //  /books/// should be converted to /books
+    // if route has no change but dirty, report with the normalized route
+    // For example, old route is /books and new route is /books///
+    // Even they are equal, the normalized route /books should be reported.
+    if (!updated) {
+      _reportNewRoute(
+        navigatorKey.currentContext!,
+        _unprocessedRouteNotifier.route,
+      );
+    }
   }
 
   void _notifyNewRoute(BuildContext context) {
@@ -105,6 +111,9 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     });
   }
 
+  /// It's safe to call _reportNewRoute multiple times on the same route.
+  /// Reporting the new route will be ignored
+  /// if it is the same as the current route.
   void _reportNewRoute(BuildContext context, NaviRoute newRoute) {
     _log.finest('_reportNewRoute $newRoute');
     final currentRouteInfo = Router.of(context).routeInformationProvider!.value;

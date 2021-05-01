@@ -1,48 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:navi/navi.dart';
 
 import '../../mocks/mocks.dart';
-
-class Book {
-  const Book({required this.id, required this.title, required this.author});
-
-  final int id;
-  final String title;
-  final String author;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Book && runtimeType == other.runtimeType && id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
-
-  @override
-  String toString() {
-    return 'Book{title: $title, author: $author}';
-  }
-}
-
-const List<Book> books = [
-  Book(
-    id: 0,
-    title: 'Stranger in a Strange Land',
-    author: 'Robert A. Heinlein',
-  ),
-  Book(
-    id: 1,
-    title: 'Foundation',
-    author: 'Isaac Asimov',
-  ),
-  Book(
-    id: 2,
-    title: 'Fahrenheit 451',
-    author: 'Ray Bradbury',
-  ),
-];
 
 typedef OnSelectBook = void Function(BuildContext context, Book book);
 
@@ -92,7 +54,7 @@ class _BooksStackState extends State<BooksStack>
           NaviPage.material(
             key: ValueKey(_selectedBook),
             route: NaviRoute(path: ['books', '${_selectedBook!.id}']),
-            child: Text('Book ${_selectedBook!.id}'),
+            child: BookPagelet(book: _selectedBook!),
           ),
       ],
       onPopPage: (context, route, dynamic result) {
@@ -116,6 +78,13 @@ class BooksPagelet extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Books'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                context.navi.pop();
+              },
+              child: const Text('Exit'))
+        ],
       ),
       body: ListView(
         children: books
@@ -131,7 +100,42 @@ class BooksPagelet extends StatelessWidget {
   }
 }
 
+void _expectBooksPagelet() {
+  expect(find.byIcon(Icons.arrow_back), findsNothing);
+  expect(find.text('Books'), findsOneWidget);
+  expect(find.byKey(const ValueKey('Book 0')), findsOneWidget);
+  expect(find.byKey(const ValueKey('Book 1')), findsOneWidget);
+  expect(find.byKey(const ValueKey('Book 2')), findsOneWidget);
+  expect(find.byKey(const ValueKey('Book 3')), findsNothing);
+}
+
+class BookPagelet extends StatelessWidget {
+  const BookPagelet({required this.book});
+
+  final Book book;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Book'),
+      ),
+      body: Text('Book ${book.id}'),
+    );
+  }
+}
+
+void _expectBookPagelet(int bookId) {
+  expect(find.byIcon(Icons.arrow_back), findsOneWidget);
+  expect(find.text('Books'), findsNothing);
+  expect(find.text('Book $bookId'), findsOneWidget);
+}
+
 void main() {
+  tearDown(() {
+    reset(mockLogger);
+  });
+
   const booksInitialRoutes = <String>[
     '/',
     '/books',
@@ -155,19 +159,10 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        expect(find.text('Books'), findsOneWidget);
-        expect(find.byKey(const ValueKey('Book 0')), findsOneWidget);
-        expect(find.byKey(const ValueKey('Book 1')), findsOneWidget);
-        expect(find.byKey(const ValueKey('Book 2')), findsOneWidget);
-        expect(find.byKey(const ValueKey('Book 3')), findsNothing);
-        final context = _navigatorKey.currentContext!;
-        final currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, '/books');
-        expect(
-          routeInformationProvider.historicalRouterReports
-              .map((e) => e.location),
-          orderedEquals(<String>[initialRoute, '/books'].toSet()),
+        _expectBooksPagelet();
+        expectHistoricalRouterReports(
+          _navigatorKey.currentContext!,
+          [initialRoute, '/books'].toSet(),
         );
       });
     });
@@ -191,16 +186,10 @@ void main() {
         ));
         await tester.pumpAndSettle();
 
-        expect(find.text('Books'), findsNothing);
-        expect(find.text('Book $bookId'), findsOneWidget);
-        final context = _navigatorKey.currentContext!;
-        final currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, initialRoute);
-        expect(
-          routeInformationProvider.historicalRouterReports
-              .map((e) => e.location),
-          orderedEquals(<String>[initialRoute]),
+        _expectBookPagelet(bookId);
+        expectHistoricalRouterReports(
+          _navigatorKey.currentContext!,
+          [initialRoute],
         );
       });
     });
@@ -229,33 +218,83 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      expect(find.text('Books'), findsOneWidget);
-      expect(find.byKey(const ValueKey('Book 0')), findsOneWidget);
-      expect(find.byKey(const ValueKey('Book 1')), findsOneWidget);
-      expect(find.byKey(const ValueKey('Book 2')), findsOneWidget);
-      expect(find.byKey(const ValueKey('Book 3')), findsNothing);
-      var context = _navigatorKey.currentContext!;
-      var currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/books');
-      expect(
-        routeInformationProvider.historicalRouterReports.map((e) => e.location),
-        orderedEquals(<String>['/', '/books']),
+      _expectBooksPagelet();
+      expectHistoricalRouterReports(
+        _navigatorKey.currentContext!,
+        ['/', '/books'],
       );
 
       await tester.tap(find.byKey(const ValueKey('Book 1')));
       await tester.pumpAndSettle();
 
-      expect(find.text('Books'), findsNothing);
-      expect(find.text('Book 1'), findsOneWidget);
-      context = _navigatorKey.currentContext!;
-      currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/books/1');
-      expect(
-        routeInformationProvider.historicalRouterReports.map((e) => e.location),
-        orderedEquals(<String>['/', '/books', '/books/1']),
+      _expectBookPagelet(1);
+      expectHistoricalRouterReports(
+        _navigatorKey.currentContext!,
+        ['/', '/books', '/books/1'],
       );
     });
   }
+
+  testWidgets('pop from /book/1 SHOULD navigate to /books', (tester) async {
+    const bookId = 1;
+    const initialRoute = '/books/$bookId';
+    final routeInformationProvider = MockRouteInformationProvider(
+      const RouteInformation(location: initialRoute),
+    );
+    final _navigatorKey = GlobalKey<NavigatorState>();
+
+    await tester.pumpWidget(MockApp(
+      navigatorKey: _navigatorKey,
+      routeInformationProvider: routeInformationProvider,
+      child: const BooksStack(),
+    ));
+    await tester.pumpAndSettle();
+
+    _expectBookPagelet(bookId);
+    expectHistoricalRouterReports(
+      _navigatorKey.currentContext!,
+      [initialRoute],
+    );
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    _expectBooksPagelet();
+    expectHistoricalRouterReports(
+      _navigatorKey.currentContext!,
+      [initialRoute, '/books'],
+    );
+  });
+
+  testWidgets(
+      'pop from /books SHOULD exit application and dispose router delegate',
+      (tester) async {
+    final routeInformationProvider = MockRouteInformationProvider();
+    final _navigatorKey = GlobalKey<NavigatorState>();
+
+    await tester.pumpWidget(MockApp(
+      navigatorKey: _navigatorKey,
+      routeInformationProvider: routeInformationProvider,
+      child: const BooksStack(),
+    ));
+    await tester.pumpAndSettle();
+
+    _expectBooksPagelet();
+    expectHistoricalRouterReports(
+      _navigatorKey.currentContext!,
+      ['/', '/books'],
+    );
+
+    await tester.tap(find.text('Exit'));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.arrow_back), findsNothing);
+    expect(find.text('Books'), findsNothing);
+    expect(find.text('Book'), findsNothing);
+
+    addTearDown(() {
+      verify(mockLogger.info('_MockAppState disposed')).called(1);
+      verify(mockLogger.info('MockNaviRouterDelegate disposed')).called(1);
+    });
+  });
 }

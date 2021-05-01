@@ -63,9 +63,7 @@ void main() {
 
         expect(find.text('home'), findsOneWidget);
         var context = _navigatorKey.currentContext!;
-        var currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, '/home');
+        expectHistoricalRouterReports(context, ['/', '/home']);
 
         switch (navigationMethod) {
           case NavigationMethod.addressBar:
@@ -82,9 +80,7 @@ void main() {
 
         expect(find.text('child'), findsOneWidget);
         context = _navigatorKey.currentContext!;
-        currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, '/child');
+        expectHistoricalRouterReports(context, ['/', '/home', '/child']);
 
         switch (navigationMethod) {
           case NavigationMethod.addressBar:
@@ -100,10 +96,12 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('home'), findsOneWidget);
-        context = _navigatorKey.currentContext!;
-        currentLocation =
-            Router.of(context).routeInformationProvider!.value!.location;
-        expect(currentLocation, '/home');
+        expectHistoricalRouterReports(
+          _navigatorKey.currentContext!,
+          navigationMethod == NavigationMethod.addressBar
+              ? ['/', '/home', '/child', '/not-exist', '/home']
+              : ['/', '/home', '/child', '/home'],
+        );
       });
     });
   }
@@ -121,10 +119,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('home'), findsOneWidget);
-      final context = _navigatorKey.currentContext!;
-      final currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/home');
+      expectHistoricalRouterReports(
+        _navigatorKey.currentContext!,
+        ['/', '/home'],
+      );
     });
   });
 
@@ -143,10 +141,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('home'), findsOneWidget);
-      final context = _navigatorKey.currentContext!;
-      final currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/home');
+      expectHistoricalRouterReports(_navigatorKey.currentContext!, ['/home']);
     });
   });
 
@@ -165,10 +160,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('child'), findsOneWidget);
-      final context = _navigatorKey.currentContext!;
-      final currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/child');
+      expectHistoricalRouterReports(_navigatorKey.currentContext!, ['/child']);
     });
   });
 
@@ -187,10 +179,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('home'), findsOneWidget);
-      final context = _navigatorKey.currentContext!;
-      final currentLocation =
-          Router.of(context).routeInformationProvider!.value!.location;
-      expect(currentLocation, '/home');
+      expectHistoricalRouterReports(
+        _navigatorKey.currentContext!,
+        ['/not-exist', '/home'],
+      );
     });
   });
 }

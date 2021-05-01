@@ -165,19 +165,23 @@ definitely much more than that.
 
 # Navigate to a new route
 
-* `context.navi.to(['products', '1'])` or `context.navi.to(['products/1'])`: navigate to absolute URL `/products/1`.
-* `context.navi.relativeTo(['details'])`: navigate to relative URL. If current URL is `/products/1`, the destination URL
-  will be `/products/1/details`.
+To navigate you have 2 options:
 
-Beside the imperative API to navigate by URL above, you can also update your widget state (or multiple widget states) to
-rebuild the widgets (declarative). It will rebuild the needed stacks and update URL accordingly.
-
-* TODOs:
-  * `context.navi.stack(ProductsStackMarker()).to(['2', 'overview'])`: navigate to relative URL starting from current
-    URL of the given stack. If current URL is `my/path/to/products/1/details` and `ProductsStack` URL
-    is `my/path/to/products`, the destination URL will be `my/path/to/products/2/overview`.
-  * `context.navi.pop()`: a shortcut of `Navigator.of(context).pop()`
-  * `context.navi.back()`: move back to the previous page in the history.
+* Declarative: update your widget state (or multiple widget states) to rebuild the widgets. It will rebuild the needed
+  stacks and update URL accordingly.
+* Imperative: calling the methods below
+  * `context.navi.to(['products', '1'])` or `context.navi.to(['products/1'])`: navigates to absolute URL `/products/1`.
+  * `context.navi.relativeTo(['details'])`: navigates to relative URL. If current URL is `/products/1`, the destination
+    URL will be `/products/1/details`. You can use `../` to goes up one level in the route. For
+    example, `context.navi.relativeTo(['../2/details'])` will navigate to `/products/2/details` in this example.
+  * `context.navi.pop()`: shortcut of `Navigator.of(context).pop()`
+  * `context.navi.maybePop()`: shortcut of `Navigator.of(context).maybePop()`
+  * `context.navi.canPop()`: shortcut of `Navigator.of(context).canPop()`
+  * TODOs:
+    * `context.navi.stack(ProductsStackMarker()).to(['2', 'overview'])`: navigates to relative URL starting from current
+      URL of the given stack. If current URL is `my/long/path/to/products/1/details` and `ProductsStack` URL
+      is `my/long/path/to/products`, the destination URL will be `my/path/to/products/2/overview`.
+    * `context.navi.back()`: moves back to the previous page in the history.
 
 # Nested stack
 

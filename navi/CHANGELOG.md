@@ -1,3 +1,11 @@
+# [0.2.2]
+
+* Reported route should always be normalized:
+  * `./` and `../` segments should be resolved
+  * blank segments should be removed
+* Allow navigating with `./` (current route) and `../` (goes up one level in the route)
+* Fix some minor bugs
+
 # [0.2.1] - 29.04.2021
 
 * Hotfix: remove duplicated routes in history
