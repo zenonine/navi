@@ -53,8 +53,8 @@ void main() {
         expectHistoricalRouterReports(
           _navigatorKey.currentContext!,
           navigationMethod == NavigationMethod.addressBar
-          // Invalid URL coming from address bar should always appeared in history
-          // While invalid URL by navigating programmatically could be removed from history
+              // Invalid URL coming from address bar should always appeared in history
+              // While invalid URL by navigating programmatically could be removed from history
               ? <String>['/not-exist-1', '/', '/not-exist-2', '/']
               : <String>['/not-exist-1', '/'],
         );
