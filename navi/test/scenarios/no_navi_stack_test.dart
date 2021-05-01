@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:navi/navi.dart';
 
 import '../mocks/mocks.dart';
 
 void main() {
+  setUpAll(() {
+    setupLogger();
+  });
+
+  tearDown(() {
+    reset(mockLogger);
+  });
+
   for (final navigationMethod in NavigationMethod.values) {
     group('$navigationMethod', () {
       testWidgets('URL SHOULD always be "/"', (tester) async {
@@ -44,8 +53,8 @@ void main() {
         expectHistoricalRouterReports(
           _navigatorKey.currentContext!,
           navigationMethod == NavigationMethod.addressBar
-              // Invalid URL coming from address bar should always appeared in history
-              // While invalid URL by navigating programmatically could be removed from history
+          // Invalid URL coming from address bar should always appeared in history
+          // While invalid URL by navigating programmatically could be removed from history
               ? <String>['/not-exist-1', '/', '/not-exist-2', '/']
               : <String>['/not-exist-1', '/'],
         );

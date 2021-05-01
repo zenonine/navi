@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -26,9 +25,7 @@ class _BooksStackState extends State<BooksStack>
     _selectedBook = null;
     if (unprocessedRoute.hasPrefixes(['books'])) {
       final bookId = int.tryParse(unprocessedRoute.pathSegmentAt(1) ?? '');
-      if (bookId != null) {
-        _selectedBook = books.firstWhereOrNull((book) => book.id == bookId);
-      }
+      _selectedBook = bookstoreService.getBook(bookId);
     }
 
     setState(() {});
@@ -80,14 +77,14 @@ class BooksPagelet extends StatelessWidget {
         title: const Text('Books'),
         actions: [
           TextButton(
-              onPressed: () {
-                context.navi.pop();
-              },
-              child: const Text('Exit'))
+            onPressed: () => context.navi.pop(),
+            child: const Text('Exit'),
+          )
         ],
       ),
       body: ListView(
-        children: books
+        children: bookstoreService
+            .getBooks()
             .map((book) => ListTile(
                   key: ValueKey('Book ${book.id}'),
                   title: Text(book.title),
@@ -118,9 +115,8 @@ class BookPagelet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Book'),
+        title: Text('Book ${book.id}'),
       ),
-      body: Text('Book ${book.id}'),
     );
   }
 }
@@ -132,6 +128,10 @@ void _expectBookPagelet(int bookId) {
 }
 
 void main() {
+  setUpAll(() {
+    setupLogger();
+  });
+
   tearDown(() {
     reset(mockLogger);
   });

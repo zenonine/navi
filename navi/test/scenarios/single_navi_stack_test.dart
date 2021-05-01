@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:navi/navi.dart';
 
 import '../mocks/mocks.dart';
@@ -47,6 +48,14 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
 }
 
 void main() {
+  setUpAll(() {
+    setupLogger();
+  });
+
+  tearDown(() {
+    reset(mockLogger);
+  });
+
   for (final navigationMethod in NavigationMethod.values) {
     group('$navigationMethod', () {
       testWidgets('URL SHOULD be controlled by the nested stack',
@@ -57,52 +66,52 @@ void main() {
         await tester.pumpWidget(MockApp(
           navigatorKey: _navigatorKey,
           routeInformationProvider: routeInformationProvider,
-          child: const RootStack(),
-        ));
-        await tester.pumpAndSettle();
+              child: const RootStack(),
+            ));
+            await tester.pumpAndSettle();
 
-        expect(find.text('home'), findsOneWidget);
-        var context = _navigatorKey.currentContext!;
-        expectHistoricalRouterReports(context, ['/', '/home']);
+            expect(find.text('home'), findsOneWidget);
+            var context = _navigatorKey.currentContext!;
+            expectHistoricalRouterReports(context, ['/', '/home']);
 
-        switch (navigationMethod) {
-          case NavigationMethod.addressBar:
-            naviByAddressBar(routeInformationProvider, '/child');
-            break;
-          case NavigationMethod.naviTo:
-            context.navi.to(['child']);
-            break;
-          case NavigationMethod.naviRelativeTo:
-            context.navi.relativeTo(['../child']);
-            break;
-        }
-        await tester.pumpAndSettle();
+            switch (navigationMethod) {
+              case NavigationMethod.addressBar:
+                naviByAddressBar(routeInformationProvider, '/child');
+                break;
+              case NavigationMethod.naviTo:
+                context.navi.to(['child']);
+                break;
+              case NavigationMethod.naviRelativeTo:
+                context.navi.relativeTo(['../child']);
+                break;
+            }
+            await tester.pumpAndSettle();
 
-        expect(find.text('child'), findsOneWidget);
-        context = _navigatorKey.currentContext!;
-        expectHistoricalRouterReports(context, ['/', '/home', '/child']);
+            expect(find.text('child'), findsOneWidget);
+            context = _navigatorKey.currentContext!;
+            expectHistoricalRouterReports(context, ['/', '/home', '/child']);
 
-        switch (navigationMethod) {
-          case NavigationMethod.addressBar:
-            naviByAddressBar(routeInformationProvider, '/not-exist');
-            break;
-          case NavigationMethod.naviTo:
-            context.navi.to(['not-exist']);
-            break;
-          case NavigationMethod.naviRelativeTo:
-            context.navi.relativeTo(['../not-exist']);
-            break;
-        }
-        await tester.pumpAndSettle();
+            switch (navigationMethod) {
+              case NavigationMethod.addressBar:
+                naviByAddressBar(routeInformationProvider, '/not-exist');
+                break;
+              case NavigationMethod.naviTo:
+                context.navi.to(['not-exist']);
+                break;
+              case NavigationMethod.naviRelativeTo:
+                context.navi.relativeTo(['../not-exist']);
+                break;
+            }
+            await tester.pumpAndSettle();
 
-        expect(find.text('home'), findsOneWidget);
-        expectHistoricalRouterReports(
-          _navigatorKey.currentContext!,
-          navigationMethod == NavigationMethod.addressBar
+            expect(find.text('home'), findsOneWidget);
+            expectHistoricalRouterReports(
+              _navigatorKey.currentContext!,
+              navigationMethod == NavigationMethod.addressBar
               ? ['/', '/home', '/child', '/not-exist', '/home']
               : ['/', '/home', '/child', '/home'],
-        );
-      });
+            );
+          });
     });
   }
 

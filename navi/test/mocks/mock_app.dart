@@ -20,10 +20,6 @@ class MockApp extends StatefulWidget {
 }
 
 class _MockAppState extends State<MockApp> {
-  _MockAppState() {
-    setupLogger();
-  }
-
   late final log = logger(this);
 
   final _informationParser = NaviInformationParser();
