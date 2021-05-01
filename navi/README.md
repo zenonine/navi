@@ -168,6 +168,9 @@ definitely much more than that.
 * `context.navi.to(['products', '1'])` or `context.navi.to(['products/1'])`: navigate to absolute URL `/products/1`.
 * `context.navi.relativeTo(['details'])`: navigate to relative URL. If current URL is `/products/1`, the destination URL
   will be `/products/1/details`.
+* `context.navi.pop()`: shortcut of `Navigator.of(context).pop()`
+* `context.navi.maybePop()`: shortcut of `Navigator.of(context).maybePop()`
+* `context.navi.canPop()`: shortcut of `Navigator.of(context).canPop()`
 
 Beside the imperative API to navigate by URL above, you can also update your widget state (or multiple widget states) to
 rebuild the widgets (declarative). It will rebuild the needed stacks and update URL accordingly.
@@ -176,7 +179,6 @@ rebuild the widgets (declarative). It will rebuild the needed stacks and update 
   * `context.navi.stack(ProductsStackMarker()).to(['2', 'overview'])`: navigate to relative URL starting from current
     URL of the given stack. If current URL is `my/path/to/products/1/details` and `ProductsStack` URL
     is `my/path/to/products`, the destination URL will be `my/path/to/products/2/overview`.
-  * `context.navi.pop()`: a shortcut of `Navigator.of(context).pop()`
   * `context.navi.back()`: move back to the previous page in the history.
 
 # Nested stack
