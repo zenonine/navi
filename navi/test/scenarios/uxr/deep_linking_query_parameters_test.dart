@@ -65,9 +65,9 @@ class BooksPagelet extends StatelessWidget {
         children: [
           ...bookstoreService.getBooks(filter).map(
                 (book) => ListTile(
-              title: Text('Book ${book.id}'),
-            ),
-          )
+                  title: Text('Book ${book.id}'),
+                ),
+              )
         ],
       ),
     );

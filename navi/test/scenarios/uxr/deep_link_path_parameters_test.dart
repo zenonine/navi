@@ -41,7 +41,7 @@ class _BooksStackState extends State<BooksStack>
           route: const NaviRoute(path: ['books']),
           child: BooksPagelet(
             onSelectBook: widget.onSelectBook ??
-                    (context, book) {
+                (context, book) {
                   setState(() {
                     _selectedBook = book;
                   });
@@ -88,11 +88,11 @@ class BooksPagelet extends StatelessWidget {
         children: bookstoreService
             .getBooks()
             .map((book) => ListTile(
-          key: ValueKey('Book ${book.id}'),
-          title: Text(book.title),
-          subtitle: Text(book.author),
-          onTap: () => onSelectBook?.call(context, book),
-        ))
+                  key: ValueKey('Book ${book.id}'),
+                  title: Text(book.title),
+                  subtitle: Text(book.author),
+                  onTap: () => onSelectBook?.call(context, book),
+                ))
             .toList(),
       ),
     );
