@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:navi/navi.dart';
 
 import 'index.dart';
 
@@ -10,6 +11,7 @@ class AuthPagelet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final requestedRoute = context.navi.currentRoute;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -64,6 +66,8 @@ class AuthPagelet extends StatelessWidget {
                               ),
                             ),
                           );
+                        } else if (!requestedRoute.hasPrefixes(['auth'])) {
+                          context.navi.toRoute(requestedRoute);
                         }
                       },
                       child: const Text('Login'),
