@@ -47,7 +47,8 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
             child: ElevatedButton(
               onPressed: () async {
                 if (await _authService.login()) {
-                  if (!requestedRoute.hasPrefixes(['auth'])) {
+                  final authPath = context.navi.currentRoute.path;
+                  if (!requestedRoute.hasPrefixes(authPath)) {
                     context.navi.toRoute(requestedRoute);
                   }
                 }

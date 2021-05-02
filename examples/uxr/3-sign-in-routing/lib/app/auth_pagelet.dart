@@ -50,6 +50,12 @@ class AuthPagelet extends StatelessWidget {
                           _passwordController.text,
                         );
 
+                        final authPath = context.navi.currentRoute.path;
+                        if (_authService.authenticated &&
+                            !requestedRoute.hasPrefixes(authPath)) {
+                          context.navi.toRoute(requestedRoute);
+                        }
+
                         if (!_authService.authenticated) {
                           showDialog<void>(
                             context: context,
@@ -66,8 +72,6 @@ class AuthPagelet extends StatelessWidget {
                               ),
                             ),
                           );
-                        } else if (!requestedRoute.hasPrefixes(['auth'])) {
-                          context.navi.toRoute(requestedRoute);
                         }
                       },
                       child: const Text('Login'),
