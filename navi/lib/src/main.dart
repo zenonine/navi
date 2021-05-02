@@ -12,6 +12,7 @@ export 'common/navi_context.dart';
 export 'common/navi_route.dart';
 export 'common/new_stack_notification.dart';
 export 'common/unprocessed_route_notifier.dart';
+export 'root/inherited_root_navigator_key.dart';
 export 'root/navi_information_parser.dart';
 export 'root/navi_router_delegate.dart';
 export 'root/root_route_notification.dart';

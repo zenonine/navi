@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:navi/navi.dart';
 
 import '../mocks/mocks.dart';
@@ -47,6 +48,14 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
 }
 
 void main() {
+  setUpAll(() {
+    setupLogger();
+  });
+
+  tearDown(() {
+    reset(mockLogger);
+  });
+
   for (final navigationMethod in NavigationMethod.values) {
     group('$navigationMethod', () {
       testWidgets('URL SHOULD be controlled by the nested stack',
@@ -75,6 +84,12 @@ void main() {
           case NavigationMethod.naviRelativeTo:
             context.navi.relativeTo(['../child']);
             break;
+          case NavigationMethod.naviToRoute:
+            context.navi.toRoute(const NaviRoute(path: ['child']));
+            break;
+          case NavigationMethod.naviRelativeToRoute:
+            context.navi.relativeToRoute(const NaviRoute(path: ['../child']));
+            break;
         }
         await tester.pumpAndSettle();
 
@@ -91,6 +106,13 @@ void main() {
             break;
           case NavigationMethod.naviRelativeTo:
             context.navi.relativeTo(['../not-exist']);
+            break;
+          case NavigationMethod.naviToRoute:
+            context.navi.toRoute(const NaviRoute(path: ['not-exist']));
+            break;
+          case NavigationMethod.naviRelativeToRoute:
+            context.navi
+                .relativeToRoute(const NaviRoute(path: ['../not-exist']));
             break;
         }
         await tester.pumpAndSettle();

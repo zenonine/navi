@@ -57,6 +57,12 @@ class NaviRoute {
     );
   }
 
+  bool hasExactPath(List<String> pathSegments) =>
+      const ListEquality<String>().equals(
+        _normalizedPathSegments(pathSegments),
+        normalizedPathSegments,
+      );
+
   String? pathSegmentAt(int position) {
     if (position >= 0 && normalizedPathSegments.length > position) {
       return normalizedPathSegments[position];
@@ -137,7 +143,9 @@ class NaviRoute {
       const DeepCollectionEquality.unordered().hash(queryParams);
 
   @override
-  String toString() {
+  String toString() => uri.toString();
+
+  String toDebugString() {
     return 'NaviRoute{path: $path, queryParams: $queryParams, fragment: $fragment}';
   }
 }

@@ -12,13 +12,15 @@ class Navi {
     Map<String, List<String>> queryParams = const {},
     String fragment = '',
   }) {
-    RootRouteNotification(
-      route: NaviRoute(
-        path: path,
-        queryParams: queryParams,
-        fragment: fragment,
-      ),
-    ).dispatch(context);
+    toRoute(NaviRoute(
+      path: path,
+      queryParams: queryParams,
+      fragment: fragment,
+    ));
+  }
+
+  void toRoute(NaviRoute route) {
+    RootRouteNotification(route: route).dispatch(context);
   }
 
   void relativeTo(
@@ -26,14 +28,27 @@ class Navi {
     Map<String, List<String>> queryParams = const {},
     String fragment = '',
   }) {
+    relativeToRoute(NaviRoute(
+      path: path,
+      queryParams: queryParams,
+      fragment: fragment,
+    ));
+  }
+
+  void relativeToRoute(NaviRoute route) {
     RootRouteNotification(
       relative: true,
-      route: NaviRoute(
-        path: path,
-        queryParams: queryParams,
-        fragment: fragment,
-      ),
+      route: route,
     ).dispatch(context);
+  }
+
+  NaviRoute get currentRoute {
+    final currentRouteInfo =
+        Router.of(context.internalNavi.rootNavigatorKey.currentContext!)
+            .routeInformationProvider
+            ?.value;
+    final currentUri = Uri.parse(currentRouteInfo?.location ?? '');
+    return NaviRoute.fromUri(currentUri);
   }
 
   /// shortcut of `Navigator.of(context).canPop()`
@@ -66,6 +81,9 @@ class InternalNavi extends Navi {
   List<NaviRoute> get routes => InheritedRoutes.of(context);
 
   List<IStackMarker> get markers => InheritedStackMarkers.of(context);
+
+  GlobalKey<NavigatorState> get rootNavigatorKey =>
+      InheritedRootNavigatorKey.of(context);
 }
 
 extension NaviContext on BuildContext {

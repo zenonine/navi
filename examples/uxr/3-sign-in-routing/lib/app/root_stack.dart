@@ -29,8 +29,6 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: how to navigate to requested page, instead of home?
-
     return NaviStack(
       pages: (context) => [
         if (_authService.authenticated)

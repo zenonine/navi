@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:navi/navi.dart';
 
 import '../mocks/mocks.dart';
 
 void main() {
+  setUpAll(() {
+    setupLogger();
+  });
+
+  tearDown(() {
+    reset(mockLogger);
+  });
+
   for (final navigationMethod in NavigationMethod.values) {
     group('$navigationMethod', () {
       testWidgets('URL SHOULD always be "/"', (tester) async {
@@ -32,10 +41,17 @@ void main() {
             naviByAddressBar(routeInformationProvider, '/not-exist-2');
             break;
           case NavigationMethod.naviTo:
-            context.navi.to(['/not-exist-3']);
+            context.navi.to(['not-exist-3']);
             break;
           case NavigationMethod.naviRelativeTo:
-            context.navi.relativeTo(['/not-exist-4']);
+            context.navi.relativeTo(['not-exist-4']);
+            break;
+          case NavigationMethod.naviToRoute:
+            context.navi.toRoute(const NaviRoute(path: ['not-exist-5']));
+            break;
+          case NavigationMethod.naviRelativeToRoute:
+            context.navi
+                .relativeToRoute(const NaviRoute(path: ['not-exist-6']));
             break;
         }
         await tester.pumpAndSettle();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:navi/navi.dart';
 
 import 'index.dart';
 
@@ -10,6 +11,7 @@ class AuthPagelet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final requestedRoute = context.navi.currentRoute;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -47,6 +49,12 @@ class AuthPagelet extends StatelessWidget {
                           _usernameController.text,
                           _passwordController.text,
                         );
+
+                        final authPath = context.navi.currentRoute.path;
+                        if (_authService.authenticated &&
+                            !requestedRoute.hasPrefixes(authPath)) {
+                          context.navi.toRoute(requestedRoute);
+                        }
 
                         if (!_authService.authenticated) {
                           showDialog<void>(
