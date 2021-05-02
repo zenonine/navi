@@ -41,10 +41,17 @@ void main() {
             naviByAddressBar(routeInformationProvider, '/not-exist-2');
             break;
           case NavigationMethod.naviTo:
-            context.navi.to(['/not-exist-3']);
+            context.navi.to(['not-exist-3']);
             break;
           case NavigationMethod.naviRelativeTo:
-            context.navi.relativeTo(['/not-exist-4']);
+            context.navi.relativeTo(['not-exist-4']);
+            break;
+          case NavigationMethod.naviToRoute:
+            context.navi.toRoute(const NaviRoute(path: ['not-exist-5']));
+            break;
+          case NavigationMethod.naviRelativeToRoute:
+            context.navi
+                .relativeToRoute(const NaviRoute(path: ['not-exist-6']));
             break;
         }
         await tester.pumpAndSettle();

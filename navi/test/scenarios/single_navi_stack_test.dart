@@ -84,6 +84,12 @@ void main() {
           case NavigationMethod.naviRelativeTo:
             context.navi.relativeTo(['../child']);
             break;
+          case NavigationMethod.naviToRoute:
+            context.navi.toRoute(const NaviRoute(path: ['child']));
+            break;
+          case NavigationMethod.naviRelativeToRoute:
+            context.navi.relativeToRoute(const NaviRoute(path: ['../child']));
+            break;
         }
         await tester.pumpAndSettle();
 
@@ -100,6 +106,13 @@ void main() {
             break;
           case NavigationMethod.naviRelativeTo:
             context.navi.relativeTo(['../not-exist']);
+            break;
+          case NavigationMethod.naviToRoute:
+            context.navi.toRoute(const NaviRoute(path: ['not-exist']));
+            break;
+          case NavigationMethod.naviRelativeToRoute:
+            context.navi
+                .relativeToRoute(const NaviRoute(path: ['../not-exist']));
             break;
         }
         await tester.pumpAndSettle();
