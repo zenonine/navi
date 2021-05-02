@@ -171,9 +171,10 @@ To navigate you have 2 options:
   stacks and update URL accordingly.
 * Imperative: calling the methods below
   * `context.navi.to(['products', '1'])` or `context.navi.to(['products/1'])`: navigates to absolute URL `/products/1`.
-  * `context.navi.relativeTo(['details'])`: navigates to relative URL. If current URL is `/products/1`, the destination
-    URL will be `/products/1/details`. You can use `../` to goes up one level in the route. For
-    example, `context.navi.relativeTo(['../2/details'])` will navigate to `/products/2/details` in this example.
+  * `context.navi.relativeTo(['details'])`: navigates to relative URL. If current URL (`context.navi.currentRoute`)
+    is `/products/1`, the destination URL will be `/products/1/details`. You can use `../` to goes up one level in the
+    route. For example, `context.navi.relativeTo(['../2/details'])` will navigate to `/products/2/details` in this
+    example.
   * `context.navi.pop()`: shortcut of `Navigator.of(context).pop()`
   * `context.navi.maybePop()`: shortcut of `Navigator.of(context).maybePop()`
   * `context.navi.canPop()`: shortcut of `Navigator.of(context).canPop()`

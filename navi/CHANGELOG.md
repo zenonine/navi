@@ -4,6 +4,7 @@
   * `./` and `../` segments should be resolved
   * blank segments should be removed
 * Allow navigating with `./` (current route) and `../` (goes up one level in the route)
+* Add `context.navi.currentRoute`
 * Fix some minor bugs
 
 # [0.2.1] - 29.04.2021
