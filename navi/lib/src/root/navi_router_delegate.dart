@@ -202,18 +202,21 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
                     notifier: _unprocessedRouteNotifier,
                     child: InheritedActiveRouteBranch(
                       active: true,
-                      child: Navigator(
-                        key: navigatorKey,
-                        pages: [rootPage(context)],
-                        onPopPage: (route, dynamic result) {
-                          if (!route.didPop(result)) {
-                            return false;
-                          }
+                      child: InheritedRootNavigatorKey(
+                        navigatorKey: navigatorKey,
+                        child: Navigator(
+                          key: navigatorKey,
+                          pages: [rootPage(context)],
+                          onPopPage: (route, dynamic result) {
+                            if (!route.didPop(result)) {
+                              return false;
+                            }
 
-                          onPopPage?.call(context, route, result, true);
+                            onPopPage?.call(context, route, result, true);
 
-                          return true;
-                        },
+                            return true;
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -225,18 +228,21 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
       );
     }
 
-    return Navigator(
-      key: navigatorKey,
-      pages: [_uninitializedPage],
-      onPopPage: (route, dynamic result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
+    return InheritedRootNavigatorKey(
+      navigatorKey: navigatorKey,
+      child: Navigator(
+        key: navigatorKey,
+        pages: [_uninitializedPage],
+        onPopPage: (route, dynamic result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
 
-        onPopPage?.call(context, route, result, false);
+          onPopPage?.call(context, route, result, false);
 
-        return true;
-      },
+          return true;
+        },
+      ),
     );
   }
 }

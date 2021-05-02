@@ -31,6 +31,7 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
 
   @override
   Widget build(BuildContext context) {
+    final requestedRoute = context.navi.currentRoute;
     return NaviStack(
       pages: (context) => [
         if (_authService.authenticated)
@@ -44,7 +45,13 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
             key: const ValueKey('Auth'),
             route: const NaviRoute(path: ['auth']),
             child: ElevatedButton(
-              onPressed: () => _authService.login(),
+              onPressed: () async {
+                if (await _authService.login()) {
+                  if (!requestedRoute.hasPrefixes(['auth'])) {
+                    context.navi.toRoute(requestedRoute);
+                  }
+                }
+              },
               child: const Text('Login'),
             ),
           ),
@@ -183,6 +190,5 @@ void main() {
         ['/protected/news', '/auth', '/protected/news'],
       );
     },
-    skip: true, // TODO: implement and call context.navi.back() after login!
   );
 }

@@ -5,11 +5,12 @@ class AuthService extends ChangeNotifier {
 
   bool get authenticated => _authenticated;
 
-  Future<void> login() async {
+  Future<bool> login() async {
     if (!_authenticated) {
       _authenticated = true;
       notifyListeners();
     }
+    return true;
   }
 
   Future<void> logout() async {
