@@ -264,6 +264,24 @@ void main() {
     });
   });
 
+  group('hasExactPath', () {
+    test('/a/b SHOULD has exact path /a/b', () {
+      const route = NaviRoute(path: ['a', 'b']);
+      expect(route.hasExactPath(['a', 'b']), true);
+      expect(route.hasExactPath([' ', 'a', ' ', 'b', ' ']), true);
+      expect(route.hasExactPath([' a/b ']), true);
+    });
+
+    test('/a/b SHOULD NOT has exact path / or /a or /b or /b/a or /a/b/c', () {
+      const route = NaviRoute(path: ['a', 'b']);
+      expect(route.hasExactPath([]), false);
+      expect(route.hasExactPath(['a']), false);
+      expect(route.hasExactPath(['b']), false);
+      expect(route.hasExactPath(['b', 'a']), false);
+      expect(route.hasExactPath(['a', 'b', 'c']), false);
+    });
+  });
+
   group('pathSegmentAt', () {
     group('GIVEN path /a/b', () {
       const route = NaviRoute(path: ['/a/b']);
