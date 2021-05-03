@@ -4,7 +4,7 @@
   </a>
 
   <p>
-    A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0.
+    A simple and easy to learn declarative navigation framework for Flutter, based on Navigator 2.0 (Router).
   </p>
 
   <div>
