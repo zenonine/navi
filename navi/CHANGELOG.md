@@ -1,10 +1,11 @@
-# [0.2.2]
+# [0.2.2] - 04.05.2021
 
 * Reported route should always be normalized:
   * `./` and `../` segments should be resolved
   * blank segments should be removed
 * Allow navigating with `./` (current route) and `../` (goes up one level in the route)
-* Add `context.navi.currentRoute`
+* Add `context.navi.currentRoute`, `context.navi.toRoute`, `context.navi.relativeToRoute`, `context.navi.canPop`
+  , `context.navi.maybePop`, `context.navi.pop`
 * Fix some minor bugs
 
 # [0.2.1] - 29.04.2021
