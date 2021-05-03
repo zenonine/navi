@@ -12,10 +12,15 @@ Note that, I purposely slow down the animation duration 3 times, so you can test
 1. [Deep Linking - Path Parameters](1-deep-linking-path-parameters)
 2. [Deep Linking - Query Parameters](2-deep-linking-query-parameters)
 3. [Login/Logout/Sign-up Routing](3-sign-in-routing)
-4. WIP: Nested Routing
+4. Nested Routing
 
-* With tabs
-* With modal dialog
+* With `BottomNavigationBar`
+  * [Without keeping state](../bottom-navigation-bar-without-keeping-state)
+  * [Keeping state](../bottom-navigation-bar-keeping-state)
+* With `TabBar`
+  * [Without keeping state](../tab-bar-without-keeping-state)
+  * [Keeping state](../tab-bar-keeping-state)
+* WIP: With modal dialog
 
 5. [Skipping Stacks](5-skipping-stacks)
 6. [Dynamic Linking](6-dynamic-linking)
