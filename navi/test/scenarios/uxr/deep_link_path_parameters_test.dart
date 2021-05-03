@@ -90,7 +90,9 @@ class BooksPagelet extends StatelessWidget {
             .map((book) => ListTile(
                   key: ValueKey('Book ${book.id}'),
                   title: Text(book.title),
-                  subtitle: Text(book.author),
+                  subtitle: Text(
+                    bookstoreService.getAuthor(book.authorId)?.name ?? '',
+                  ),
                   onTap: () => onSelectBook?.call(context, book),
                 ))
             .toList(),

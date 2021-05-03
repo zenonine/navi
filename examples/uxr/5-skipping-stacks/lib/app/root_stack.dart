@@ -15,11 +15,9 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
 
   @override
   void onNewRoute(NaviRoute unprocessedRoute) {
-    _pageId = RootPageId.books;
-    if (unprocessedRoute.hasPrefixes(['authors'])) {
-      _pageId = RootPageId.authors;
-    }
-
+    _pageId = unprocessedRoute.hasPrefixes(['authors'])
+        ? RootPageId.authors
+        : RootPageId.books;
     setState(() {});
   }
 
