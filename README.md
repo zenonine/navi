@@ -43,4 +43,5 @@ Note that, **imperative navigation API is also supported** as an extra layer bey
   * [Dynamic Linking](examples/uxr/6-dynamic-linking)
   * [Nested Routing - Bottom Navigation Bar - without Keeping State](examples/bottom-navigation-bar-without-keeping-state)
   * [Nested Routing - Bottom Navigation Bar - Keeping State](examples/bottom-navigation-bar-keeping-state)
+  * [Nested Routing - Tab Bar - Without Keeping State](examples/tab-bar-without-keeping-state)
   * [Nested Routing - Tab Bar - Keeping State](examples/tab-bar-keeping-state)

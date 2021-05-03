@@ -7,6 +7,7 @@
 * [Dynamic Linking](https://github.com/zenonine/navi/tree/master/examples/uxr/6-dynamic-linking)
 * [Nested Routing - Bottom Navigation Bar - without Keeping State](https://github.com/zenonine/navi/tree/master/examples/bottom-navigation-bar-without-keeping-state)
 * [Nested Routing - Bottom Navigation Bar - Keeping State](https://github.com/zenonine/navi/tree/master/examples/bottom-navigation-bar-keeping-state)
+* [Nested Routing - Tab Bar - Without Keeping State](https://github.com/zenonine/navi/tree/master/examples/tab-bar-without-keeping-state)
 * [Nested Routing - Tab Bar - Keeping State](https://github.com/zenonine/navi/tree/master/examples/tab-bar-keeping-state)
 
 # Quick example
