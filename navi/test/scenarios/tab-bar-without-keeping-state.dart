@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:navi/navi.dart';
@@ -13,58 +14,89 @@ class RootStack extends StatefulWidget {
   _RootStackState createState() => _RootStackState();
 }
 
-class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
+class _RootStackState extends State<RootStack>
+    with SingleTickerProviderStateMixin, NaviRouteMixin<RootStack> {
   int _currentIndex = AppTab.home.index;
+
+  late final TabController _tabController = TabController(
+    length: 2,
+    vsync: this,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        setState(() {
+          _currentIndex = _tabController.index;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   void onNewRoute(NaviRoute unprocessedRoute) {
     _currentIndex = unprocessedRoute.hasExactPath(['school'])
         ? AppTab.school.index
         : AppTab.home.index;
+    _tabController.animateTo(_currentIndex);
     setState(() {});
   }
 
-  Widget _buildBody() {
-    return NaviStack(
-      key: ValueKey(_currentIndex),
-      pages: (context) => [
-        NaviPage.material(
-          key: ValueKey(_currentIndex),
-          route: NaviRoute(path: [
-            if (_currentIndex == AppTab.home.index) 'home' else 'school'
-          ]),
-          child: TextField(key: ValueKey('AppTab $_currentIndex')),
-        )
-      ],
+  AppBar _buildAppBar() {
+    return AppBar(
+      bottom: TabBar(
+        controller: _tabController,
+        tabs: const [
+          Tab(
+            icon: Icon(Icons.home),
+            text: 'AppTab Home',
+          ),
+          Tab(
+            icon: Icon(Icons.school),
+            text: 'AppTab School',
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'AppTab Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'AppTab School',
+  Widget _buildBody() {
+    return TabBarView(
+      controller: _tabController,
+      children: [
+        ...AppTab.values.mapIndexed(
+          (tabIndex, tab) => NaviStack(
+            // IMPORTANT: only one stack should be activated
+            active: _currentIndex == tabIndex,
+            pages: (context) => [
+              NaviPage.material(
+                key: ValueKey(tabIndex),
+                route: NaviRoute(path: [
+                  if (tabIndex == AppTab.home.index) 'home' else 'school'
+                ]),
+                child: TextField(key: ValueKey('AppTab $tabIndex')),
+              )
+            ],
+          ),
         ),
       ],
-      onTap: (newIndex) {
-        setState(() {
-          _currentIndex = newIndex;
-        });
-      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _buildAppBar(),
       body: _buildBody(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 }

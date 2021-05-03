@@ -13,58 +13,115 @@ class RootStack extends StatefulWidget {
   _RootStackState createState() => _RootStackState();
 }
 
-class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
+class _RootStackState extends State<RootStack>
+    with SingleTickerProviderStateMixin, NaviRouteMixin<RootStack> {
   int _currentIndex = AppTab.home.index;
+
+  late final TabController _tabController = TabController(
+    length: 2,
+    vsync: this,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        setState(() {
+          _currentIndex = _tabController.index;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   void onNewRoute(NaviRoute unprocessedRoute) {
     _currentIndex = unprocessedRoute.hasExactPath(['school'])
         ? AppTab.school.index
         : AppTab.home.index;
+    _tabController.animateTo(_currentIndex);
     setState(() {});
   }
 
-  Widget _buildBody() {
-    return NaviStack(
-      key: ValueKey(_currentIndex),
-      pages: (context) => [
-        NaviPage.material(
-          key: ValueKey(_currentIndex),
-          route: NaviRoute(path: [
-            if (_currentIndex == AppTab.home.index) 'home' else 'school'
-          ]),
-          child: TextField(key: ValueKey('AppTab $_currentIndex')),
-        )
-      ],
+  AppBar _buildAppBar() {
+    return AppBar(
+      bottom: TabBar(
+        controller: _tabController,
+        tabs: const [
+          Tab(
+            icon: Icon(Icons.home),
+            text: 'AppTab Home',
+          ),
+          Tab(
+            icon: Icon(Icons.school),
+            text: 'AppTab School',
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'AppTab Home',
+  Widget _buildBody() {
+    return TabBarView(
+      controller: _tabController,
+      children: [
+        // IMPORTANT: only one stack should be activated
+        TabStack(
+          active: _currentIndex == AppTab.home.index,
+          tab: AppTab.home,
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'AppTab School',
+        TabStack(
+          active: _currentIndex == AppTab.school.index,
+          tab: AppTab.school,
         ),
       ],
-      onTap: (newIndex) {
-        setState(() {
-          _currentIndex = newIndex;
-        });
-      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _buildAppBar(),
       body: _buildBody(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+}
+
+class TabStack extends StatefulWidget {
+  const TabStack({required this.active, required this.tab});
+
+  final bool active;
+  final AppTab tab;
+
+  @override
+  _TabStackState createState() => _TabStackState();
+}
+
+class _TabStackState extends State<TabStack>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return NaviStack(
+      active: widget.active,
+      pages: (context) => [
+        NaviPage.material(
+          key: ValueKey(widget.tab.index),
+          route: NaviRoute(
+              path: [if (widget.tab == AppTab.home) 'home' else 'school']),
+          child: TextField(key: ValueKey('AppTab ${widget.tab.index}')),
+        )
+      ],
     );
   }
 }
@@ -73,14 +130,12 @@ void _expectTabHome() {
   expect(find.text('AppTab Home'), findsOneWidget);
   expect(find.text('AppTab School'), findsOneWidget);
   expect(find.byKey(const ValueKey('AppTab 0')), findsOneWidget);
-  expect(find.widgetWithText(TextField, ''), findsOneWidget);
 }
 
 void _expectTabSchool() {
   expect(find.text('AppTab Home'), findsOneWidget);
   expect(find.text('AppTab School'), findsOneWidget);
   expect(find.byKey(const ValueKey('AppTab 1')), findsOneWidget);
-  expect(find.widgetWithText(TextField, ''), findsOneWidget);
 }
 
 void main() {
@@ -136,11 +191,11 @@ void main() {
 
   testWidgets(
       'initial route /school SHOULD show tab school.'
-      ' Then enter any text.'
+      ' Then enter text "Text 1".'
       ' Then tap Home tab SHOULD show tab Home.'
-      ' Then enter any text.'
-      ' Then tap School tab SHOULD show tab school without the entered text.'
-      ' Then tap Home tab SHOULD show tab home without the entered text.',
+      ' Then enter text "Text 0".'
+      ' Then tap School tab SHOULD show tab school with the text "Text 1".'
+      ' Then tap Home tab SHOULD show tab home with the text "Text 0".',
       (tester) async {
     final routeInformationProvider = MockRouteInformationProvider(
       const RouteInformation(location: '/school'),
@@ -154,16 +209,24 @@ void main() {
     ));
     await tester.pumpAndSettle();
     _expectTabSchool();
+    expect(find.widgetWithText(TextField, ''), findsOneWidget);
+    expect(find.widgetWithText(TextField, 'Text 0'), findsNothing);
+    expect(find.widgetWithText(TextField, 'Text 1'), findsNothing);
     expectHistoricalRouterReports(_navigatorKey.currentContext!, ['/school']);
 
     await tester.enterText(find.byKey(const ValueKey('AppTab 1')), 'Text 1');
     await tester.pumpAndSettle();
+    _expectTabSchool();
     expect(find.widgetWithText(TextField, ''), findsNothing);
+    expect(find.widgetWithText(TextField, 'Text 0'), findsNothing);
     expect(find.widgetWithText(TextField, 'Text 1'), findsOneWidget);
 
     await tester.tap(find.text('AppTab Home'));
     await tester.pumpAndSettle();
     _expectTabHome();
+    expect(find.widgetWithText(TextField, ''), findsOneWidget);
+    expect(find.widgetWithText(TextField, 'Text 0'), findsNothing);
+    expect(find.widgetWithText(TextField, 'Text 1'), findsNothing);
     expectHistoricalRouterReports(
       _navigatorKey.currentContext!,
       ['/school', '/home'],
@@ -171,14 +234,17 @@ void main() {
 
     await tester.enterText(find.byKey(const ValueKey('AppTab 0')), 'Text 0');
     await tester.pumpAndSettle();
+    _expectTabHome();
     expect(find.widgetWithText(TextField, ''), findsNothing);
     expect(find.widgetWithText(TextField, 'Text 0'), findsOneWidget);
+    expect(find.widgetWithText(TextField, 'Text 1'), findsNothing);
 
     await tester.tap(find.text('AppTab School'));
     await tester.pumpAndSettle();
     _expectTabSchool();
+    expect(find.widgetWithText(TextField, ''), findsNothing);
     expect(find.widgetWithText(TextField, 'Text 0'), findsNothing);
-    expect(find.widgetWithText(TextField, 'Text 1'), findsNothing);
+    expect(find.widgetWithText(TextField, 'Text 1'), findsOneWidget);
     expectHistoricalRouterReports(
       _navigatorKey.currentContext!,
       ['/school', '/home', '/school'],
@@ -187,7 +253,8 @@ void main() {
     await tester.tap(find.text('AppTab Home'));
     await tester.pumpAndSettle();
     _expectTabHome();
-    expect(find.widgetWithText(TextField, 'Text 0'), findsNothing);
+    expect(find.widgetWithText(TextField, ''), findsNothing);
+    expect(find.widgetWithText(TextField, 'Text 0'), findsOneWidget);
     expect(find.widgetWithText(TextField, 'Text 1'), findsNothing);
     expectHistoricalRouterReports(
       _navigatorKey.currentContext!,

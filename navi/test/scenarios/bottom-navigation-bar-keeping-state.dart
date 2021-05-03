@@ -80,10 +80,12 @@ class _RootStackState extends State<RootStack> with NaviRouteMixin<RootStack> {
 
 void _expectTabHome() {
   expect(find.text('AppTab Home'), findsOneWidget);
+  expect(find.text('AppTab School'), findsOneWidget);
   expect(find.byKey(const ValueKey('AppTab 0')), findsOneWidget);
 }
 
 void _expectTabSchool() {
+  expect(find.text('AppTab Home'), findsOneWidget);
   expect(find.text('AppTab School'), findsOneWidget);
   expect(find.byKey(const ValueKey('AppTab 1')), findsOneWidget);
 }
@@ -141,14 +143,14 @@ void main() {
 
   testWidgets(
       'initial route /school SHOULD show tab school.'
-          ' Then enter text "Text 1".'
-          ' Then tap Home tab SHOULD show tab Home.'
-          ' Then enter text "Text 0".'
-          ' Then tap School tab SHOULD show tab school with the text "Text 1".'
-          ' Then tap Home tab SHOULD show tab home with the text "Text 0".',
-          (tester) async {
-        final routeInformationProvider = MockRouteInformationProvider(
-          const RouteInformation(location: '/school'),
+      ' Then enter text "Text 1".'
+      ' Then tap Home tab SHOULD show tab Home.'
+      ' Then enter text "Text 0".'
+      ' Then tap School tab SHOULD show tab school with the text "Text 1".'
+      ' Then tap Home tab SHOULD show tab home with the text "Text 0".',
+      (tester) async {
+    final routeInformationProvider = MockRouteInformationProvider(
+      const RouteInformation(location: '/school'),
     );
     final _navigatorKey = GlobalKey<NavigatorState>();
 
