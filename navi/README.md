@@ -268,6 +268,36 @@ To use a custom page, use the default constructors:
 * `NaviRouterDelegate(rootPage: () => YourCustomPage())`
 * `NaviPage(pageBuilder: (key, child) => YourCustomPage())`
 
+For example, you can to create a custom page without animation.
+
+    ```
+    class NoAnimationPage extends Page {
+      const NoAnimationPage({
+        LocalKey? key,
+        required this.child,
+      }) : super(key: key);
+    
+      final Widget child;
+    
+      @override
+      Route createRoute(BuildContext context) => PageRouteBuilder(
+            settings: this,
+            pageBuilder: (_, __, ___) => child,
+          );
+    }
+    ´´´
+
+Then passing your custom page to `NaviPage` default constructor.
+
+    ´´´
+    NaviPage(
+      key: const ValueKey('Books'),
+      route: const NaviRoute(path: ['books']),
+      child: BooksPagelet(),
+      pageBuilder: (key, child) => NoAnimationPage(key: key, child: child),
+    )
+    ```
+
 # TODO: Flatten list of stacks to a single stack
 
 ```
