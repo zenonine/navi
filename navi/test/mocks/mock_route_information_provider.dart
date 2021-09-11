@@ -27,7 +27,10 @@ class MockRouteInformationProvider extends RouteInformationProvider
   List<RouteInformation> historicalRouterReports = [];
 
   @override
-  void routerReportsNewRouteInformation(RouteInformation routeInformation) {
+  void routerReportsNewRouteInformation(
+    RouteInformation routeInformation, {
+    bool isNavigation = true,
+  }) {
     log.info('routerReportsNewRouteInformation ${routeInformation.location}');
     _value = routeInformation;
     historicalRouterReports += [routeInformation];
