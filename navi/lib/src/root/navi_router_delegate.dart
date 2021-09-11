@@ -15,7 +15,7 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
     required this.rootPage,
     this.onPopPage,
     required Page uninitializedPage,
-  })   : navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>(),
+  })  : navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>(),
         _uninitializedPage = uninitializedPage;
 
   NaviRouterDelegate.material({
