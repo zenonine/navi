@@ -117,7 +117,7 @@ class NaviRouterDelegate extends RouterDelegate<NaviRoute>
   void _reportNewRoute(BuildContext context, NaviRoute newRoute) {
     _log.finest('_reportNewRoute $newRoute');
     final currentRouteInfo = Router.of(context).routeInformationProvider!.value;
-    final currentUri = Uri.parse(currentRouteInfo!.location ?? '');
+    final currentUri = Uri.parse(currentRouteInfo.location ?? '');
     final currentRoute = NaviRoute.fromUri(currentUri);
 
     // update route if there is a new route or the current one is dirty
