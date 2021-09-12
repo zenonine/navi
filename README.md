@@ -22,6 +22,15 @@
 
 ---
 
+# Flutter/Dart compatibility
+
+| Navi               | Flutter               | Dart                |
+| :----------------- | :-------------------- | :------------------ |
+| Navi 0.0.x - 0.2.x | Flutter 2.0.0 - 2.2.3 | Dart 2.12.0 - newer |
+| Navi 0.3.x - newer | Flutter 2.5.0 - newer | Dart 2.12.0 - newer |
+
+---
+
 If you love Flutter, you would love [declarative UI](https://flutter.dev/docs/get-started/flutter-for/declarative) and
 therefore **declarative navigation**.
 
