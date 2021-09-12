@@ -1,5 +1,10 @@
+# [0.3.0-rc+0] - 12.09.2021
+
+* Compatible with Flutter 2.5.0 and newer
+
 # [0.2.2] - 04.05.2021
 
+* Compatible with Flutter 2.2.3 and older
 * Reported route should always be normalized:
   * `./` and `../` segments should be resolved
   * blank segments should be removed
